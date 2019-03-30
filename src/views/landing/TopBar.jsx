@@ -9,7 +9,7 @@ class TopBar extends React.Component {
     return (
       <AppBar style={{ color: "white" }}>
         <Toolbar>
-          <IconButton color="inherit">
+          <IconButton color="inherit" onClick={this.props.showMenuCb}>
             <MenuIcon />
           </IconButton>
         </Toolbar>
