@@ -9,11 +9,12 @@ class Landing extends React.Component {
     showSideMenu: false
   }
   render() {
+    const url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
     return (
       <div>
         <TopBar showMenuCb={() => this.setState({ showSideMenu: true })} />
         <GoogleMapWrapper
-          googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+          googleMapURL={url}
           loadingElement={<div style={{ height: `100%` }} />}
           containerElement={<div style={{ height: `100vh` }} />}
           mapElement={<div style={{ height: `100%` }} />}
