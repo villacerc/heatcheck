@@ -4,9 +4,11 @@ import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
 import Divider from "@material-ui/core/Divider"
 import IconButton from "@material-ui/core/IconButton"
 
-import styles from "./Sidemenu.module.scss"
+import SideMenuRow from "./SideMenuRow"
 
-class Sidemenu extends React.Component {
+import styles from "./SideMenu.module.scss"
+
+class SideMenu extends React.Component {
   render() {
     return (
       <Drawer
@@ -15,17 +17,14 @@ class Sidemenu extends React.Component {
         }}
         variant="persistent"
         anchor="left"
-        open={this.props.open}
+        open={true}
       >
-        <div className={styles.header}>
-          <IconButton onClick={this.props.hideCb}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider/>
+        <Divider />
+        <SideMenuRow />
+        <Divider />
       </Drawer>
     )
   }
 }
 
-export default Sidemenu
+export default SideMenu

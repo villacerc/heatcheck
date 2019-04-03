@@ -1,8 +1,6 @@
 /* eslint-disable no-undef */
 import React from "react"
 import MarkerWithLabel from "react-google-maps/lib/components/addons/MarkerWithLabel"
-import GradeOutlined from "@material-ui/icons/GradeOutlined"
-import Grade from "@material-ui/icons/Grade"
 import { InfoWindow } from "react-google-maps"
 import Popper from "@material-ui/core/Popper"
 import Paper from "@material-ui/core/Paper"

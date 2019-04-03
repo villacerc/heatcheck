@@ -1,0 +1,37 @@
+.container {
+  padding: 15px 0;
+}
+.content {
+  display: table;
+  >div {
+    display: table-cell;
+    vertical-align: top;
+  }
+}
+.photo {
+  width: 105px;
+  height: 105px;
+  img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 3px;
+  }
+}
+.info {
+  h3 {margin: 0;}
+  span {
+    margin-top: 5px;
+  }
+}
+.grade {
+  margin-top: 5px;
+  margin-right: 10px;
+}
+.reviews {
+  margin-bottom: 5px;
+}
+.reviews, .grade {
+  display: inline-block;
+  vertical-align: text-bottom;
+}

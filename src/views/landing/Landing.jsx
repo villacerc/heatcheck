@@ -2,7 +2,7 @@ import React from "react"
 
 import GoogleMapWrapper from "./GoogleMapWrapper"
 import TopBar from "./TopBar"
-import Sidemenu from "./Sidemenu"
+import SideMenu from "./SideMenu"
 
 class Landing extends React.Component {
   state = {
@@ -20,7 +20,7 @@ class Landing extends React.Component {
           containerElement={<div style={{ height: `100vh` }} />}
           mapElement={<div style={{ height: `100%` }} />}
         />
-        <Sidemenu
+        <SideMenu
           open={this.state.showSideMenu}
           hideCb={() => this.setState({ showSideMenu: false })}
         />

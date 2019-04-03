@@ -1,5 +1,9 @@
 .drawer {
-  width: 300px;
+  margin-top: 64px;
+  width: 330px;
+  padding: 0 15px;
+  padding-top: 10px;
+  z-index: 1;
 }
 .header {
   display: flex;
