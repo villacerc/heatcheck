@@ -7,7 +7,7 @@ import MenuIcon from "@material-ui/icons/Menu"
 class TopBar extends React.Component {
   render() {
     return (
-      <AppBar style={{ color: "white" }}>
+      <AppBar style={{ color: "white", background: '#039be5' }}>
         <Toolbar>
           <IconButton color="inherit" onClick={this.props.showMenuCb}>
             <MenuIcon />

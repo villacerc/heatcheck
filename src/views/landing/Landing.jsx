@@ -10,6 +10,7 @@ class Landing extends React.Component {
   }
   render() {
     const url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+    const url2 = process.env.REACT_APP_GOOGLE_MAP_URL
     return (
       <div>
         <TopBar showMenuCb={() => this.setState({ showSideMenu: true })} />
