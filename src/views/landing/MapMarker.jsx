@@ -1,32 +1,40 @@
 /* eslint-disable no-undef */
 import React from "react"
 import MarkerWithLabel from "react-google-maps/lib/components/addons/MarkerWithLabel"
-import { InfoWindow } from "react-google-maps"
 import Popper from "@material-ui/core/Popper"
-import Paper from "@material-ui/core/Paper"
 
-import MarkerPopper from "./MarkerPopper"
+import MarkerContent from "./MarkerContent"
 
 import styles from "./MapMarker.module.scss"
-import markerIcon from "../../static/marker.png"
 
 class MapMarker extends React.Component {
   state = {
-    showInfo: false,
+    showPopper: false,
     popperEntered: false,
     className: styles.bubble
   }
   timeout = null
   onMouseOver = () => {
     clearTimeout(this.timeout)
-    this.setState({ showInfo: true, className: styles.bubbleLight })
+    this.setState({ showPopper: true, className: styles.bubbleLight })
   }
   onMouseOut = e => {
+    //hide popper and remove highlight if not inside popper
     this.timeout = setTimeout(() => {
       if (!this.state.popperEntered) {
-        this.setState({ showInfo: false, className: styles.bubble })
+        this.setState({ showPopper: false, className: styles.bubble })
       }
     }, 0)
+  }
+  onPopperEnter = () => {
+    this.setState({ popperEntered: true })
+  }
+  onPopperLeave = () => {
+    this.setState({
+      popperEntered: false,
+      showPopper: false,
+      className: styles.bubble
+    })
   }
   render() {
     return (
@@ -42,19 +50,13 @@ class MapMarker extends React.Component {
           <div className={styles.index}>1</div>
           <Popper
             className={styles.popper}
-            onMouseEnter={e => this.setState({ popperEntered: true })}
-            onMouseLeave={e =>
-              this.setState({
-                popperEntered: false,
-                showInfo: false,
-                className: styles.bubble
-              })
-            }
+            onMouseEnter={this.onPopperEnter}
+            onMouseLeave={this.onPopperLeave}
             anchorEl={this.myAnchor}
             placement="top-start"
-            open={this.state.showInfo}
+            open={this.state.showPopper}
           >
-            <Paper style={{borderRadius: '0', padding: '10px'}}>The content of the Popper</Paper>
+            <MarkerContent />
           </Popper>
         </div>
       </MarkerWithLabel>

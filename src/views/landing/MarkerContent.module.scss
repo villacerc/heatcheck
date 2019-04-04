@@ -1,0 +1,22 @@
+.container {
+  border-radius: 3px;
+  padding: 15px;
+  width: 345px;
+  display: flex;
+  justify-content: space-between;
+}
+.address {
+  margin-top: 5px;
+  p {
+    margin: 0;
+  }
+}
+.photo {
+  width: 95px;
+  img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 3px;
+  }
+}
