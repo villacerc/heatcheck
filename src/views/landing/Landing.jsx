@@ -15,7 +15,7 @@ class Landing extends React.Component {
       <div>
         <TopBar showMenuCb={() => this.setState({ showSideMenu: true })} />
         <GoogleMapWrapper
-          googleMapURL={url}
+          googleMapURL={url2}
           loadingElement={<div style={{ height: `100%` }} />}
           containerElement={<div style={{ height: `100vh` }} />}
           mapElement={<div style={{ height: `100%` }} />}
