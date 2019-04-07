@@ -1,7 +1,7 @@
 import React from "react"
 import Paper from "@material-ui/core/Paper"
 
-import LooInfo from "./LooInfo"
+import VenueInfo from "./VenueInfo"
 
 import styles from "./MarkerContent.module.scss"
 
@@ -10,7 +10,7 @@ class MarkerContent extends React.Component {
     return (
       <Paper className={styles.container}>
         <div>
-          <LooInfo />
+          <VenueInfo />
           <div className={styles.address}>
             <p>1095 Hamilton St</p>
             <p>Vancouver, BC V6B 5T4</p>

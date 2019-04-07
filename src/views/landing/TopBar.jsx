@@ -9,10 +9,10 @@ import styles from "./TopBar.module.scss"
 class TopBar extends React.Component {
   render() {
     return (
-      <AppBar style={{ color: "white", background: "#039be5" }}>
+      <AppBar classes={{root: styles.bar}}>
         <Toolbar>
           <div className={styles.brand}>
-            <h1 >Good Loo</h1>
+            <h1 >Heat Check</h1>
           </div>
         </Toolbar>
       </AppBar>

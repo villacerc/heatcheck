@@ -4,9 +4,9 @@ import Grade from "@material-ui/icons/Grade"
 import Accessible from "@material-ui/icons/Accessible"
 import ChildFriendly from "@material-ui/icons/ChildFriendly"
 
-import styles from "./LooInfo.module.scss"
+import styles from "./VenueInfo.module.scss"
 
-class LooInfo extends React.Component {
+class VenueInfo extends React.Component {
   render() {
     return (
       <div className={styles.info}>
@@ -30,4 +30,4 @@ class LooInfo extends React.Component {
   }
 }
 
-export default LooInfo
+export default VenueInfo

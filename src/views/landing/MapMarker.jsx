@@ -47,7 +47,6 @@ class MapMarker extends React.Component {
         labelAnchor={new google.maps.Point(16, 40)}
       >
         <div ref={el => (this.myAnchor = el)}>
-          <div className={styles.index}>1</div>
           <Popper
             className={styles.popper}
             onMouseEnter={this.onPopperEnter}
