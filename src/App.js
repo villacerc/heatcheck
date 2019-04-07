@@ -1,6 +1,6 @@
-import React, { Component } from "react"
+import React, { Component } from 'react'
 
-import Landing from "./views/landing/Landing"
+import Landing from './views/landing/Landing'
 
 class App extends Component {
   render() {
