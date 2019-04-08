@@ -1,11 +1,15 @@
 .bar {
   background-color: #ff5722 !important;
   color: white;
+  button {
+    color: inherit;
+    font-size: 12pt;
+  }
 }
 .brand {
   font-family: "Carter One", cursive;
   margin-left: 5%;
-  margin-bottom: 8px;
+  flex-grow: 1;
   h1 {
     margin: 0;
   }

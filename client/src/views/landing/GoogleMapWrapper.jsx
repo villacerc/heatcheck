@@ -8,7 +8,6 @@ import MapMarker from './MapMarker'
 class GoogleMapWrapper extends React.Component {
   render() {
     const { venues } = this.props
-    console.log(this.props)
     return (
       <GoogleMap
         {...this.props}
@@ -17,7 +16,7 @@ class GoogleMapWrapper extends React.Component {
       >
         {venues &&
           map(venues, venue => {
-            return <MapMarker key={venue.id} venue={venue} />
+            return <MapMarker key={venue._id} venue={venue} />
           })}
       </GoogleMap>
     )

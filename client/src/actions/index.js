@@ -5,3 +5,9 @@ export const fetchVenues = () => async dispatch => {
 
   dispatch({ type: 'RECEIVE_VENUES', payload: res.data.venues })
 }
+
+export const showModal = (name, props = null) => ({
+  type: 'SHOW_MODAL',
+  name,
+  props
+})

@@ -1,10 +1,12 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux'
 import reduxThunk from 'redux-thunk'
 
-import venuesReducer from './venuesReducer'
+import venues from './venuesReducer'
+import modals from './modalsReducer'
 
 const reducers = combineReducers({
-  venues: venuesReducer
+  venues,
+  modals
 })
 
 const store = createStore(reducers, applyMiddleware(reduxThunk))
