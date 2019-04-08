@@ -5,16 +5,21 @@ import TextField from '@material-ui/core/TextField'
 import DialogContent from '@material-ui/core/DialogContent'
 import Button from '@material-ui/core/Button'
 import DialogActions from '@material-ui/core/DialogActions'
+import LinearProgress from '@material-ui/core/LinearProgress'
 
 import styles from './Login.module.scss'
 
 class Login extends React.Component {
   state = {
-    open: true
+    open: true,
+    loading: false
   }
 
   handleClose = () => {
     this.setState({ open: false })
+  }
+  handleLogin = () => {
+    this.setState({ loading: true })
   }
   render() {
     return (
@@ -42,13 +47,22 @@ class Login extends React.Component {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={this.handleClose} color="primary">
+          <Button
+            disabled={this.state.loading}
+            onClick={this.handleClose}
+            color="primary"
+          >
             Cancel
           </Button>
-          <Button onClick={this.handleClose} color="primary">
+          <Button
+            disabled={this.state.loading}
+            onClick={this.handleLogin}
+            color="primary"
+          >
             Login
           </Button>
         </DialogActions>
+        {this.state.loading && <LinearProgress />}
       </Dialog>
     )
   }
