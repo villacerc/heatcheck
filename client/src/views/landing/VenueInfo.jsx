@@ -1,30 +1,28 @@
-import React from "react"
-import GradeOutlined from "@material-ui/icons/GradeOutlined"
-import Grade from "@material-ui/icons/Grade"
-import Accessible from "@material-ui/icons/Accessible"
-import ChildFriendly from "@material-ui/icons/ChildFriendly"
+import React from 'react'
 
-import styles from "./VenueInfo.module.scss"
+import styles from './VenueInfo.module.scss'
 
 class VenueInfo extends React.Component {
   render() {
+    const { venue } = this.props
     return (
       <div className={styles.info}>
-        <h3>1. Stanley Park</h3>
-        <div className={styles.grade}>
-          <Grade />
-          <Grade />
-          <Grade />
-          <Grade />
-          <GradeOutlined />
-        </div>
-        <div className={styles.reviews}>8156 reviews</div>
-        <div>
-          <Accessible />
-          <ChildFriendly />
-          <span style={{ margin: "0 10px" }}>•</span>
-          Public
-        </div>
+        <h4>{venue.name}</h4>
+        {/*<div className={styles.courts}>
+          <label>
+            Includes: 
+          </label>
+          <ul>
+            <li>
+              1x Basketball court
+            </li>
+            <li>
+              2x Tennis court
+            </li>
+          </ul>
+    </div>*/}
+        {/* <div className={styles.grade}>8 Checked in</div>
+        <div>5 Games being played</div> */}
       </div>
     )
   }

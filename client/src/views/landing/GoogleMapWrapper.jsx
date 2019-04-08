@@ -1,26 +1,33 @@
-import React from "react"
-import {
-  withScriptjs,
-  withGoogleMap,
-  GoogleMap,
-  Marker
-} from "react-google-maps"
+import React from 'react'
+import { map } from 'lodash'
+import { connect } from 'react-redux'
+import { withScriptjs, withGoogleMap, GoogleMap } from 'react-google-maps'
 
-import MapMarker from "./MapMarker"
+import MapMarker from './MapMarker'
 
 class GoogleMapWrapper extends React.Component {
   render() {
+    const { venues } = this.props
+    console.log(this.props)
     return (
       <GoogleMap
         {...this.props}
-        defaultZoom={20}
+        defaultZoom={12}
         defaultCenter={{ lat: 49.1785, lng: -123.12789 }}
       >
-        <MapMarker position={{ lat: 49.1785, lng: -123.12789 }} />
-        <MapMarker position={{ lat: 49.178500, lng: -123.128580 }} />
+        {venues &&
+          map(venues, venue => {
+            return <MapMarker key={venue.id} venue={venue} />
+          })}
       </GoogleMap>
     )
   }
 }
 
-export default withScriptjs(withGoogleMap(GoogleMapWrapper))
+function mapStateToProps({ venues }) {
+  return { venues }
+}
+
+GoogleMapWrapper = withScriptjs(withGoogleMap(GoogleMapWrapper))
+
+export default connect(mapStateToProps)(GoogleMapWrapper)

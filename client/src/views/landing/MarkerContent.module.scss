@@ -2,8 +2,10 @@
   border-radius: 3px;
   padding: 15px;
   width: 345px;
-  display: flex;
-  justify-content: space-between;
+  >div {
+    justify-content: space-between;
+    display: flex;
+  }
 }
 .address {
   margin-top: 5px;
@@ -19,4 +21,13 @@
     object-fit: cover;
     border-radius: 3px;
   }
+}
+.checkin {
+  &:hover {
+    text-decoration: underline
+  }
+  cursor: pointer;
+  margin: 10px 0 0 0;
+  color: blue;
+  font-size: 14pt;
 }

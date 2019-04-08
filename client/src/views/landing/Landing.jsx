@@ -1,16 +1,25 @@
-import React from "react"
+import React from 'react'
+import { connect } from 'react-redux'
 
-import GoogleMapWrapper from "./GoogleMapWrapper"
-import TopBar from "./TopBar"
-import SideMenu from "./SideMenu"
+import { fetchVenues } from '../../actions'
+import GoogleMapWrapper from './GoogleMapWrapper'
+import TopBar from './TopBar'
+import SideMenu from './SideMenu'
 
 class Landing extends React.Component {
   state = {
-    showSideMenu: false
+    showSideMenu: false,
+    venues: null
   }
+  componentDidMount() {
+    this.props.fetchVenues()
+  }
+
   render() {
-    const url = "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+    const url =
+      'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places'
     const url2 = process.env.REACT_APP_GOOGLE_MAP_URL
+
     return (
       <div>
         <TopBar showMenuCb={() => this.setState({ showSideMenu: true })} />
@@ -29,4 +38,7 @@ class Landing extends React.Component {
   }
 }
 
-export default Landing
+export default connect(
+  null,
+  { fetchVenues }
+)(Landing)

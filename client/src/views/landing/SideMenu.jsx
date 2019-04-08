@@ -1,15 +1,16 @@
-import React from "react"
-import Drawer from "@material-ui/core/Drawer"
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft"
-import Divider from "@material-ui/core/Divider"
-import IconButton from "@material-ui/core/IconButton"
+import React from 'react'
+import Drawer from '@material-ui/core/Drawer'
+import Divider from '@material-ui/core/Divider'
+import { map } from 'lodash'
+import { connect } from 'react-redux'
 
-import SideMenuRow from "./SideMenuRow"
+import SideMenuRow from './SideMenuRow'
 
-import styles from "./SideMenu.module.scss"
+import styles from './SideMenu.module.scss'
 
 class SideMenu extends React.Component {
   render() {
+    const { venues } = this.props
     return (
       <Drawer
         classes={{
@@ -19,12 +20,22 @@ class SideMenu extends React.Component {
         anchor="left"
         open={true}
       >
-        <Divider />
-        <SideMenuRow />
-        <Divider />
+        {venues &&
+          map(venues, venue => {
+            return (
+              <div>
+                <Divider />
+                <SideMenuRow venue={venue} />
+              </div>
+            )
+          })}
       </Drawer>
     )
   }
 }
 
-export default SideMenu
+function mapStateToProps({ venues }) {
+  return { venues }
+}
+
+export default connect(mapStateToProps)(SideMenu)

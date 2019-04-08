@@ -1,11 +1,11 @@
 /* eslint-disable no-undef */
-import React from "react"
-import MarkerWithLabel from "react-google-maps/lib/components/addons/MarkerWithLabel"
-import Popper from "@material-ui/core/Popper"
+import React from 'react'
+import MarkerWithLabel from 'react-google-maps/lib/components/addons/MarkerWithLabel'
+import Popper from '@material-ui/core/Popper'
 
-import MarkerContent from "./MarkerContent"
+import MarkerContent from './MarkerContent'
 
-import styles from "./MapMarker.module.scss"
+import styles from './MapMarker.module.scss'
 
 class MapMarker extends React.Component {
   state = {
@@ -37,13 +37,15 @@ class MapMarker extends React.Component {
     })
   }
   render() {
+    const { venue } = this.props
+    
     return (
       <MarkerWithLabel
         onMouseOut={this.onMouseOut}
         onMouseOver={this.onMouseOver}
-        position={this.props.position}
+        position={{ lat: venue.lat, lng: venue.lng }}
         labelClass={this.state.className}
-        icon={{ url: "" }}
+        icon={{ url: '' }}
         labelAnchor={new google.maps.Point(16, 40)}
       >
         <div ref={el => (this.myAnchor = el)}>
@@ -55,7 +57,7 @@ class MapMarker extends React.Component {
             placement="top-start"
             open={this.state.showPopper}
           >
-            <MarkerContent />
+            <MarkerContent venue={venue} />
           </Popper>
         </div>
       </MarkerWithLabel>

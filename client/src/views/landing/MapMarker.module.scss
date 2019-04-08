@@ -1,13 +1,13 @@
 .bubble {
   overflow: visible !important;
-  cursor: pointer;
+  cursor: pointer !important;
   text-align: center;
   width: 20px;
   height: 20px;
   padding: 5px;
   position: relative;
   background: #64dd17;
-  box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.3);
+  box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.3);
   > svg {
     fill: #fdd835;
     height: 20px;
@@ -53,7 +53,7 @@
   padding: 5px;
   position: relative;
   background: white;
-  box-shadow: 1px 2px 1px rgba(3, 155, 229, 0.3);
+  box-shadow: 1px 2px 8px rgba(3, 155, 229, 0.3);
     z-index: 999 !important;
   > svg {
     fill: #fdd835;

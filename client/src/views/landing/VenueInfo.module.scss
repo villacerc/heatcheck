@@ -1,17 +1,16 @@
 .info {
-  h3 {margin: 0;}
+  h4 {
+    margin: 0;
+  }
   span {
     margin-top: 5px;
   }
 }
-.grade {
+.courts {
+  display: flex;
   margin-top: 5px;
-  margin-right: 10px;
-}
-.reviews {
-  margin-bottom: 5px;
-}
-.reviews, .grade {
-  display: inline-block;
-  vertical-align: text-bottom;
+  ul {
+    margin: 0;
+    padding-left: 25px;
+  }
 }
