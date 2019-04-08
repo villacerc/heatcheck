@@ -4,14 +4,16 @@ import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 
-import { showModal } from '../../actions'
+import { showModal } from '../actions'
 
 import styles from './TopBar.module.scss'
 
 class TopBar extends React.Component {
-
-  showLogin = () =>{
+  showLogin = () => {
     this.props.showModal('login')
+  }
+  toSignup = () => {
+    this.props.history.push('/signup')
   }
   render() {
     return (

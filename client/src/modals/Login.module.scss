@@ -1,4 +1,16 @@
 .paper {
-    width: 100%;
-    max-width: 400px !important;
+  width: 100%;
+  max-width: 400px !important;
+}
+.signup {
+  margin-bottom: 0;
+  text-align: center;
+  span {
+    margin-left: 3px;
+    color: blue;
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }

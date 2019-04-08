@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 
 import { fetchVenues } from '../../actions'
 import GoogleMapWrapper from './GoogleMapWrapper'
-import TopBar from './TopBar'
 import SideMenu from './SideMenu'
 
 class Landing extends React.Component {
@@ -22,7 +21,6 @@ class Landing extends React.Component {
 
     return (
       <div>
-        <TopBar showMenuCb={() => this.setState({ showSideMenu: true })} />
         <GoogleMapWrapper
           googleMapURL={url}
           loadingElement={<div style={{ height: `100%` }} />}

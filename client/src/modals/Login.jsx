@@ -6,6 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import Button from '@material-ui/core/Button'
 import DialogActions from '@material-ui/core/DialogActions'
 import LinearProgress from '@material-ui/core/LinearProgress'
+import { withRouter } from 'react-router'
 
 import styles from './Login.module.scss'
 
@@ -20,6 +21,10 @@ class Login extends React.Component {
   }
   handleLogin = () => {
     this.setState({ loading: true })
+  }
+  toSignup = () => {
+    this.props.history.push('/signup')
+    this.handleClose()
   }
   render() {
     return (
@@ -45,6 +50,9 @@ class Login extends React.Component {
             type="password"
             fullWidth
           />
+          <p className={styles.signup}>
+            Don't have an account? <span onClick={this.toSignup}>Sign up</span>
+          </p>
         </DialogContent>
         <DialogActions>
           <Button
@@ -72,4 +80,4 @@ function Transition(props) {
   return <Slide direction="down" {...props} />
 }
 
-export default Login
+export default withRouter(Login)
