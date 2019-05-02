@@ -8,7 +8,12 @@ import styles from './signup.module.scss'
 
 class Signup extends React.Component {
   render() {
-    const values = { name: '', email: '', confirmPassword: '', password: '' }
+    const values = {
+      displayName: '',
+      email: '',
+      confirmPassword: '',
+      password: ''
+    }
     return (
       <div>
         <InputForm

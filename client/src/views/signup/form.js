@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button'
 
 const Form = props => {
   const {
-    values: { name, email, password, confirmPassword },
+    values: { displayName, email, password, confirmPassword },
     errors,
     touched,
     handleChange,
@@ -24,13 +24,13 @@ const Form = props => {
       }}
     >
       <TextField
-        id="name"
-        name="name"
-        helperText={touched.name ? errors.name : ''}
-        error={touched.name && Boolean(errors.name)}
-        label="Name"
-        value={name}
-        onChange={change.bind(null, 'name')}
+        id="displayName"
+        name="displayName"
+        helperText={touched.displayName ? errors.displayName : ''}
+        error={touched.displayName && Boolean(errors.displayName)}
+        label="Display Name"
+        value={displayName}
+        onChange={change.bind(null, 'displayName')}
         fullWidth
       />
       <TextField

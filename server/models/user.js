@@ -2,10 +2,16 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const jwt = require('jsonwebtoken')
 const _ = require('lodash')
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcrypt')
 
 //declare schema to tack on custom methods
 const UserSchema = new mongoose.Schema({
+  displayName: {
+    type: String,
+    required: true,
+    minLength: 1,
+    trim: true
+  },
   email: {
     type: String,
     required: true,
@@ -20,7 +26,7 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     require: true,
-    minlength: 6
+    minlength: 5
   },
   tokens: [
     {
