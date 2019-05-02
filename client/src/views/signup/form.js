@@ -1,8 +1,14 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
+import axios from 'axios'
+import { Form } from 'formik'
 
-const Form = props => {
+export const onSubmit = async values => {
+  const res = await axios.post('/api/signup', values)
+}
+
+export const SignupForm = props => {
   const {
     values: { displayName, email, password, confirmPassword },
     errors,
@@ -18,11 +24,7 @@ const Form = props => {
     setFieldTouched(name, true, false)
   }
   return (
-    <form
-      onSubmit={() => {
-        alert('submitted')
-      }}
-    >
+    <Form>
       <TextField
         id="displayName"
         name="displayName"
@@ -74,8 +76,6 @@ const Form = props => {
       >
         Submit
       </Button>
-    </form>
+    </Form>
   )
 }
-
-export default Form
