@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import Button from '@material-ui/core/Button'
 import DialogActions from '@material-ui/core/DialogActions'
 import LinearProgress from '@material-ui/core/LinearProgress'
-import { withRouter } from 'react-router'
+import { navigate } from '@reach/router'
 
 import styles from './Login.module.scss'
 
@@ -23,7 +23,7 @@ class Login extends React.Component {
     this.setState({ loading: true })
   }
   toSignup = () => {
-    this.props.history.push('/signup')
+    navigate('/signup')
     this.handleClose()
   }
   render() {
@@ -80,4 +80,4 @@ function Transition(props) {
   return <Slide direction="down" {...props} />
 }
 
-export default withRouter(Login)
+export default Login

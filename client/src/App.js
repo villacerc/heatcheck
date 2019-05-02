@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Router } from '@reach/router'
 
 import TopBar from './extra/TopBar'
 import Landing from './views/landing'
@@ -12,10 +12,12 @@ class App extends Component {
       <div>
         <ModalConductor />
         <TopBar />
-        <Switch>
-          <Route exact path="/" render={props => <Landing {...props} />} />
-          <Route path="/signup" render={props => <Signup {...props} />} />
-        </Switch>
+        <div className="app-body">
+          <Router>
+            <Landing path="/" />
+            <Signup path="signup" />
+          </Router>
+        </div>
       </div>
     )
   }
