@@ -19,4 +19,4 @@ const Venue = mongoose.model('Venue', {
   }
 })
 
-module.exports = { Venue }
+module.exports = Venue
