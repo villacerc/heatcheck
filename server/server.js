@@ -59,6 +59,11 @@ app.get('/api/user', async (req, res) => {
 
 app.post('/api/login', authenticate)
 
+app.get('/api/logout', function(req, res) {
+  req.logout()
+  res.status(200).send()
+})
+
 app.post('/api/signup', async (req, res, next) => {
   const body = _.pick(req.body, [
     'displayName',
