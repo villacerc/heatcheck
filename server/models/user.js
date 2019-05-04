@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
-const jwt = require('jsonwebtoken')
 const _ = require('lodash')
 const bcrypt = require('bcrypt')
 
@@ -27,19 +26,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     require: true,
     minlength: 5
-  },
-  tokens: [
-    {
-      access: {
-        type: String,
-        require: true
-      },
-      token: {
-        type: String,
-        required: true
-      }
-    }
-  ]
+  }
 })
 
 //override toJSON method
@@ -50,46 +37,11 @@ UserSchema.methods.toJSON = function() {
   return _.pick(userObject, ['_id', 'email'])
 }
 
-//need to use a function keyword rather than arrow because arrow functions do not bind THIS
-//.methods is for instance methods
-UserSchema.methods.generateAuthToken = function() {
-  //this keyword stores the individual document
-  const user = this
-  const access = 'auth'
-  const token = jwt
-    .sign({ _id: user._id.toHexString(), access }, process.env.JWT_SECRET)
-    .toString()
-
-  user.tokens = user.tokens.concat({ access, token })
-
-  return user.save().then(() => {
-    return token
-  })
-}
-
 UserSchema.methods.removeToken = function(token) {
   const user = this
 
   return user.update({
     $pull: { tokens: { token } }
-  })
-}
-
-//.statics is for model metods
-UserSchema.statics.findByToken = function(token) {
-  const User = this
-  let decoded
-
-  try {
-    decoded = jwt.verify(token, process.env.JWT_SECRET)
-  } catch (e) {
-    return Promise.reject()
-  }
-
-  return User.findOne({
-    _id: decoded._id,
-    'tokens.token': token,
-    'tokens.access': 'auth'
   })
 }
 

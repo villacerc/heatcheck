@@ -1,16 +1,26 @@
 require('dotenv').config()
 require('./db/mongoose')
+require('./services/passport')
+
+const mongoose = require('mongoose')
 const express = require('express')
 const bodyParser = require('body-parser')
 const _ = require('lodash')
+const passport = require('passport')
+const session = require('express-session')
+const cookieParser = require('cookie-parser')
+const MongoStore = require('connect-mongo')(session)
+const morgan = require('morgan')
 
-const { Venue } = require('./models/venue')
-const { User } = require('./models/user')
+const Venue = require('./models/venue')
+const User = require('./models/user')
 
 const app = express()
 const port = process.env.PORT
 
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+app.use(cookieParser())
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
   res.header(
@@ -19,6 +29,17 @@ app.use(function(req, res, next) {
   )
   next()
 })
+app.use(morgan('combined'))
+app.use(
+  session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    store: new MongoStore({ mongooseConnection: mongoose.connection })
+  })
+)
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.get('/api/venues', async (req, res) => {
   try {
@@ -29,7 +50,23 @@ app.get('/api/venues', async (req, res) => {
   }
 })
 
-app.post('/api/signup', async (req, res) => {
+app.get('/api/user', async (req, res) => {
+  const user = req.isAuthenticated() ? req.user : null
+
+  res.status(200).send({ ...user })
+})
+
+app.post('/api/login', async (req, res, next) => {
+  const body = _.pick(req.body, ['email', 'password'])
+
+  try {
+    const user = User.findByCredentials(body.email, body.password)
+  } catch (e) {
+    res.status(401).send()
+  }
+})
+
+app.post('/api/signup', async (req, res, next) => {
   const body = _.pick(req.body, [
     'displayName',
     'email',
@@ -37,13 +74,33 @@ app.post('/api/signup', async (req, res) => {
     'confirmPassword'
   ])
 
-  const newUser = new User(body)
-
   try {
+    const newUser = new User(body)
     await newUser.save()
-    res.send({ success: true })
+
+    passport.authenticate('local', (err, user, info) => {
+      let status = null
+      let send = ''
+
+      if (err) {
+        status = 400
+        send = { error: err }
+      }
+      if (!user) {
+        status = 400
+        send = { message: 'No user found' }
+      }
+      req.logIn(user, function(err) {
+        if (err) {
+          status = 400
+          send = { error: err }
+        }
+        status = 200
+      })
+      return res.status(status).send(send)
+    })(req, res, next)
   } catch (e) {
-    res.status(400).send(e)
+    res.status(400).send({ error: e })
   }
 })
 

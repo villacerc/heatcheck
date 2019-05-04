@@ -8,6 +8,10 @@ export const onSubmit = async values => {
   const res = await axios.post('/api/signup', values)
 }
 
+const getUser = async values => {
+  const res = await axios.get('/api/user')
+}
+
 export const SignupForm = props => {
   const {
     values: { displayName, email, password, confirmPassword },
@@ -75,6 +79,15 @@ export const SignupForm = props => {
         disabled={!isValid}
       >
         Submit
+      </Button>
+      <Button
+        onClick={getUser}
+        type="button"
+        fullWidth
+        variant="contained"
+        color="primary"
+      >
+        user
       </Button>
     </Form>
   )
