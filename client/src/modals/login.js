@@ -14,7 +14,7 @@ import { connect } from 'react-redux'
 
 import { updateUser } from '../actions'
 
-import styles from './Login.module.scss'
+import styles from './login.module.scss'
 
 const validationSchema = Yup.object({
   email: Yup.string('Enter your email')
