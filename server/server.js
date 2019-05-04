@@ -14,6 +14,7 @@ const morgan = require('morgan')
 
 const Venue = require('./models/venue')
 const User = require('./models/user')
+const authenticate = require('./services/authenticate')
 
 const app = express()
 const port = process.env.PORT
@@ -53,18 +54,10 @@ app.get('/api/venues', async (req, res) => {
 app.get('/api/user', async (req, res) => {
   const user = req.isAuthenticated() ? req.user : null
 
-  res.status(200).send({ ...user })
+  res.status(200).send({ user: user })
 })
 
-app.post('/api/login', async (req, res, next) => {
-  const body = _.pick(req.body, ['email', 'password'])
-
-  try {
-    const user = User.findByCredentials(body.email, body.password)
-  } catch (e) {
-    res.status(401).send()
-  }
-})
+app.post('/api/login', authenticate)
 
 app.post('/api/signup', async (req, res, next) => {
   const body = _.pick(req.body, [
