@@ -11,3 +11,16 @@ export const showModal = (name, props = null) => ({
   name,
   props
 })
+
+export const fetchUser = () => async dispatch => {
+  dispatch({ type: 'FETCHING_USER' })
+
+  const res = await axios.get('/api/user')
+
+  dispatch(receiveUser(res.data.user))
+}
+
+export const receiveUser = payload => ({
+  type: 'RECEIVE_USER',
+  payload
+})
