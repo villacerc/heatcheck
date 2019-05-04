@@ -2,8 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import { fetchVenues } from '../../actions'
-import GoogleMapWrapper from './GoogleMapWrapper'
-import SideMenu from './SideMenu'
+import GoogleMapWrapper from './googleMapWrapper'
+import SideMenu from './sideMenu'
 
 class Landing extends React.Component {
   state = {

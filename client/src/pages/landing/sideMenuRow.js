@@ -1,19 +1,19 @@
-import React from "react"
+import React from 'react'
 
-import VenueInfo from "./VenueInfo"
+import VenueInfo from './venueInfo'
 
-import styles from "./SideMenuRow.module.scss"
+import styles from './sideMenuRow.module.scss'
 
 class SideMenuRow extends React.Component {
   render() {
-    const {venue} = this.props
+    const { venue } = this.props
     return (
       <div className={styles.container}>
         <div className={styles.content}>
           <div className={styles.photo}>
             <img src="https://images.pexels.com/photos/1415555/pexels-photo-1415555.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" />
           </div>
-          <VenueInfo venue={venue}/>
+          <VenueInfo venue={venue} />
         </div>
       </div>
     )

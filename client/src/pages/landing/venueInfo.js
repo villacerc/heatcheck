@@ -1,6 +1,6 @@
 import React from 'react'
 
-import styles from './VenueInfo.module.scss'
+import styles from './venueInfo.module.scss'
 
 class VenueInfo extends React.Component {
   render() {

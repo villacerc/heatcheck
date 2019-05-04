@@ -3,7 +3,7 @@ import { map } from 'lodash'
 import { connect } from 'react-redux'
 import { withScriptjs, withGoogleMap, GoogleMap } from 'react-google-maps'
 
-import MapMarker from './MapMarker'
+import MapMarker from './mapMarker'
 
 class GoogleMapWrapper extends React.Component {
   render() {

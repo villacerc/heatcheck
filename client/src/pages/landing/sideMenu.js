@@ -4,9 +4,9 @@ import Divider from '@material-ui/core/Divider'
 import { map } from 'lodash'
 import { connect } from 'react-redux'
 
-import SideMenuRow from './SideMenuRow'
+import SideMenuRow from './sideMenuRow'
 
-import styles from './SideMenu.module.scss'
+import styles from './sideMenu.module.scss'
 
 class SideMenu extends React.Component {
   render() {

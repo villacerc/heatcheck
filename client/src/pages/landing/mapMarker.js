@@ -3,9 +3,9 @@ import React from 'react'
 import MarkerWithLabel from 'react-google-maps/lib/components/addons/MarkerWithLabel'
 import Popper from '@material-ui/core/Popper'
 
-import MarkerContent from './MarkerContent'
+import MarkerContent from './markerContent'
 
-import styles from './MapMarker.module.scss'
+import styles from './mapMarker.module.scss'
 
 class MapMarker extends React.Component {
   state = {
@@ -38,7 +38,7 @@ class MapMarker extends React.Component {
   }
   render() {
     const { venue } = this.props
-    
+
     return (
       <MarkerWithLabel
         onMouseOut={this.onMouseOut}

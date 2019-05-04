@@ -1,9 +1,9 @@
 import React from 'react'
 import Paper from '@material-ui/core/Paper'
 
-import VenueInfo from './VenueInfo'
+import VenueInfo from './venueInfo'
 
-import styles from './MarkerContent.module.scss'
+import styles from './markerContent.module.scss'
 
 class MarkerContent extends React.Component {
   render() {
