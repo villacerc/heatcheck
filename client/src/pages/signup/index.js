@@ -1,6 +1,6 @@
 import React from 'react'
 
-import InputForm from '../../extra/inputForm'
+import InputForm from '../../components/inputForm'
 import { SignupForm, onSubmit } from './form'
 import validationSchema from './validationSchema'
 

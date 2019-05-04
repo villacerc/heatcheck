@@ -3,10 +3,10 @@ import { Router } from '@reach/router'
 import { connect } from 'react-redux'
 
 import { fetchUser } from './actions'
-import TopBar from './extra/topBar'
-import Landing from './views/landing'
+import TopBar from './components/topBar'
+import Landing from './pages/landing'
 import ModalConductor from './modals'
-import Signup from './views/signup'
+import Signup from './pages/signup'
 
 class App extends Component {
   componentDidMount() {

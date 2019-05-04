@@ -23,21 +23,38 @@ const validationSchema = Yup.object({
   password: Yup.string('').required('Enter your password')
 })
 
+axios.interceptors.response.use(
+  response => {
+    return response
+  },
+  error => {
+    return error.response
+  }
+)
+
 class Login extends React.Component {
   state = {
     open: true,
-    loading: false
+    loading: false,
+    showFlash: false
   }
 
   handleClose = () => {
     this.setState({ open: false })
   }
   handleLogin = async (values, actions) => {
+    this.setState({ showFlash: false })
     this.setState({ loading: true })
     const res = await axios.post('/api/login', values)
-    this.props.updateUser(res.data.user)
+
+    console.log(res)
+    if (res.status == 200) {
+      this.props.updateUser(res.data.user)
+      this.handleClose()
+    } else {
+      this.setState({ showFlash: true })
+    }
     this.setState({ loading: false })
-    this.handleClose()
   }
   toSignup = () => {
     navigate('/signup')
@@ -51,6 +68,9 @@ class Login extends React.Component {
         open={this.state.open}
         onClose={this.handleClose}
       >
+        {this.state.showFlash && (
+          <div className={styles.flash}>Incorrect email or password</div>
+        )}
         <Formik
           initialValues={{ email: '', password: '' }}
           onSubmit={this.handleLogin}
