@@ -10,6 +10,9 @@ import { navigate } from '@reach/router'
 import axios from 'axios'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
+import { connect } from 'react-redux'
+
+import { updateUser } from '../actions'
 
 import styles from './Login.module.scss'
 
@@ -32,7 +35,9 @@ class Login extends React.Component {
   handleLogin = async (values, actions) => {
     this.setState({ loading: true })
     const res = await axios.post('/api/login', values)
+    this.props.updateUser(res.data.user)
     this.setState({ loading: false })
+    this.handleClose()
   }
   toSignup = () => {
     navigate('/signup')
@@ -122,4 +127,7 @@ function Transition(props) {
   return <Slide direction="down" {...props} />
 }
 
-export default Login
+export default connect(
+  null,
+  { updateUser }
+)(Login)

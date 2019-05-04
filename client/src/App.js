@@ -3,7 +3,7 @@ import { Router } from '@reach/router'
 import { connect } from 'react-redux'
 
 import { fetchUser } from './actions'
-import TopBar from './extra/TopBar'
+import TopBar from './extra/topBar'
 import Landing from './views/landing'
 import ModalConductor from './modals'
 import Signup from './views/signup'

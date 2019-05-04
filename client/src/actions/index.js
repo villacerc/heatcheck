@@ -17,10 +17,10 @@ export const fetchUser = () => async dispatch => {
 
   const res = await axios.get('/api/user')
 
-  dispatch(receiveUser(res.data.user))
+  dispatch(updateUser(res.data.user))
 }
 
-export const receiveUser = payload => ({
-  type: 'RECEIVE_USER',
+export const updateUser = payload => ({
+  type: 'UPDATE_USER',
   payload
 })

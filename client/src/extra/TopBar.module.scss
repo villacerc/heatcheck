@@ -7,10 +7,15 @@
   }
 }
 .brand {
-  font-family: "Carter One", cursive;
+  font-family: 'Carter One', cursive;
   margin-left: 5%;
   flex-grow: 1;
   h1 {
     margin: 0;
   }
+}
+.defaultAv {
+  cursor: pointer;
+  padding: 5px;
+  font-size: 33px !important;
 }
