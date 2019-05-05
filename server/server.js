@@ -51,6 +51,32 @@ app.get('/api/venues', async (req, res) => {
   }
 })
 
+app.post('/api/checkin', async (req, res) => {
+  const body = _.pick(req.body, ['venueId'])
+  if (req.user) {
+    if (req.user.checkedInTo) {
+      //check user out from current venue
+      await Venue.findOneAndUpdate(
+        { _id: req.user.checkedInTo },
+        { $pull: { checkIns: { user: req.user._id } } }
+      )
+    }
+    //check in to new venue
+    await Venue.findOneAndUpdate(
+      { _id: body.venueId },
+      { $push: { checkIns: { user: req.user._id } } }
+    )
+    const user = await User.findOneAndUpdate(
+      { _id: req.user._id },
+      { checkedInTo: body.venueId },
+      { new: true }
+    )
+
+    return res.status(200).send({ user })
+  }
+  return res.status(400).send()
+})
+
 app.get('/api/user', async (req, res) => {
   const user = req.isAuthenticated() ? req.user : null
 

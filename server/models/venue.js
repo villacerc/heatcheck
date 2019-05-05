@@ -16,6 +16,9 @@ const Venue = mongoose.model('Venue', {
   },
   lng: {
     type: Number
+  },
+  checkIns: {
+    type: Array
   }
 })
 

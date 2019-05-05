@@ -24,9 +24,10 @@ const UserSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    require: true,
+    required: true,
     minlength: 5
-  }
+  },
+  checkedInTo: { type: mongoose.Schema.Types.ObjectId }
 })
 
 //override toJSON method
@@ -34,7 +35,7 @@ UserSchema.methods.toJSON = function() {
   const user = this
   const userObject = user.toObject()
 
-  return _.pick(userObject, ['_id', 'email'])
+  return _.pick(userObject, ['_id', 'email', 'checkedInTo'])
 }
 
 UserSchema.methods.removeToken = function(token) {
