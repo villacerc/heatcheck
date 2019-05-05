@@ -7,11 +7,11 @@ import Button from '@material-ui/core/Button'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import { navigate } from '@reach/router'
-import axios from 'axios'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { connect } from 'react-redux'
 
+import axios from '../services/axios'
 import { updateUser } from '../actions'
 
 import styles from './login.module.scss'
@@ -23,27 +23,18 @@ const validationSchema = Yup.object({
   password: Yup.string('').required('Enter your password')
 })
 
-axios.interceptors.response.use(
-  response => {
-    return response
-  },
-  error => {
-    return error.response
-  }
-)
-
 class Login extends React.Component {
   state = {
     open: true,
     loading: false,
-    showFlash: false
+    flash: false
   }
 
   handleClose = () => {
     this.setState({ open: false })
   }
   handleLogin = async (values, actions) => {
-    this.setState({ showFlash: false })
+    this.setState({ flash: false })
     this.setState({ loading: true })
     const res = await axios.post('/api/login', values)
 
@@ -52,7 +43,7 @@ class Login extends React.Component {
       this.props.updateUser(res.data.user)
       this.handleClose()
     } else {
-      this.setState({ showFlash: true })
+      this.setState({ flash: res.data.flash })
     }
     this.setState({ loading: false })
   }
@@ -68,8 +59,8 @@ class Login extends React.Component {
         open={this.state.open}
         onClose={this.handleClose}
       >
-        {this.state.showFlash && (
-          <div className={styles.flash}>Incorrect email or password</div>
+        {this.state.flash && (
+          <div className={styles.flash}>{this.state.flash}</div>
         )}
         <Formik
           initialValues={{ email: '', password: '' }}
