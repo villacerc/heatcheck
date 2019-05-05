@@ -2,12 +2,17 @@ import React from 'react'
 import { map } from 'lodash'
 import { connect } from 'react-redux'
 import { withScriptjs, withGoogleMap, GoogleMap } from 'react-google-maps'
+import { fetchVenues, updateUser } from '../../actions'
 
 import MapMarker from './mapMarker'
 
 class GoogleMapWrapper extends React.Component {
   render() {
-    const { venues } = this.props
+    const { venues, user, fetchVenues, updateUser } = this.props
+    const contentProps = {
+      fetchVenues,
+      updateUser
+    }
     return (
       <GoogleMap
         {...this.props}
@@ -16,17 +21,28 @@ class GoogleMapWrapper extends React.Component {
       >
         {venues &&
           map(venues, venue => {
-            return <MapMarker key={venue._id} venue={venue} />
+            const checkedIn = venue._id == (user && user.checkedInTo)
+            return (
+              <MapMarker
+                key={venue._id}
+                venue={venue}
+                checkedIn={checkedIn}
+                contentProps={contentProps}
+              />
+            )
           })}
       </GoogleMap>
     )
   }
 }
 
-function mapStateToProps({ venues }) {
-  return { venues }
+function reduxProps({ venues, user }) {
+  return { venues, user: user.payload }
 }
 
 GoogleMapWrapper = withScriptjs(withGoogleMap(GoogleMapWrapper))
 
-export default connect(mapStateToProps)(GoogleMapWrapper)
+export default connect(
+  reduxProps,
+  { fetchVenues, updateUser }
+)(GoogleMapWrapper)

@@ -2,7 +2,7 @@
   border-radius: 3px;
   padding: 15px;
   width: 345px;
-  >div {
+  > div {
     justify-content: space-between;
     display: flex;
   }
@@ -22,12 +22,17 @@
     border-radius: 3px;
   }
 }
-.checkin {
+.checkIn {
+  margin: 10px 0 0 0;
+  font-size: 14pt;
+}
+.inActive {
   &:hover {
-    text-decoration: underline
+    text-decoration: underline;
   }
   cursor: pointer;
-  margin: 10px 0 0 0;
   color: blue;
-  font-size: 14pt;
+}
+.active {
+  color: green;
 }

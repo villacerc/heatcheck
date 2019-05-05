@@ -1,20 +1,37 @@
 import React from 'react'
 import Paper from '@material-ui/core/Paper'
-
 import VenueInfo from './venueInfo'
+import classNames from 'classnames'
+
+import axios from '../../services/axios'
 
 import styles from './markerContent.module.scss'
 
 class MarkerContent extends React.Component {
+  checkIn = async venueId => {
+    const res = await axios.post('/api/checkin', { venueId })
+    await this.props.updateUser(res.data.user)
+    this.props.fetchVenues()
+  }
   render() {
-    const { venue } = this.props
-
+    const { venue, checkedIn } = this.props
     return (
       <Paper className={styles.container}>
         <div>
           <div>
             <VenueInfo venue={venue} />
-            <p className={styles.checkin}>Check in</p>
+            {checkedIn ? (
+              <p className={classNames(styles.checkIn, styles.active)}>
+                Checked in
+              </p>
+            ) : (
+              <p
+                onClick={() => this.checkIn(venue._id)}
+                className={classNames(styles.checkIn, styles.inActive)}
+              >
+                Check in
+              </p>
+            )}
           </div>
           <div>
             <div className={styles.photo}>
