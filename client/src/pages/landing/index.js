@@ -5,6 +5,8 @@ import { fetchVenues } from '../../actions'
 import GoogleMapWrapper from './googleMapWrapper'
 import SideMenu from './sideMenu'
 
+import styles from './index.module.scss'
+
 class Landing extends React.Component {
   state = {
     showSideMenu: false,
@@ -24,7 +26,7 @@ class Landing extends React.Component {
         <GoogleMapWrapper
           googleMapURL={url}
           loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div style={{ height: `100vh` }} />}
+          containerElement={<div className={styles.mapContainer} />}
           mapElement={<div style={{ height: `100%` }} />}
         />
         <SideMenu

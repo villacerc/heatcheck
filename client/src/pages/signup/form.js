@@ -28,7 +28,7 @@ export const SignupForm = props => {
     setFieldTouched(name, true, false)
   }
   return (
-    <Form>
+    <Form style={{ width: '100vw', margin: 'auto' }}>
       <TextField
         id="displayName"
         name="displayName"
