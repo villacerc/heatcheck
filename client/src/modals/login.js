@@ -86,6 +86,7 @@ class Login extends React.Component {
                     helperText={touched.email ? errors.email : ''}
                     error={touched.email && Boolean(errors.email)}
                     label="Email"
+                    type="email"
                     fullWidth
                     value={email}
                     onBlur={handleBlur}

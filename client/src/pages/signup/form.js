@@ -45,6 +45,7 @@ export const SignupForm = props => {
         helperText={touched.email ? errors.email : ''}
         error={touched.email && Boolean(errors.email)}
         label="Email"
+        type="email"
         fullWidth
         value={email}
         onChange={change.bind(null, 'email')}
