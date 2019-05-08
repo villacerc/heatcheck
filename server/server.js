@@ -12,12 +12,18 @@ const cookieParser = require('cookie-parser')
 const MongoStore = require('connect-mongo')(session)
 const morgan = require('morgan')
 
+const db = require('./db/sequelize')
+
 const Venue = require('./models/venue')
 const User = require('./models/user')
 const authenticate = require('./services/authenticate')
 
 const app = express()
 const port = process.env.PORT
+
+db.authenticate()
+  .then(() => console.log('Database Connected'))
+  .catch(err => console.log('Databse error', err))
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
