@@ -1,25 +1,14 @@
-const mongoose = require('mongoose')
-
-const Venue = mongoose.model('Venue', {
-  name: {
-    type: String,
-    required: true
-  },
-  google_place_id: {
-    type: String
-  },
-  address: {
-    type: String
-  },
-  lat: {
-    type: Number
-  },
-  lng: {
-    type: Number
-  },
-  checkIns: {
-    type: Array
-  }
-})
-
-module.exports = Venue
+'use strict';
+module.exports = (sequelize, DataTypes) => {
+  const Venue = sequelize.define('Venue', {
+    name: DataTypes.STRING,
+    google_place_id: DataTypes.STRING,
+    address: DataTypes.STRING,
+    lat: DataTypes.STRING,
+    lng: DataTypes.STRING
+  }, {});
+  Venue.associate = function(models) {
+    // associations can be defined here
+  };
+  return Venue;
+};
