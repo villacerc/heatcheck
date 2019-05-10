@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize')
-const db = require('../db/sequelize')
 
-const Venue = db.define(
+const Venue = sequelize.define(
   'venue',
   {
     name: {
