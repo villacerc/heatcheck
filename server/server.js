@@ -1,19 +1,15 @@
 require('dotenv').config()
-require('./db/mongoose')
 require('./services/passport')
 
-const mongoose = require('mongoose')
 const express = require('express')
 const bodyParser = require('body-parser')
 const _ = require('lodash')
 const passport = require('passport')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
-const MongoStore = require('connect-mongo')(session)
 const morgan = require('morgan')
 
-const db = require('./db/sequelize')
-
+const models = require('./models')
 const Venue = require('./models/venue')
 const User = require('./models/user')
 const authenticate = require('./services/authenticate')
@@ -21,9 +17,14 @@ const authenticate = require('./services/authenticate')
 const app = express()
 const port = process.env.PORT
 
-db.authenticate()
-  .then(() => console.log('Database Connected'))
-  .catch(err => console.log('Databse error', err))
+models.sequelize
+  .sync()
+  .then(function() {
+    console.log('Nice! Database looks fine')
+  })
+  .catch(function(err) {
+    console.log(err, 'Something went wrong with the Database Update!')
+  })
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -41,8 +42,7 @@ app.use(
   session({
     secret: 'keyboard cat',
     resave: false,
-    saveUninitialized: true,
-    store: new MongoStore({ mongooseConnection: mongoose.connection })
+    saveUninitialized: true
   })
 )
 app.use(passport.initialize())
