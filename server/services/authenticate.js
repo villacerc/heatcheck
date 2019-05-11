@@ -1,7 +1,7 @@
 const passport = require('passport')
 
 module.exports = function(req, res, next) {
-  passport.authenticate('local', (err, user, info) => {
+  passport.authenticate('local-signup', (err, user, info) => {
     if (err) {
       return res.status(400).send({ flash: err })
     }

@@ -1,5 +1,5 @@
 const LocalStrategy = require('passport-local').Strategy
-const User = require('../models/user')
+const User = sequelize.import('../models/user')
 const bcrypt = require('bcrypt')
 const passport = require('passport')
 
@@ -9,29 +9,38 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await User.findById(id)
-    return done(null, user)
+    const user = await User.findByPk(id)
+    return done(null, user.get())
   } catch (e) {
     return done(null, e)
   }
 })
 
 passport.use(
-  new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
-    const query = { email }
-    User.findOne(query, (err, user) => {
-      if (err) throw err
-      if (!user) {
+  'local-signup',
+  new LocalStrategy(
+    {
+      usernameField: 'email',
+      passwordField: 'password',
+      passReqToCallback: true // allows us to pass back the entire request to the callback
+    },
+    async (req, email, password, done) => {
+      const user = await User.findOne({
+        where: { email }
+      })
+
+      //check password matches
+      if (user) {
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+          if (err) throw err
+          if (isMatch) {
+            return done(null, user)
+          }
+          return done(null, false, { message: 'Wrong password' })
+        })
+      } else {
         return done(null, false, { message: 'No user found' })
       }
-
-      bcrypt.compare(password, user.password, (err, isMatch) => {
-        if (err) throw err
-        if (isMatch) {
-          return done(null, user)
-        }
-        return done(null, false, { message: 'Wrong password' })
-      })
-    })
-  })
+    }
+  )
 )

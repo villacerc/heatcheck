@@ -1,5 +1,4 @@
 require('dotenv').config()
-require('./services/passport')
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -8,23 +7,14 @@ const passport = require('passport')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const morgan = require('morgan')
+const SequelizeStore = require('connect-session-sequelize')(session.Store)
 
-const models = require('./models')
-const Venue = require('./models/venue')
-const User = require('./models/user')
+const db = require('./db/sequelize')
+require('./services/passport')
 const authenticate = require('./services/authenticate')
 
 const app = express()
 const port = process.env.PORT
-
-models.sequelize
-  .sync()
-  .then(function() {
-    console.log('Nice! Database looks fine')
-  })
-  .catch(function(err) {
-    console.log(err, 'Something went wrong with the Database Update!')
-  })
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -42,6 +32,9 @@ app.use(
   session({
     secret: 'keyboard cat',
     resave: false,
+    store: new SequelizeStore({
+      db: sequelize
+    }),
     saveUninitialized: true
   })
 )
@@ -85,7 +78,6 @@ app.post('/api/checkin', async (req, res) => {
 
 app.get('/api/user', async (req, res) => {
   const user = req.isAuthenticated() ? req.user : null
-
   res.status(200).send({ user: user })
 })
 
@@ -97,40 +89,16 @@ app.get('/api/logout', function(req, res) {
 })
 
 app.post('/api/signup', async (req, res, next) => {
-  const body = _.pick(req.body, [
-    'displayName',
-    'email',
-    'password',
-    'confirmPassword'
-  ])
+  const body = _.pick(req.body, ['displayName', 'email', 'password'])
 
   try {
-    const newUser = new User(body)
-    await newUser.save()
-
-    passport.authenticate('local', (err, user, info) => {
-      let status = null
-      let send = ''
-
-      if (err) {
-        status = 400
-        send = { error: err }
-      }
-      if (!user) {
-        status = 400
-        send = { message: 'No user found' }
-      }
-      req.logIn(user, function(err) {
-        if (err) {
-          status = 400
-          send = { error: err }
-        }
-        status = 200
-      })
-      return res.status(status).send(send)
-    })(req, res, next)
-  } catch (e) {
-    res.status(400).send({ error: e })
+    await db.User.create(body)
+    authenticate(req, res, next)
+  } catch (error) {
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      error = 'An account with this email already exists'
+    }
+    res.status(400).send({ error })
   }
 })
 
