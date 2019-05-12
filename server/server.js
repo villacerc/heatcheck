@@ -91,6 +91,8 @@ app.get('/api/logout', function(req, res) {
   res.status(200).send()
 })
 
+app.post('/api/verify', verificationController)
+
 app.post('/api/signup', signUpController)
 
 // app.post('/api/signup', async (req, res, next) => {

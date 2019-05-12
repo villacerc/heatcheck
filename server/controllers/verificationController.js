@@ -1,36 +1,41 @@
-module.exports = (req, res) => {
-  return models.User.find({
-    where: { email: req.query.email }
-  })
-    .then(user => {
+module.exports = async (req, res) => {
+  try {
+    const user = await db.User.findOne({
+      where: { email: req.body.email }
+    })
+
+    if (user) {
       if (user.isVerified) {
         return res.status(202).json(`Email Already Verified`)
-      } else {
-        return models.VerificationToken.find({
-          where: { token: req.query.verificationToken }
-        })
-          .then(foundToken => {
-            if (foundToken) {
-              return user
-                .update({ isVerified: true })
-                .then(updatedUser => {
-                  return res
-                    .status(403)
-                    .json(`User with ${user.email} has been verified`)
-                })
-                .catch(reason => {
-                  return res.status(403).json(`Verification failed`)
-                })
-            } else {
-              return res.status(404).json(`Token expired`)
-            }
-          })
-          .catch(reason => {
-            return res.status(404).json(`Token expired`)
-          })
       }
-    })
-    .catch(reason => {
-      return res.status(404).json(`Email not found`)
-    })
+      const foundToken = await db.VerificationToken.findOne({
+        where: { token: req.body.token }
+      })
+
+      if (foundToken) {
+        //delete token
+        db.VerificationToken.destroy({
+          where: { token: req.body.token }
+        })
+        //update user
+        const updatedUser = await user.update({ isVerified: true })
+        if (updatedUser) {
+          return res
+            .status(403)
+            .json(`User with ${user.email} has been verified`)
+        } else {
+          throw { status: 403, msg: 'Verification failed' }
+        }
+      } else {
+        throw { status: 404, msg: 'Token expired' }
+      }
+    } else {
+      throw { status: 404, msg: 'Email not found' }
+    }
+  } catch (e) {
+    if (e.status) {
+      return res.status(e.status).json(e.msg)
+    }
+    return res.status(400).json(e)
+  }
 }
