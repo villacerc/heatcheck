@@ -8,12 +8,17 @@ module.exports = (sequelize, DataTypes) => {
     {
       displayName: DataTypes.STRING,
       email: { type: DataTypes.STRING, unique: 'email' },
-      password: DataTypes.STRING
+      password: DataTypes.STRING,
+      isVerified: DataTypes.BOOLEAN
     },
     {}
   )
   User.associate = function(models) {
-    // associations can be defined here
+    User.hasOne(models.VerificationToken, {
+      as: 'verificationToken',
+      foreignKey: 'userId',
+      foreignKeyConstraint: true
+    })
   }
   User.beforeCreate((user, options) => {
     const userPw = bcrypt.hashSync(user.password, bcrypt.genSaltSync(8), null)
