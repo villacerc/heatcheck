@@ -9,12 +9,15 @@ const cookieParser = require('cookie-parser')
 const morgan = require('morgan')
 const SequelizeStore = require('connect-session-sequelize')(session.Store)
 
-const db = require('./db/sequelize')
+require('./db/sequelize')
 require('./services/passport')
 const authenticate = require('./services/authenticate')
 
 const app = express()
 const port = process.env.PORT
+
+const signUpController = require('./controllers/signUpController')
+const verificationController = require('./controllers/verificationController')
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -33,7 +36,7 @@ app.use(
     secret: 'keyboard cat',
     resave: false,
     store: new SequelizeStore({
-      db: sequelize
+      db: db.sequelize
     }),
     saveUninitialized: true
   })
@@ -88,19 +91,21 @@ app.get('/api/logout', function(req, res) {
   res.status(200).send()
 })
 
-app.post('/api/signup', async (req, res, next) => {
-  const body = _.pick(req.body, ['displayName', 'email', 'password'])
+app.post('/api/signup', signUpController)
 
-  try {
-    await db.User.create(body)
-    authenticate(req, res, next)
-  } catch (error) {
-    if (error.name === 'SequelizeUniqueConstraintError') {
-      error = 'An account with this email already exists'
-    }
-    res.status(400).send({ error })
-  }
-})
+// app.post('/api/signup', async (req, res, next) => {
+//   const body = _.pick(req.body, ['displayName', 'email', 'password'])
+
+//   try {
+//     await db.User.create(body)
+//     authenticate(req, res, next)
+//   } catch (error) {
+//     if (error.name === 'SequelizeUniqueConstraintError') {
+//       error = 'An account with this email already exists'
+//     }
+//     res.status(400).send({ error })
+//   }
+// })
 
 app.listen(port, () => {
   console.log(`Listening on port`, port)

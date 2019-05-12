@@ -1,5 +1,4 @@
 const LocalStrategy = require('passport-local').Strategy
-const User = sequelize.import('../models/user')
 const bcrypt = require('bcrypt')
 const passport = require('passport')
 
@@ -9,7 +8,7 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await User.findByPk(id)
+    const user = await db.User.findByPk(id)
     return done(null, user.get())
   } catch (e) {
     return done(null, e)
@@ -25,7 +24,7 @@ passport.use(
       passReqToCallback: true // allows us to pass back the entire request to the callback
     },
     async (req, email, password, done) => {
-      const user = await User.findOne({
+      const user = await db.User.findOne({
         where: { email }
       })
 

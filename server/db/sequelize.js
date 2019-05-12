@@ -52,4 +52,4 @@ db.sequelize = sequelize
 db.Sequelize = Sequelize
 
 module.exports = db
-global.sequelize = sequelize
+global.db = db
