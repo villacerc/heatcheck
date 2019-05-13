@@ -11,6 +11,7 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store)
 
 require('./db/sequelize')
 require('./services/passport')
+require('./jobs')
 const authenticate = require('./services/authenticate')
 
 const app = express()

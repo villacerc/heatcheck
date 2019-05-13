@@ -13,10 +13,6 @@ module.exports = async (req, res) => {
       })
 
       if (foundToken) {
-        //delete token
-        db.VerificationToken.destroy({
-          where: { token: req.body.token }
-        })
         //update user
         const updatedUser = await user.update({ isVerified: true })
         if (updatedUser) {
