@@ -3,6 +3,8 @@
 const bcrypt = require('bcrypt')
 
 module.exports = (sequelize, DataTypes) => {
+  const CheckIn = sequelize.import('./checkIn')
+
   const User = sequelize.define(
     'User',
     {
@@ -11,11 +13,21 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       isVerified: DataTypes.BOOLEAN
     },
-    {}
+    {
+      defaultScope: {
+        attributes: { exclude: ['password'] },
+        include: [{ model: CheckIn, as: 'checkIn' }]
+      }
+    }
   )
   User.associate = function(models) {
     User.hasOne(models.VerificationToken, {
       as: 'verificationToken',
+      foreignKey: 'userId',
+      foreignKeyConstraint: true
+    })
+    User.hasOne(models.CheckIn, {
+      as: 'checkIn',
       foreignKey: 'userId',
       foreignKeyConstraint: true
     })

@@ -47,7 +47,7 @@ app.use(passport.session())
 
 app.get('/api/venues', async (req, res) => {
   try {
-    const venues = await Venue.find({})
+    const venues = await db.Venue.findAll()
     res.send({ venues })
   } catch (e) {
     console.log(e)
@@ -55,29 +55,27 @@ app.get('/api/venues', async (req, res) => {
 })
 
 app.post('/api/checkin', async (req, res) => {
-  const body = _.pick(req.body, ['venueId'])
-  if (req.user) {
-    if (req.user.checkedInTo) {
-      //check user out from current venue
-      await Venue.findOneAndUpdate(
-        { _id: req.user.checkedInTo },
-        { $pull: { checkIns: { user: req.user._id } } }
-      )
-    }
-    //check in to new venue
-    await Venue.findOneAndUpdate(
-      { _id: body.venueId },
-      { $push: { checkIns: { user: req.user._id } } }
-    )
-    const user = await User.findOneAndUpdate(
-      { _id: req.user._id },
-      { checkedInTo: body.venueId },
-      { new: true }
-    )
+  try {
+    if (req.user) {
+      if (req.user.checkIn) {
+        //check user out from current venue
+        await db.CheckIn.destroy({ where: { userId: req.user.id } })
+      }
+      //check in to new venue
+      await db.CheckIn.create({
+        userId: req.user.id,
+        venueId: req.body.venueId
+      })
 
-    return res.status(200).send({ user })
+      const user = await db.User.findByPk(req.user.id)
+
+      return res.status(200).send({ user })
+    } else {
+      return res.status(400).send()
+    }
+  } catch (e) {
+    return res.status(400).send(e)
   }
-  return res.status(400).send()
 })
 
 app.get('/api/user', async (req, res) => {
@@ -110,6 +108,17 @@ app.post('/api/signup', signUpController)
 //   }
 // })
 
-app.listen(port, () => {
-  console.log(`Listening on port`, port)
+const server = app.listen(port, () => console.log(`listening on port ${port}!`))
+
+const closeConnections = () => {
+  db.sequelize.close()
+  server.close()
+}
+
+//close db and app when terminating server
+process.on('SIGINT', () => {
+  closeConnections()
+})
+process.on('SIGTERM', () => {
+  closeConnections()
 })
