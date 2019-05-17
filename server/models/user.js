@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       defaultScope: {
-        attributes: { exclude: ['password'] },
+        // attributes: { exclude: ['password'] },
         include: [{ model: CheckIn, as: 'checkIn' }]
       }
     }
@@ -36,5 +36,13 @@ module.exports = (sequelize, DataTypes) => {
     const userPw = bcrypt.hashSync(user.password, bcrypt.genSaltSync(8), null)
     user.password = userPw
   })
+
+  //exclude password from JSON
+  User.prototype.toJSON = function() {
+    const values = Object.assign({}, this.get())
+
+    delete values.password
+    return values
+  }
   return User
 }

@@ -1,5 +1,7 @@
 'use strict'
 module.exports = (sequelize, DataTypes) => {
+  const CheckIn = sequelize.import('./checkIn')
+
   const Venue = sequelize.define(
     'Venue',
     {
@@ -9,7 +11,11 @@ module.exports = (sequelize, DataTypes) => {
       lat: DataTypes.STRING,
       lng: DataTypes.STRING
     },
-    {}
+    {
+      defaultScope: {
+        include: [{ model: CheckIn, as: 'checkIns' }]
+      }
+    }
   )
   Venue.associate = function(models) {
     Venue.hasMany(models.CheckIn, {

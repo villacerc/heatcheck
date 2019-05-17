@@ -9,7 +9,7 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await db.User.findByPk(id)
-    return done(null, user.get())
+    return done(null, user)
   } catch (e) {
     return done(null, e)
   }
@@ -31,7 +31,7 @@ passport.use(
       //check password matches
       if (user) {
         bcrypt.compare(password, user.password, (err, isMatch) => {
-          if (err) throw err
+          if (err) done(null, false, { message: err })
           if (isMatch) {
             return done(null, user)
           }
