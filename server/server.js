@@ -94,20 +94,6 @@ app.post('/api/verify', verificationController)
 
 app.post('/api/signup', signUpController)
 
-// app.post('/api/signup', async (req, res, next) => {
-//   const body = _.pick(req.body, ['displayName', 'email', 'password'])
-
-//   try {
-//     await db.User.create(body)
-//     authenticate(req, res, next)
-//   } catch (error) {
-//     if (error.name === 'SequelizeUniqueConstraintError') {
-//       error = 'An account with this email already exists'
-//     }
-//     res.status(400).send({ error })
-//   }
-// })
-
 const server = app.listen(port, () => console.log(`listening on port ${port}!`))
 
 const closeConnections = () => {
@@ -122,3 +108,5 @@ process.on('SIGINT', () => {
 process.on('SIGTERM', () => {
   closeConnections()
 })
+
+module.exports = app
