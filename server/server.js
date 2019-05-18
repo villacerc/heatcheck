@@ -31,10 +31,11 @@ app.use(function(req, res, next) {
   )
   next()
 })
+
 app.use(morgan('combined'))
 app.use(
   session({
-    secret: 'keyboard cat',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     store: new SequelizeStore({
       db: db.sequelize
