@@ -9,13 +9,16 @@ module.exports = (sequelize, DataTypes) => {
     'User',
     {
       displayName: DataTypes.STRING,
-      email: { type: DataTypes.STRING, unique: 'email' },
+      email: {
+        type: DataTypes.STRING,
+        unique: 'email',
+        validate: { isEmail: true }
+      },
       password: DataTypes.STRING,
       isVerified: DataTypes.BOOLEAN
     },
     {
       defaultScope: {
-        // attributes: { exclude: ['password'] },
         include: [{ model: CheckIn, as: 'checkIn' }]
       }
     }
@@ -32,9 +35,18 @@ module.exports = (sequelize, DataTypes) => {
       foreignKeyConstraint: true
     })
   }
+
+  const hashPw = password => {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null)
+  }
+
+  User.beforeUpdate(user => {
+    if (user.changed('password')) {
+      user.password = hashPw(user.password)
+    }
+  })
   User.beforeCreate((user, options) => {
-    const userPw = bcrypt.hashSync(user.password, bcrypt.genSaltSync(8), null)
-    user.password = userPw
+    user.password = hashPw(user.password)
   })
 
   //exclude password from JSON
