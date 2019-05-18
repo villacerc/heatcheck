@@ -37,9 +37,9 @@ const populateVenues = done => {
 const populateUsers = done => {
   db.User.destroy({ where: {} })
     .then(() => {
-      db.User.bulkCreate(users)
+      db.User.bulkCreate(users, { individualHooks: true })
     })
     .then(() => done())
 }
 
-module.exports = { populateVenues, populateUsers }
+module.exports = { populateVenues, populateUsers, users }

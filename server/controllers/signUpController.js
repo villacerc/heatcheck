@@ -10,8 +10,8 @@ module.exports = async (req, res, next) => {
       userId: user.id,
       token: crypto({ length: 5 })
     })
-    sendVerificationEmail(user.email, verification.token)
-    return res.status(200).json(user)
+    // sendVerificationEmail(user.email, verification.token)
+    return res.status(200).json({ user })
   } catch (error) {
     if (error.name === 'SequelizeUniqueConstraintError') {
       error = 'An account with this email already exists'

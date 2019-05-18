@@ -12,7 +12,7 @@ module.exports = function(req, res, next) {
       if (err) {
         return res.status(400).send({ flash: err })
       }
-      return res.status(200).send({ user: user })
+      return res.status(200).send({ user })
     })
   })(req, res, next)
 }
