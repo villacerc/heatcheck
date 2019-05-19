@@ -2,11 +2,21 @@ const expect = require('expect')
 const request = require('supertest')
 
 const app = require('../server')
+const withSession = request.agent(app)
 const { populateUsers, users, populateVenues } = require('./seed')
 
 //refresh collection with seeds
 beforeEach(populateUsers)
 beforeEach(populateVenues)
+
+const authenticateBefore = (user = null) => {
+  before(done => {
+    withSession
+      .post('/api/login')
+      .send(user || users[0])
+      .end(done)
+  })
+}
 
 describe('POST /signup', () => {
   it('should create a user', done => {
@@ -48,10 +58,9 @@ describe('POST /signup', () => {
 
 describe('POST /login', () => {
   it('should log in the user', done => {
-    const authenticatedUser = request.agent(app)
-    authenticatedUser
+    request(app)
       .post('/api/login')
-      .send({ email: users[1].email, password: users[1].password })
+      .send(users[1])
       .expect(200)
       .expect(res => {
         const { user } = res.body
@@ -71,30 +80,37 @@ describe('POST /login', () => {
   })
 })
 
-// describe('GET /user', async () => {
-//   const authenticatedUser = request.agent(app)
-//   before(function(done) {
-//     authenticatedUser
-//       .post('/api/login')
-//       .send({ email: users[0].email, password: users[0].password })
-//       .expect(200)
-//       .end(done)
-//   })
+describe('GET /user', async () => {
+  describe('with no session', () => {
+    it('should return null user if there is no session', done => {
+      request(app)
+        .get('/api/user')
+        .expect(200)
+        .expect(res => {
+          const { user } = res.body
+          expect(user).toBeNull()
+        })
+        .end(done)
+    })
+  })
 
-//   it('should return authenticated user', done => {
-//     request(app)
-//       .get('/api/user')
-//       .expect(200)
-//       .expect(res => {
-//         const { user } = res.body
-//         console.log(res.body)
-//         expect(user.id).toBeTruthy()
-//         expect(user.displayName).toBe(users[0].displayName)
-//         expect(user.email).toBe(users[0].email)
-//       })
-//       .end(done)
-//   })
-// })
+  describe('with session', () => {
+    authenticateBefore()
+
+    it('should return authenticated user', done => {
+      withSession
+        .get('/api/user')
+        .expect(200)
+        .expect(res => {
+          const { user } = res.body
+          expect(user.id).toBeTruthy()
+          expect(user.displayName).toBe(users[0].displayName)
+          expect(user.email).toBe(users[0].email)
+        })
+        .end(done)
+    })
+  })
+})
 
 describe('GET /venues', () => {
   it('should get all venues', done => {

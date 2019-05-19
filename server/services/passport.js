@@ -2,10 +2,12 @@ const LocalStrategy = require('passport-local').Strategy
 const bcrypt = require('bcrypt')
 const passport = require('passport')
 
+//determines which data of the user object should be stored in the session
 passport.serializeUser((user, done) => {
   done(null, user.id)
 })
 
+//user object attaches to the request as req.user
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await db.User.findByPk(id)

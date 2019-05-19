@@ -1,22 +1,27 @@
 const venues = [
   {
+    id: 1,
     name: 'Waves Coffee'
   },
   {
+    id: 2,
     name: 'Stanley Park'
   },
   {
+    id: 3,
     name: 'South Arm Community'
   }
 ]
 
 const users = [
   {
+    id: 1,
     displayName: 'carlo',
     email: 'carlo@example.com',
     password: 'userOnePass'
   },
   {
+    id: 2,
     displayName: 'bob',
     email: 'bob@example.com',
     password: 'userTwoPass'
