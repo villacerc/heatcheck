@@ -3,7 +3,7 @@ const request = require('supertest')
 
 const app = require('../server')
 const withSession = request.agent(app)
-const { populateUsers, users, populateVenues } = require('./seed')
+const { populateUsers, users, populateVenues, venues } = require('./seed')
 
 //refresh collection with seeds
 beforeEach(populateUsers)
@@ -106,6 +106,36 @@ describe('GET /user', async () => {
           expect(user.id).toBeTruthy()
           expect(user.displayName).toBe(users[0].displayName)
           expect(user.email).toBe(users[0].email)
+        })
+        .end(done)
+    })
+  })
+})
+
+describe('POST /checkin', () => {
+  describe('with no session', () => {
+    it('should reject request if no session exist', done => {
+      request(app)
+        .post('/api/checkin')
+        .send({ user: null, venueId: venues[0].id })
+        .expect(400)
+        .end(done)
+    })
+  })
+
+  describe('with session', () => {
+    authenticateBefore()
+    it('should check in the user to the venue', done => {
+      withSession
+        .post('/api/checkin')
+        .send({ user: users[0], venueId: venues[0].id })
+        .expect(200)
+        .expect(async res => {
+          const { user } = res.body
+          expect(user.checkIn.venueId).toBe(venues[0].id)
+
+          const venue = await db.Venue.findByPk(venues[0].id)
+          expect(venue.checkIns[0].userId).toBe(user.id)
         })
         .end(done)
     })

@@ -47,4 +47,4 @@ const populateUsers = done => {
     .then(() => done())
 }
 
-module.exports = { populateVenues, populateUsers, users }
+module.exports = { populateVenues, venues, populateUsers, users }
