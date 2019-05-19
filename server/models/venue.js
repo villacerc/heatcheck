@@ -24,5 +24,13 @@ module.exports = (sequelize, DataTypes) => {
       foreignKeyConstraint: true
     })
   }
+
+  Venue.prototype.toJSON = function() {
+    const values = Object.assign({}, this.get())
+    //only include checkins that have a user id
+    values.checkIns = values.checkIns.filter(e => e.userId)
+
+    return values
+  }
   return Venue
 }
