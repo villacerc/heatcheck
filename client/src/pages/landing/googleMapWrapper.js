@@ -21,10 +21,10 @@ class GoogleMapWrapper extends React.Component {
       >
         {venues &&
           map(venues, venue => {
-            const checkedIn = venue._id == (user && user.checkedInTo)
+            const checkedIn = venue.id == (user && user.checkIn.venueId)
             return (
               <MapMarker
-                key={venue._id}
+                key={venue.id}
                 venue={venue}
                 checkedIn={checkedIn}
                 contentProps={contentProps}

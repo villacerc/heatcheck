@@ -1,6 +1,5 @@
 require('../db/sequelize')
 
-const Venue = sequelize.import('../models/venue')
 const axios = require('axios')
 const url =
   'https://maps.googleapis.com/maps/api/place/textsearch/json?query=basketball%20courts%20richmond%20bc+in+v6y2g3&key=AIzaSyBrUsX1qwbRw4ry4rodgUPG37qP-BxUMtQ'
@@ -11,7 +10,7 @@ axios
     const results = response.data.results
 
     results.forEach(place => {
-      Venue.create({
+      db.Venue.create({
         name: place.name,
         google_place_id: place.place_id,
         address: place.formatted_address,

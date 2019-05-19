@@ -5,7 +5,8 @@ const _ = require('lodash')
 module.exports = async (req, res, next) => {
   const body = _.pick(req.body, ['displayName', 'email', 'password'])
   try {
-    const user = await db.User.create(body)
+    await db.User.create(body)
+    const user = await db.User.findOne({ where: { email: body.email } })
     const verification = await db.VerificationToken.create({
       userId: user.id,
       token: crypto({ length: 5 })

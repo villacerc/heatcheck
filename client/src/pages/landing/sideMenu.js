@@ -23,7 +23,7 @@ class SideMenu extends React.Component {
         {venues &&
           map(venues, venue => {
             return (
-              <div key={venue._id}>
+              <div key={venue.id}>
                 <Divider />
                 <SideMenuRow venue={venue} />
               </div>

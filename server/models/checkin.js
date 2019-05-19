@@ -20,5 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKeyConstraint: true
     })
   }
+
+  CheckIn.removeAttribute('id')
   return CheckIn
 }

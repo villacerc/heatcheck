@@ -26,7 +26,7 @@ class MarkerContent extends React.Component {
               </p>
             ) : (
               <p
-                onClick={() => this.checkIn(venue._id)}
+                onClick={() => this.checkIn(venue.id)}
                 className={classNames(styles.checkIn, styles.inActive)}
               >
                 Check in
