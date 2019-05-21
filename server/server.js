@@ -1,99 +1,31 @@
 require('dotenv').config()
-
 const express = require('express')
-const bodyParser = require('body-parser')
-const _ = require('lodash')
-const passport = require('passport')
-const session = require('express-session')
-const cookieParser = require('cookie-parser')
-const morgan = require('morgan')
-const SequelizeStore = require('connect-session-sequelize')(session.Store)
 
 require('./db/sequelize')
 require('./services/passport')
 require('./jobs')
 const authenticate = require('./services/authenticate')
+const controllers = require('./controllers')
 
 const app = express()
 const port = process.env.PORT
 
-const signUpController = require('./controllers/signUpController')
-const verificationController = require('./controllers/verificationController')
+require('./middlewares')(app)
 
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
-app.use(cookieParser())
-app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  )
-  next()
-})
-
-if (process.env.NODE_ENV === 'development') app.use(morgan('combined'))
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    store: new SequelizeStore({
-      db: db.sequelize
-    }),
-    saveUninitialized: true
-  })
-)
-app.use(passport.initialize())
-app.use(passport.session())
-
-app.get('/api/venues', async (req, res) => {
-  try {
-    const venues = await db.Venue.scope('checkIns').findAll()
-    res.send({ venues })
-  } catch (e) {
-    console.log(e)
-  }
-})
-
-app.post('/api/checkin', async (req, res) => {
-  try {
-    if (req.user) {
-      if (req.user.checkIn) {
-        //check user out from current venue
-        await db.CheckIn.destroy({ where: { userId: req.user.id } })
-      }
-      //check in to new venue
-      await db.CheckIn.create({
-        userId: req.user.id,
-        venueId: req.body.venueId
-      })
-
-      const user = await db.User.scope('checkIn').findByPk(req.user.id)
-
-      return res.status(200).send({ user })
-    } else {
-      return res.status(400).send()
-    }
-  } catch (e) {
-    return res.status(400).send(e)
-  }
-})
-
-app.get('/api/user', async (req, res) => {
-  const user = req.isAuthenticated() ? req.user : null
-  res.status(200).send({ user: user })
-})
-
+//user controllers
+app.get('/api/user', controllers.user.getUser)
+app.get('/api/logout', controllers.user.logout)
+app.post('/api/signup', controllers.user.signup)
 app.post('/api/login', authenticate)
 
-app.get('/api/logout', function(req, res) {
-  req.logout()
-  res.status(200).send()
-})
+//venue controllers
+app.get('/api/venues', controllers.venue.getVenues)
 
-app.post('/api/verify', verificationController)
+//checkin controllers
+app.post('/api/checkin', controllers.checkin)
 
-app.post('/api/signup', signUpController)
+//verificationToken controllers
+app.post('/api/verify', controllers.verificationToken.verify)
 
 const server = app.listen(port, () => console.log(`listening on port ${port}!`))
 

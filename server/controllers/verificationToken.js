@@ -1,4 +1,4 @@
-module.exports = async (req, res) => {
+const verify = async (req, res) => {
   try {
     const user = await db.User.findOne({
       where: { email: req.body.email }
@@ -35,3 +35,5 @@ module.exports = async (req, res) => {
     return res.status(400).json(e)
   }
 }
+
+module.exports = { verify }
