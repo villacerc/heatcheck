@@ -27,6 +27,10 @@ app.post('/api/checkin', controllers.checkin)
 //verificationToken controllers
 app.post('/api/verify', controllers.verificationToken.verify)
 
+//game controllers
+app.post('/api/create-game', controllers.game.create)
+app.get('/api/games', controllers.game.getGames)
+
 const server = app.listen(port, () => console.log(`listening on port ${port}!`))
 
 const closeConnections = () => {

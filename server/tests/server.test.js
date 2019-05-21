@@ -3,11 +3,19 @@ const request = require('supertest')
 
 const app = require('../server')
 const withSession = request.agent(app)
-const { populateUsers, users, populateVenues, venues } = require('./seed')
+const {
+  populateUsers,
+  users,
+  populateVenues,
+  venues,
+  populateGames,
+  games
+} = require('./seed')
 
 //refresh collection with seeds
 beforeEach(populateUsers)
 beforeEach(populateVenues)
+beforeEach(populateGames)
 
 const authenticateBefore = (user = null) => {
   before(done => {
@@ -149,6 +157,43 @@ describe('GET /venues', () => {
       .expect(200)
       .expect(res => {
         expect(res.body.venues.length).toBe(3)
+      })
+      .end(done)
+  })
+})
+
+describe('POST /create-game', () => {
+  it('should create a game', done => {
+    const body = {
+      user: users[0],
+      venueId: venues[0].id,
+      name: '5on5 Basketball',
+      description: 'everyone welcome'
+    }
+
+    request(app)
+      .post('/api/create-game')
+      .send(body)
+      .expect(200)
+      .expect(async res => {
+        const { game } = res.body
+
+        expect(game.userId).toBe(body.user.id)
+        expect(game.venueId).toBe(body.venueId)
+        expect(game.name).toBe(body.name)
+        expect(game.description).toBe(body.description)
+      })
+      .end(done)
+  })
+})
+
+describe('GET /games', (req, res) => {
+  it('it should retrieve all games', done => {
+    request(app)
+      .get('/api/games')
+      .expect(200)
+      .expect(async res => {
+        expect(res.body.games.length).toBe(games.length)
       })
       .end(done)
   })
