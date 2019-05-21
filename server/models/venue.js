@@ -12,8 +12,10 @@ module.exports = (sequelize, DataTypes) => {
       lng: DataTypes.DOUBLE
     },
     {
-      defaultScope: {
-        include: [{ model: CheckIn, as: 'checkIns' }]
+      scopes: {
+        checkIns: {
+          include: [{ model: CheckIn, as: 'checkIns' }]
+        }
       }
     }
   )
@@ -25,12 +27,5 @@ module.exports = (sequelize, DataTypes) => {
     })
   }
 
-  Venue.prototype.toJSON = function() {
-    const values = Object.assign({}, this.get())
-    //only include checkins that have a user id
-    values.checkIns = values.checkIns.filter(e => e.userId)
-
-    return values
-  }
   return Venue
 }

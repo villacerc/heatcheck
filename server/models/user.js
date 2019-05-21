@@ -18,8 +18,10 @@ module.exports = (sequelize, DataTypes) => {
       isVerified: DataTypes.BOOLEAN
     },
     {
-      defaultScope: {
-        include: [{ model: CheckIn, as: 'checkIn' }]
+      scopes: {
+        checkIn: {
+          include: [{ model: CheckIn, as: 'checkIn' }]
+        }
       }
     }
   )

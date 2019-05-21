@@ -10,7 +10,7 @@ passport.serializeUser((user, done) => {
 //user object attaches to the request as req.user
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await db.User.findByPk(id)
+    const user = await db.User.scope('checkIn').findByPk(id)
     return done(null, user)
   } catch (e) {
     return done(null, e)
@@ -26,7 +26,7 @@ passport.use(
       passReqToCallback: true // allows us to pass back the entire request to the callback
     },
     async (req, email, password, done) => {
-      const user = await db.User.findOne({
+      const user = await db.User.scope('checkIn').findOne({
         where: { email }
       })
 

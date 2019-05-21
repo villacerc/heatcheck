@@ -48,7 +48,7 @@ app.use(passport.session())
 
 app.get('/api/venues', async (req, res) => {
   try {
-    const venues = await db.Venue.findAll()
+    const venues = await db.Venue.scope('checkIns').findAll()
     res.send({ venues })
   } catch (e) {
     console.log(e)
@@ -68,7 +68,7 @@ app.post('/api/checkin', async (req, res) => {
         venueId: req.body.venueId
       })
 
-      const user = await db.User.findByPk(req.user.id)
+      const user = await db.User.scope('checkIn').findByPk(req.user.id)
 
       return res.status(200).send({ user })
     } else {

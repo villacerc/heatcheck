@@ -134,7 +134,7 @@ describe('POST /checkin', () => {
           const { user } = res.body
           expect(user.checkIn.venueId).toBe(venues[0].id)
 
-          const venue = await db.Venue.findByPk(venues[0].id)
+          const venue = await db.Venue.scope('checkIns').findByPk(venues[0].id)
           expect(venue.checkIns[0].userId).toBe(user.id)
         })
         .end(done)
