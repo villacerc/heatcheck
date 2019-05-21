@@ -36,6 +36,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'userId',
       foreignKeyConstraint: true
     })
+    User.belongsToMany(models.Game, {
+      through: 'Request',
+      as: 'games',
+      foreignKey: 'userId'
+    })
   }
 
   const hashPw = password => {
