@@ -3,8 +3,6 @@
 const bcrypt = require('bcrypt')
 
 module.exports = (sequelize, DataTypes) => {
-  const CheckIn = sequelize.import('./checkIn')
-
   const User = sequelize.define(
     'User',
     {
@@ -20,7 +18,17 @@ module.exports = (sequelize, DataTypes) => {
     {
       scopes: {
         checkIn: {
-          include: [{ model: CheckIn, as: 'checkIn' }]
+          include: [{ model: sequelize.models.CheckIn, as: 'checkIn' }]
+        },
+        createdGame: {
+          include: [{ model: sequelize.models.Game, as: 'createdGame' }]
+        },
+        includeAll: {
+          include: [
+            { model: sequelize.models.Game, as: 'createdGame' },
+            { model: sequelize.models.CheckIn, as: 'checkIn' },
+            { model: sequelize.models.Game, as: 'requestedGames' }
+          ]
         }
       }
     }
@@ -36,9 +44,13 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'userId',
       foreignKeyConstraint: true
     })
+    User.hasOne(models.Game, {
+      as: 'createdGame',
+      foreignKey: 'userId'
+    })
     User.belongsToMany(models.Game, {
       through: 'Request',
-      as: 'games',
+      as: 'requestedGames',
       foreignKey: 'userId'
     })
   }
@@ -56,11 +68,37 @@ module.exports = (sequelize, DataTypes) => {
     user.password = hashPw(user.password)
   })
 
-  //exclude password from JSON
+  //sanitize user JSON
   User.prototype.toJSON = function() {
-    const values = Object.assign({}, this.get())
+    const values = JSON.parse(JSON.stringify(this.get()))
 
     delete values.password
+
+    //filter the games that have a request type
+    values.requestedGames = values.requestedGames.filter(({ Request }) => {
+      if (Request.type) {
+        const request = JSON.parse(JSON.stringify(Request))
+
+        delete request.userId
+        return request
+      }
+    })
+
+    //check if a player has joined a game
+    if (!values.createdGame) {
+      const joinedGame = values.requestedGames.find(({ Request }) => {
+        return !Request.type
+      })
+
+      values.joinedGame = JSON.parse(JSON.stringify(joinedGame))
+
+      if (values.joinedGame) {
+        const { joinedGame } = values
+        delete joinedGame.userId
+        delete joinedGame.Request
+      }
+    }
+
     return values
   }
   return User

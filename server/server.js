@@ -4,7 +4,6 @@ const express = require('express')
 require('./db/sequelize')
 require('./services/passport')
 require('./jobs')
-const authenticate = require('./services/authenticate')
 const controllers = require('./controllers')
 
 const app = express()
@@ -16,7 +15,7 @@ require('./middlewares')(app)
 app.get('/api/user', controllers.user.getUser)
 app.get('/api/logout', controllers.user.logout)
 app.post('/api/signup', controllers.user.signup)
-app.post('/api/login', authenticate)
+app.post('/api/login', controllers.user.authenticate)
 
 //venue controllers
 app.get('/api/venues', controllers.venue.getVenues)
