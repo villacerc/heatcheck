@@ -30,8 +30,8 @@ app.post('/api/verify', authorize, controllers.verificationToken.verify)
 //game controllers
 app.post('/api/create-game', authorize, controllers.game.create)
 app.get('/api/games', controllers.game.getGames)
-app.get('/api/my-game', controllers.game.myGame)
-app.delete('/api/my-game', controllers.game.deleteGame)
+app.get('/api/my-game', authorize, controllers.game.myGame)
+app.delete('/api/my-game', authorize, controllers.game.deleteGame)
 
 const server = app.listen(port, () => console.log(`listening on port ${port}!`))
 

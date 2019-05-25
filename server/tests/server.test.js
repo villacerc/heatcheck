@@ -26,6 +26,29 @@ const authenticateBefore = (user = null) => {
   })
 }
 
+const describeUnauthorized = (method, endpoint) => {
+  describe('unauthorized', () => {
+    it('should reject request if user not logged in', done => {
+      switch (method) {
+        case 'post':
+          request(app)
+            .post(endpoint)
+            .expect(401)
+        case 'get':
+          request(app)
+            .get(endpoint)
+            .expect(401)
+        case 'delete':
+          request(app)
+            .delete(endpoint)
+            .expect(401)
+        default:
+      }
+      done()
+    })
+  })
+}
+
 describe('POST /signup', () => {
   it('should create a user', done => {
     const newUser = {
@@ -89,7 +112,7 @@ describe('POST /login', () => {
 })
 
 describe('GET /user', async () => {
-  describe('with no session', () => {
+  describe('sessionless', () => {
     it('should return null user if there is no session', done => {
       request(app)
         .get('/api/user')
@@ -102,7 +125,7 @@ describe('GET /user', async () => {
     })
   })
 
-  describe('with session', () => {
+  describe('session', () => {
     authenticateBefore()
     it('should return authenticated user', done => {
       withSession
@@ -120,26 +143,23 @@ describe('GET /user', async () => {
 })
 
 describe('POST /logout', () => {
-  authenticateBefore()
-  it('should logout authenticated user', done => {
-    withSession
-      .post('/api/logout')
-      .expect(200)
-      .end(done)
+  describeUnauthorized('post', '/api/logout')
+
+  describe('authorized', () => {
+    authenticateBefore()
+    it('should logout authenticated user', done => {
+      withSession
+        .post('/api/logout')
+        .expect(200)
+        .end(done)
+    })
   })
 })
 
 describe('POST /checkin', () => {
-  describe('with no session', () => {
-    it('should reject request if no session exist', done => {
-      request(app)
-        .post('/api/checkin')
-        .expect(401)
-        .end(done)
-    })
-  })
+  describeUnauthorized('post', '/api/checkin')
 
-  describe('with session', () => {
+  describe('authorized', () => {
     authenticateBefore()
     it('should check in the user to the venue', done => {
       withSession
@@ -171,27 +191,31 @@ describe('GET /venues', () => {
 })
 
 describe('POST /create-game', () => {
-  authenticateBefore()
-  it('should create a game', done => {
-    const body = {
-      venueId: venues[0].id,
-      name: '5on5 Basketball',
-      description: 'everyone welcome'
-    }
+  describeUnauthorized('post', '/api/create-game')
 
-    withSession
-      .post('/api/create-game')
-      .send(body)
-      .expect(200)
-      .expect(async res => {
-        const { game } = res.body
+  describe('authorized', () => {
+    authenticateBefore()
+    it('should create a game', done => {
+      const body = {
+        venueId: venues[0].id,
+        name: '5on5 Basketball',
+        description: 'everyone welcome'
+      }
 
-        expect(game.userId).toBe(users[0].id)
-        expect(game.venueId).toBe(body.venueId)
-        expect(game.name).toBe(body.name)
-        expect(game.description).toBe(body.description)
-      })
-      .end(done)
+      withSession
+        .post('/api/create-game')
+        .send(body)
+        .expect(200)
+        .expect(async res => {
+          const { game } = res.body
+
+          expect(game.userId).toBe(users[0].id)
+          expect(game.venueId).toBe(body.venueId)
+          expect(game.name).toBe(body.name)
+          expect(game.description).toBe(body.description)
+        })
+        .end(done)
+    })
   })
 })
 
@@ -208,16 +232,9 @@ describe('GET /games', (req, res) => {
 })
 
 describe('GET /my-game', (req, res) => {
-  describe('with no session', () => {
-    it('should reject request if user not logged in', done => {
-      request(app)
-        .get('/api/my-game')
-        .expect(401)
-        .end(done)
-    })
-  })
+  describeUnauthorized('get', '/api/my-game')
 
-  describe('with session', () => {
+  describe('authorized', () => {
     authenticateBefore()
     it('it should retrieve a game by the user', done => {
       withSession
@@ -225,6 +242,24 @@ describe('GET /my-game', (req, res) => {
         .expect(200)
         .expect(async res => {
           expect(res.body.game.userId).toBe(users[0].id)
+        })
+        .end(done)
+    })
+  })
+})
+
+describe('DELETE /my-game', (req, res) => {
+  describeUnauthorized('delete', '/api/my-game')
+
+  describe('authorized', () => {
+    authenticateBefore()
+    it('it should delete a game by the user', done => {
+      withSession
+        .delete('/api/my-game')
+        .expect(200)
+        .expect(async () => {
+          const game = await db.Game.findOne({ where: { userId: users[0].id } })
+          expect(game).toBeNull()
         })
         .end(done)
     })
