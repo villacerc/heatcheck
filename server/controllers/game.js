@@ -4,11 +4,9 @@ const create = async (req, res) => {
     const body = { userId: req.user.id, venueId, name, description }
 
     const newGame = await db.Game.create(body)
-
     await db.Request.create({ userId: body.userId, gameId: newGame.id })
-    const game = await db.Game.scope('players').findOne({
-      where: { userId: body.userId }
-    })
+
+    const game = await db.Game.scope('players').findByPk(newGame.id)
 
     res.status(200).json({ game: sanitize(game) })
   } catch (e) {
@@ -21,6 +19,18 @@ const getGames = async (req, res) => {
     const games = await db.Game.scope('players').findAll()
 
     res.status(200).json({ games: sanitizeAll(games) })
+  } catch (e) {
+    res.status(400).send(e)
+  }
+}
+
+const myGame = async (req, res) => {
+  try {
+    const game = await db.Game.scope('players').findOne({
+      where: { userId: req.user.id }
+    })
+
+    res.status(200).json({ game: sanitize(game) })
   } catch (e) {
     res.status(400).send(e)
   }
@@ -45,4 +55,4 @@ sanitizeAll = gamesArr => {
   })
 }
 
-module.exports = { create, getGames }
+module.exports = { create, getGames, myGame }

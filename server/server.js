@@ -29,6 +29,7 @@ app.post('/api/verify', controllers.verificationToken.verify)
 //game controllers
 app.post('/api/create-game', controllers.game.create)
 app.get('/api/games', controllers.game.getGames)
+app.get('/api/my-game', controllers.game.myGame)
 
 const server = app.listen(port, () => console.log(`listening on port ${port}!`))
 
