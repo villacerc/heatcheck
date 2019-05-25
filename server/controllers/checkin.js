@@ -1,7 +1,7 @@
 module.exports = async (req, res) => {
   try {
     if (req.user) {
-      if (req.user.checkIn) {
+      if (req.user.checkIn.createdAt) {
         //check user out from current venue
         await db.CheckIn.destroy({ where: { userId: req.user.id } })
       }

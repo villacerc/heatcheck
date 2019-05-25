@@ -94,9 +94,6 @@ module.exports = (sequelize, DataTypes) => {
     const values = JSON.parse(JSON.stringify(this.get()))
 
     delete values.password
-    if (!values.checkIn.createdAt) {
-      values.checkIn = null
-    }
 
     //filter the games that have a request type
     values.requestedGames = values.requestedGames.filter(({ Request }) => {
