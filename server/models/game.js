@@ -1,6 +1,7 @@
 'use strict'
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.import('./user')
+  const Request = sequelize.import('./request')
   const Game = sequelize.define(
     'Game',
     {
@@ -36,6 +37,14 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'gameId'
     })
   }
+
+  Game.afterCreate(async (game, options) => {
+    await Request.create({ userId: game.userId, gameId: game.id })
+  })
+  // destroy all requests related to this game
+  Game.afterDestroy(async (game, options) => {
+    await Request.destroy({ where: { gameId: game.id } })
+  })
 
   return Game
 }

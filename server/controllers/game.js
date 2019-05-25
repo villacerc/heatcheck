@@ -4,7 +4,6 @@ const create = async (req, res) => {
     const body = { userId: req.user.id, venueId, name, description }
 
     const newGame = await db.Game.create(body)
-    await db.Request.create({ userId: body.userId, gameId: newGame.id })
 
     const game = await db.Game.scope('players').findByPk(newGame.id)
 
@@ -40,7 +39,8 @@ const myGame = async (req, res) => {
 
 const deleteGame = async (req, res) => {
   try {
-    await db.Game.destroy({ where: { userId: req.user.id } })
+    const game = await db.Game.findOne({ where: { userId: req.user.id } })
+    await game.destroy()
 
     res.status(200).send()
   } catch (err) {
