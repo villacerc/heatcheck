@@ -7,7 +7,7 @@ passport.serializeUser((user, done) => {
   done(null, user.id)
 })
 
-//user object attaches to the request as req.user
+//attach user to the request as req.user
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await db.User.scope('includeAll').findByPk(id)

@@ -5,6 +5,7 @@ require('./db/sequelize')
 require('./services/passport')
 require('./jobs')
 const controllers = require('./controllers')
+const authorize = require('./middlewares/authorize')
 
 const app = express()
 const port = process.env.PORT
@@ -13,7 +14,7 @@ require('./middlewares')(app)
 
 //user controllers
 app.get('/api/user', controllers.user.getUser)
-app.post('/api/logout', controllers.user.logout)
+app.post('/api/logout', authorize, controllers.user.logout)
 app.post('/api/signup', controllers.user.signup)
 app.post('/api/login', controllers.user.authenticate)
 
@@ -21,15 +22,15 @@ app.post('/api/login', controllers.user.authenticate)
 app.get('/api/venues', controllers.venue.getVenues)
 
 //checkin controllers
-app.post('/api/checkin', controllers.checkin)
+app.post('/api/checkin', authorize, controllers.checkin)
 
 //verificationToken controllers
-app.post('/api/verify', controllers.verificationToken.verify)
+app.post('/api/verify', authorize, controllers.verificationToken.verify)
 
 //game controllers
-app.post('/api/create-game', controllers.game.create)
+app.post('/api/create-game', authorize, controllers.game.create)
 app.get('/api/games', controllers.game.getGames)
-app.get('/api/my-game', controllers.game.myGame)
+app.get('/api/my-game', authorize, controllers.game.myGame)
 
 const server = app.listen(port, () => console.log(`listening on port ${port}!`))
 

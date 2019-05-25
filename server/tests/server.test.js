@@ -134,8 +134,7 @@ describe('POST /checkin', () => {
     it('should reject request if no session exist', done => {
       request(app)
         .post('/api/checkin')
-        .send({ user: null, venueId: venues[0].id })
-        .expect(400)
+        .expect(401)
         .end(done)
     })
   })
@@ -213,7 +212,7 @@ describe('GET /my-game', (req, res) => {
     it('should reject request if user not logged in', done => {
       request(app)
         .get('/api/my-game')
-        .expect(400)
+        .expect(401)
         .end(done)
     })
   })
