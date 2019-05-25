@@ -119,6 +119,16 @@ describe('GET /user', async () => {
   })
 })
 
+describe('POST /logout', () => {
+  authenticateBefore()
+  it('should logout authenticated user', done => {
+    withSession
+      .post('/api/logout')
+      .expect(200)
+      .end(done)
+  })
+})
+
 describe('POST /checkin', () => {
   describe('with no session', () => {
     it('should reject request if no session exist', done => {

@@ -13,7 +13,7 @@ require('./middlewares')(app)
 
 //user controllers
 app.get('/api/user', controllers.user.getUser)
-app.get('/api/logout', controllers.user.logout)
+app.post('/api/logout', controllers.user.logout)
 app.post('/api/signup', controllers.user.signup)
 app.post('/api/login', controllers.user.authenticate)
 
