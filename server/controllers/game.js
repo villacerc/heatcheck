@@ -9,8 +9,8 @@ const create = async (req, res) => {
     const game = await db.Game.scope('players').findByPk(newGame.id)
 
     res.status(200).json({ game: sanitize(game) })
-  } catch (e) {
-    res.status(400).send(e)
+  } catch (err) {
+    res.status(400).send({ err })
   }
 }
 
@@ -19,8 +19,8 @@ const getGames = async (req, res) => {
     const games = await db.Game.scope('players').findAll()
 
     res.status(200).json({ games: sanitizeAll(games) })
-  } catch (e) {
-    res.status(400).send(e)
+  } catch (err) {
+    res.status(400).send({ err })
   }
 }
 
@@ -30,9 +30,21 @@ const myGame = async (req, res) => {
       where: { userId: req.user.id }
     })
 
+    if (!game) throw 'No game found'
+
     res.status(200).json({ game: sanitize(game) })
-  } catch (e) {
-    res.status(400).send(e)
+  } catch (err) {
+    res.status(400).send({ err })
+  }
+}
+
+const deleteGame = async (req, res) => {
+  try {
+    await db.Game.destroy({ where: { userId: req.user.id } })
+
+    res.status(200).send()
+  } catch (err) {
+    res.status(400).send({ err })
   }
 }
 
@@ -55,4 +67,4 @@ sanitizeAll = gamesArr => {
   })
 }
 
-module.exports = { create, getGames, myGame }
+module.exports = { create, getGames, myGame, deleteGame }
