@@ -104,7 +104,6 @@ describe('GET /user', async () => {
 
   describe('with session', () => {
     authenticateBefore()
-
     it('should return authenticated user', done => {
       withSession
         .get('/api/user')
@@ -163,22 +162,22 @@ describe('GET /venues', () => {
 })
 
 describe('POST /create-game', () => {
+  authenticateBefore()
   it('should create a game', done => {
     const body = {
-      user: users[0],
       venueId: venues[0].id,
       name: '5on5 Basketball',
       description: 'everyone welcome'
     }
 
-    request(app)
+    withSession
       .post('/api/create-game')
       .send(body)
       .expect(200)
       .expect(async res => {
         const { game } = res.body
 
-        expect(game.userId).toBe(body.user.id)
+        expect(game.userId).toBe(users[0].id)
         expect(game.venueId).toBe(body.venueId)
         expect(game.name).toBe(body.name)
         expect(game.description).toBe(body.description)

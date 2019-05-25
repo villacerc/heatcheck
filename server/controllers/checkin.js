@@ -11,7 +11,7 @@ module.exports = async (req, res) => {
         venueId: req.body.venueId
       })
 
-      const user = await db.User.scope('checkIn').findByPk(req.user.id)
+      const user = await db.User.scope('includeAll').findByPk(req.user.id)
 
       return res.status(200).send({ user })
     } else {

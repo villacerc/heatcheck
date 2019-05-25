@@ -25,9 +25,27 @@ module.exports = (sequelize, DataTypes) => {
         },
         includeAll: {
           include: [
-            { model: sequelize.models.Game, as: 'createdGame' },
-            { model: sequelize.models.CheckIn, as: 'checkIn' },
-            { model: sequelize.models.Game, as: 'requestedGames' }
+            {
+              model: sequelize.models.Game,
+              as: 'createdGame',
+              attributes: {
+                exclude: ['userId']
+              }
+            },
+            {
+              model: sequelize.models.CheckIn,
+              as: 'checkIn',
+              attributes: {
+                exclude: ['userId']
+              }
+            },
+            {
+              model: sequelize.models.Game,
+              as: 'requestedGames',
+              attributes: {
+                exclude: ['userId']
+              }
+            }
           ]
         }
       }
@@ -70,16 +88,22 @@ module.exports = (sequelize, DataTypes) => {
 
   //sanitize user JSON
   User.prototype.toJSON = function() {
+    //skip parse if no id
+    if (!this.get().id) return
+
     const values = JSON.parse(JSON.stringify(this.get()))
 
     delete values.password
+    if (!values.checkIn.createdAt) {
+      values.checkIn = null
+    }
 
     //filter the games that have a request type
     values.requestedGames = values.requestedGames.filter(({ Request }) => {
       if (Request.type) {
         const request = JSON.parse(JSON.stringify(Request))
 
-        delete request.userId
+        // delete request.userId
         return request
       }
     })
@@ -90,12 +114,10 @@ module.exports = (sequelize, DataTypes) => {
         return !Request.type
       })
 
-      values.joinedGame = JSON.parse(JSON.stringify(joinedGame))
+      if (joinedGame) {
+        values.joinedGame = JSON.parse(JSON.stringify(joinedGame))
 
-      if (values.joinedGame) {
-        const { joinedGame } = values
-        delete joinedGame.userId
-        delete joinedGame.Request
+        delete values.joinedGame.Request
       }
     }
 

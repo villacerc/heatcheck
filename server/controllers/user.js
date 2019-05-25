@@ -23,7 +23,7 @@ const signup = async (req, res) => {
   const { email } = req.body
   try {
     await db.User.create(req.body)
-    const user = await db.User.findOne({ where: { email } })
+    const user = await db.User.scope('includeAll').findOne({ where: { email } })
     // const verification = await db.VerificationToken.create({
     //   userId: user.id,
     //   token: crypto({ length: 5 })
