@@ -9,13 +9,15 @@ const {
   populateVenues,
   venues,
   populateGames,
-  games
+  games,
+  populateRequests
 } = require('./seed')
 
 //refresh collection with seeds
 beforeEach(populateUsers)
 beforeEach(populateVenues)
 beforeEach(populateGames)
+beforeEach(populateRequests)
 
 const authenticateBefore = (user = null) => {
   before(done => {
@@ -213,6 +215,13 @@ describe('POST /create-game', () => {
           expect(game.venueId).toBe(body.venueId)
           expect(game.name).toBe(body.name)
           expect(game.description).toBe(body.description)
+
+          //check that a request record for the user was created
+          const request = await db.Request.findOne({
+            where: { userId: users[0].id, gameId: game.id }
+          })
+
+          expect(request).toBeTruthy()
         })
         .end(done)
     })
@@ -260,6 +269,13 @@ describe('DELETE /my-game', (req, res) => {
         .expect(async () => {
           const game = await db.Game.findOne({ where: { userId: users[0].id } })
           expect(game).toBeNull()
+
+          //should delete all requests related to the game
+          const requests = await db.Request.findAll({
+            where: { gameId: games[0].id }
+          })
+
+          expect(requests.length).toBe(0)
         })
         .end(done)
     })

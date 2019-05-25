@@ -35,17 +35,17 @@ app.delete('/api/my-game', authorize, controllers.game.deleteGame)
 
 const server = app.listen(port, () => console.log(`listening on port ${port}!`))
 
-const closeConnections = () => {
-  db.sequelize.close()
-  server.close()
-}
+// const closeConnections = () => {
+//   db.sequelize.close()
+//   server.close()
+// }
 
 //close db and app when terminating server
-process.on('SIGINT', () => {
-  closeConnections()
-})
-process.on('SIGTERM', () => {
-  closeConnections()
-})
+// process.on('SIGINT', () => {
+//   closeConnections()
+// })
+// process.on('SIGTERM', () => {
+//   closeConnections()
+// })
 
 module.exports = app

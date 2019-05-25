@@ -13,10 +13,18 @@ const venues = [
   }
 ]
 
+requests = [
+  {
+    userId: 1,
+    gameId: 1
+  }
+]
+
 const games = [
   {
     id: 1,
     userId: 1,
+    venueId: 1,
     name: '2on2 Tennis'
   },
   {
@@ -73,11 +81,22 @@ const populateGames = done => {
     .then(() => done())
 }
 
+const populateRequests = done => {
+  db.Request.destroy({
+    where: {}
+  })
+    .then(() => {
+      db.Request.bulkCreate(requests)
+    })
+    .then(() => done())
+}
+
 module.exports = {
   populateVenues,
   venues,
   populateUsers,
   users,
   populateGames,
-  games
+  games,
+  populateRequests
 }
