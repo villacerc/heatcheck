@@ -197,3 +197,27 @@ describe('GET /games', (req, res) => {
       .end(done)
   })
 })
+
+describe('GET /my-game', (req, res) => {
+  describe('with no session', () => {
+    it('should reject request if user not logged in', done => {
+      request(app)
+        .get('/api/my-game')
+        .expect(400)
+        .end(done)
+    })
+  })
+
+  describe('with session', () => {
+    authenticateBefore()
+    it('it should retrieve a game by the user', done => {
+      withSession
+        .get('/api/my-game')
+        .expect(200)
+        .expect(async res => {
+          expect(res.body.game.userId).toBe(users[0].id)
+        })
+        .end(done)
+    })
+  })
+})
