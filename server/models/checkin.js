@@ -14,13 +14,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'userId',
       foreignKeyConstraint: true
     })
-    CheckIn.belongsTo(models.Venue, {
-      as: 'venue',
-      foreignKey: 'venueId',
-      foreignKeyConstraint: true
-    })
   }
-
-  CheckIn.removeAttribute('id')
   return CheckIn
 }

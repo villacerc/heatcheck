@@ -3,6 +3,7 @@
 const bcrypt = require('bcrypt')
 
 module.exports = (sequelize, DataTypes) => {
+  const CheckIn = sequelize.import('./checkin')
   const User = sequelize.define(
     'User',
     {
@@ -84,6 +85,9 @@ module.exports = (sequelize, DataTypes) => {
   })
   User.beforeCreate((user, options) => {
     user.password = hashPw(user.password)
+  })
+  User.afterCreate(async (user, options) => {
+    await CheckIn.create({ userId: user.id })
   })
 
   //sanitize user JSON

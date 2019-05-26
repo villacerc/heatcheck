@@ -1,22 +1,14 @@
 module.exports = async (req, res) => {
   try {
-    if (req.user) {
-      if (req.user.checkIn.createdAt) {
-        //check user out from current venue
-        await db.CheckIn.destroy({ where: { userId: req.user.id } })
-      }
-      //check in to new venue
-      await db.CheckIn.create({
-        userId: req.user.id,
-        venueId: req.body.venueId
-      })
+    //check in to new venue
+    await db.CheckIn.update(
+      { venueId: req.body.venueId },
+      { where: { userId: req.user.id } }
+    )
 
-      const user = await db.User.scope('includeAll').findByPk(req.user.id)
+    const user = await db.User.scope('includeAll').findByPk(req.user.id)
 
-      return res.status(200).send({ user })
-    } else {
-      return res.status(400).send()
-    }
+    return res.status(200).send({ user })
   } catch (e) {
     return res.status(400).send(e)
   }

@@ -166,7 +166,7 @@ describe('POST /checkin', () => {
     it('should check in the user to the venue', done => {
       withSession
         .post('/api/checkin')
-        .send({ user: users[0], venueId: venues[0].id })
+        .send({ venueId: venues[0].id })
         .expect(200)
         .expect(async res => {
           const { user } = res.body
