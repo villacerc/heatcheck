@@ -1,5 +1,4 @@
 import React from 'react'
-import { map } from 'lodash'
 import { connect } from 'react-redux'
 import { withScriptjs, withGoogleMap, GoogleMap } from 'react-google-maps'
 import { fetchVenues, updateUser, showModal } from '../../actions'
@@ -22,7 +21,7 @@ class GoogleMapWrapper extends React.Component {
         defaultCenter={{ lat: 49.1785, lng: -123.12789 }}
       >
         {venues &&
-          map(venues, venue => {
+          venues.map(venue => {
             const checkedIn = venue.id == (user && user.checkIn.venueId)
             return (
               <MapMarker

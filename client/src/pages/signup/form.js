@@ -1,16 +1,11 @@
 import React from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
-import axios from 'axios'
 import { Form } from 'formik'
 
 import styles from './signup.module.scss'
 
-export const onSubmit = async values => {
-  await axios.post('/api/signup', values)
-}
-
-export const SignupForm = props => {
+const SignupForm = props => {
   const {
     values: { displayName, email, password, confirmPassword },
     errors,
@@ -84,3 +79,5 @@ export const SignupForm = props => {
     </Form>
   )
 }
+
+export default SignupForm

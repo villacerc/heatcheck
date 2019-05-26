@@ -13,7 +13,9 @@ class Landing extends React.Component {
     venues: null
   }
   componentDidMount() {
-    this.props.fetchVenues()
+    if (!this.props.venues) {
+      this.props.fetchVenues()
+    }
   }
 
   render() {
@@ -38,7 +40,11 @@ class Landing extends React.Component {
   }
 }
 
+const stateToProps = ({ venues }) => {
+  return { venues }
+}
+
 export default connect(
-  null,
+  stateToProps,
   { fetchVenues }
 )(Landing)
