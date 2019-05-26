@@ -10,10 +10,10 @@ class ModalConductor extends React.Component {
     if (stack.length === 0) return null
     return (
       <div>
-        {stack.map(({ name }, i) => {
+        {stack.map(({ name, props }, i) => {
           switch (name) {
             case 'login':
-              return <Login key={i} />
+              return <Login key={i} {...props} />
             default:
               return null
           }

@@ -35,9 +35,14 @@ class Login extends React.Component {
   handleLogin = async (values, actions) => {
     this.setState({ flash: false })
     this.setState({ loading: true })
+
+    if (this.props.venueId) {
+      //check user in to venue
+      values.venueId = this.props.venueId
+    }
+
     const res = await axios.post('/api/login', values)
 
-    console.log(res)
     if (res.status == 200) {
       this.props.updateUser(res.data.user)
       this.handleClose()

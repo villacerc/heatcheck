@@ -11,7 +11,7 @@ class MarkerContent extends React.Component {
   checkIn = async venueId => {
     if (!this.props.user) {
       this.props.closePopper()
-      return this.props.showModal('login')
+      return this.props.showModal('login', { venueId })
     }
     const res = await axios.post('/api/checkin', { venueId })
     if (res.status === 200) {

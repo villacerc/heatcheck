@@ -10,10 +10,21 @@ const authenticate = (req, res, next) => {
     if (!user) {
       return res.status(401).send({ flash: 'Incorrect email or password' })
     }
-    req.logIn(user, function(err) {
+    req.logIn(user, async err => {
       if (err) {
         return res.status(400).send({ flash: err })
       }
+
+      //check user in
+      if (req.body.venueId) {
+        await db.CheckIn.update(
+          { venueId: req.body.venueId },
+          { where: { userId: user.id } }
+        )
+
+        user = await db.User.scope('includeAll').findByPk(user.id)
+      }
+
       return res.status(200).json({ user })
     })
   })(req, res, next)
