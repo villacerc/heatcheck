@@ -22,7 +22,7 @@ class MapMarker extends React.Component {
     //hide popper and remove highlight if not inside popper
     this.timeout = setTimeout(() => {
       if (!this.state.popperEntered) {
-        this.setState({ showPopper: false, className: styles.bubble })
+        this.closePopper()
       }
     }, 0)
   }
@@ -31,10 +31,12 @@ class MapMarker extends React.Component {
   }
   onPopperLeave = () => {
     this.setState({
-      popperEntered: false,
-      showPopper: false,
-      className: styles.bubble
+      popperEntered: false
     })
+    this.closePopper()
+  }
+  closePopper = () => {
+    this.setState({ showPopper: false, className: styles.bubble })
   }
   render() {
     const { venue, contentProps, checkedIn } = this.props
@@ -58,6 +60,7 @@ class MapMarker extends React.Component {
             open={this.state.showPopper}
           >
             <MarkerContent
+              closePopper={this.closePopper}
               venue={venue}
               checkedIn={checkedIn}
               {...contentProps}

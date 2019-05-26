@@ -10,10 +10,11 @@ import styles from './markerContent.module.scss'
 class MarkerContent extends React.Component {
   checkIn = async venueId => {
     if (!this.props.user) {
+      this.props.closePopper()
       return this.props.showModal('login')
     }
     const res = await axios.post('/api/checkin', { venueId })
-    if (res.status === '200') {
+    if (res.status === 200) {
       await this.props.updateUser(res.data.user)
       this.props.fetchVenues()
     }
