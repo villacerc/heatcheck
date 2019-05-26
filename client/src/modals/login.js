@@ -6,7 +6,6 @@ import DialogContent from '@material-ui/core/DialogContent'
 import Button from '@material-ui/core/Button'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import { navigate } from '@reach/router'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { connect } from 'react-redux'
@@ -46,10 +45,6 @@ class Login extends React.Component {
       this.setState({ flash: res.data.flash })
     }
     this.setState({ loading: false })
-  }
-  toSignup = () => {
-    navigate('/signup')
-    this.handleClose()
   }
   render() {
     return (
@@ -104,28 +99,24 @@ class Login extends React.Component {
                     onBlur={handleBlur}
                     onChange={handleChange}
                   />
-                  <p className={styles.signup}>
-                    Don't have an account?
-                    <span onClick={this.toSignup}>Sign up</span>
-                  </p>
-                  <DialogActions>
-                    <Button
-                      type="button"
-                      disabled={this.state.loading}
-                      onClick={this.handleClose}
-                      color="primary"
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      type="submit"
-                      disabled={this.state.loading}
-                      color="primary"
-                    >
-                      Login
-                    </Button>
-                  </DialogActions>
                 </DialogContent>
+                <DialogActions>
+                  <Button
+                    type="button"
+                    disabled={this.state.loading}
+                    onClick={this.handleClose}
+                    color="primary"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={this.state.loading}
+                    color="primary"
+                  >
+                    Submit
+                  </Button>
+                </DialogActions>
               </form>
             )
           }}

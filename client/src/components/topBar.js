@@ -7,6 +7,7 @@ import Icon from '@material-ui/core/Icon'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import axios from 'axios'
+import { navigate } from '@reach/router'
 
 import PopperWrapper from './popperWrapper'
 import { showModal, updateUser } from '../actions'
@@ -21,10 +22,10 @@ class TopBar extends React.Component {
     this.props.showModal('login')
   }
   toSignup = () => {
-    this.props.history.push('/signup')
+    navigate('/signup')
   }
   logOut = async () => {
-    const res = await axios.get('api/logout')
+    const res = await axios.post('api/logout')
 
     this.props.updateUser(res.data.user)
     this.setState({ showUserPopper: false })
@@ -42,7 +43,12 @@ class TopBar extends React.Component {
         </div>
       )
     }
-    return <Button onClick={this.showLogin}>Login</Button>
+    return (
+      <div>
+        <Button onClick={this.showLogin}>Login</Button>
+        <Button onClick={this.toSignup}>Sign Up</Button>
+      </div>
+    )
   }
   userPopper = () => {
     return (
@@ -64,7 +70,7 @@ class TopBar extends React.Component {
       <AppBar classes={{ root: styles.bar }}>
         <Toolbar>
           <div className={styles.brand}>
-            <h1>Heat Check</h1>
+            <h1>Pick And Roll</h1>
           </div>
           {user.fetching ? null : this.renderButtons()}
         </Toolbar>

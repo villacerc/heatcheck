@@ -15,7 +15,7 @@ class Signup extends React.Component {
       password: ''
     }
     return (
-      <div>
+      <div className={styles.container}>
         <InputForm
           onSubmit={onSubmit}
           component={SignupForm}

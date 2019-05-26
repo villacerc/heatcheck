@@ -4,12 +4,10 @@ import Button from '@material-ui/core/Button'
 import axios from 'axios'
 import { Form } from 'formik'
 
-export const onSubmit = async values => {
-  const res = await axios.post('/api/signup', values)
-}
+import styles from './signup.module.scss'
 
-const getUser = async values => {
-  const res = await axios.get('/api/user')
+export const onSubmit = async values => {
+  await axios.post('/api/signup', values)
 }
 
 export const SignupForm = props => {
@@ -28,7 +26,7 @@ export const SignupForm = props => {
     setFieldTouched(name, true, false)
   }
   return (
-    <Form style={{ width: '100vw', margin: 'auto' }}>
+    <Form className={styles.form}>
       <TextField
         id="displayName"
         name="displayName"
@@ -72,24 +70,17 @@ export const SignupForm = props => {
         value={confirmPassword}
         onChange={change.bind(null, 'confirmPassword')}
       />
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-        disabled={!isValid}
-      >
-        Submit
-      </Button>
-      <Button
-        onClick={getUser}
-        type="button"
-        fullWidth
-        variant="contained"
-        color="primary"
-      >
-        user
-      </Button>
+      <div className={styles.footer}>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          disabled={!isValid}
+        >
+          Submit
+        </Button>
+      </div>
     </Form>
   )
 }

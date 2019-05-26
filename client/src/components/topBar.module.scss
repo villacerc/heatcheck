@@ -12,10 +12,17 @@
   flex-grow: 1;
   h1 {
     margin: 0;
+    font-size: 1.1rem;
   }
 }
 .defaultAv {
   cursor: pointer;
   padding: 5px;
   font-size: 33px !important;
+}
+
+@media (min-width: 500px) {
+  .brand h1 {
+    font-size: 2rem !important;
+  }
 }
