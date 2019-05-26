@@ -153,6 +153,16 @@ describe('POST /logout', () => {
       withSession
         .post('/api/logout')
         .expect(200)
+        .expect(() => {
+          //check that user cleanup is perofmred
+          db.User.scope('includeAll')
+            .findByPk(users[0].id)
+            .then(user => {
+              expect(user.checkIn.venueId).toBeNull()
+              expect(user.createdGame).toBeNull()
+              expect(user.requestedGames.length).toBe(0)
+            })
+        })
         .end(done)
     })
   })
@@ -216,12 +226,19 @@ describe('POST /create-game', () => {
           expect(game.name).toBe(body.name)
           expect(game.description).toBe(body.description)
 
-          //check that a request record for the user was created
-          const request = await db.Request.findOne({
+          //checked that request is created for user
+          db.Request.findOne({
             where: { userId: users[0].id, gameId: game.id }
+          }).then(request => {
+            expect(request).toBeTruthy()
           })
 
-          expect(request).toBeTruthy()
+          //check that user is checked in to venue
+          db.User.scope('checkIn')
+            .findByPk(users[0].id)
+            .then(user => {
+              expect(user.checkIn.venueId).toBe(body.venueId)
+            })
         })
         .end(done)
     })

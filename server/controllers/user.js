@@ -23,13 +23,12 @@ const signup = async (req, res) => {
   const { email } = req.body
   try {
     await db.User.create(req.body)
-    const user = await db.User.scope('includeAll').findOne({ where: { email } })
     // const verification = await db.VerificationToken.create({
     //   userId: user.id,
     //   token: crypto({ length: 5 })
     // })
     // sendVerificationEmail(user.email, verification.token)
-    return res.status(200).json({ user })
+    authenticate(req, res)
   } catch (error) {
     if (error.name === 'SequelizeUniqueConstraintError') {
       error = 'An account with this email already exists'
@@ -43,7 +42,20 @@ const getUser = async (req, res) => {
   res.status(200).send({ user: user })
 }
 
-const logout = function(req, res) {
+const logout = async (req, res) => {
+  //perform cleanup
+  if (req.user.checkIn.venueId) {
+    await db.CheckIn.update(
+      { venueId: null },
+      { where: { userId: req.user.id } }
+    )
+  }
+  if (req.user.createdGame) {
+    const game = await db.Game.findOne({ where: { userId: req.user.id } })
+    game.destroy()
+  }
+  await db.Request.destroy({ where: { userId: req.user.id } })
+
   req.logout()
   res.status(200).send()
 }

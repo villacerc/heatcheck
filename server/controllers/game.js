@@ -3,8 +3,8 @@ const create = async (req, res) => {
     const { venueId, name, description } = req.body
     const body = { userId: req.user.id, venueId, name, description }
 
+    await db.CheckIn.update({ venueId }, { where: { userId: req.user.id } })
     const newGame = await db.Game.create(body)
-
     const game = await db.Game.scope('players').findByPk(newGame.id)
 
     res.status(200).json({ game: sanitize(game) })
