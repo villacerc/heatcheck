@@ -55,7 +55,7 @@ class Login extends React.Component {
     return (
       <Dialog
         classes={{ paper: styles.paper }}
-        TransitionComponent={Transition}
+        // TransitionComponent={Transition}
         open={this.state.open}
         onClose={this.handleClose}
       >
