@@ -1,6 +1,5 @@
 import React from 'react'
 import Dialog from '@material-ui/core/Dialog'
-import Slide from '@material-ui/core/Slide'
 import TextField from '@material-ui/core/TextField'
 import DialogContent from '@material-ui/core/DialogContent'
 import Button from '@material-ui/core/Button'
@@ -11,7 +10,7 @@ import * as Yup from 'yup'
 import { connect } from 'react-redux'
 
 import axios from '../services/axios'
-import { updateUser } from '../actions'
+import { updateUser, popModal } from '../actions'
 
 import styles from './login.module.scss'
 
@@ -24,13 +23,12 @@ const validationSchema = Yup.object({
 
 class Login extends React.Component {
   state = {
-    open: true,
     loading: false,
     flash: false
   }
 
   handleClose = () => {
-    this.setState({ open: false })
+    this.props.popModal()
   }
   handleLogin = async (values, actions) => {
     this.setState({ flash: false })
@@ -56,7 +54,7 @@ class Login extends React.Component {
       <Dialog
         classes={{ paper: styles.paper }}
         // TransitionComponent={Transition}
-        open={this.state.open}
+        open={true}
         onClose={this.handleClose}
       >
         {this.state.flash && (
@@ -131,11 +129,7 @@ class Login extends React.Component {
   }
 }
 
-function Transition(props) {
-  return <Slide direction="down" {...props} />
-}
-
 export default connect(
   null,
-  { updateUser }
+  { updateUser, popModal }
 )(Login)

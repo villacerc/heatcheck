@@ -5,6 +5,9 @@ export default function(state = { stack: [] }, action) {
       const { name, props } = action
       stack.push({ name, props })
       return { ...state, stack }
+    case 'POP_MODAL':
+      stack.pop()
+      return { ...state, stack }
     default:
       return state
   }

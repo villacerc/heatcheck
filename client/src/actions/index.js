@@ -12,6 +12,10 @@ export const showModal = (name, props = null) => ({
   props
 })
 
+export const popModal = () => ({
+  type: 'POP_MODAL'
+})
+
 export const fetchUser = () => async dispatch => {
   dispatch({ type: 'FETCHING_USER' })
 
