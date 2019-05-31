@@ -6,7 +6,6 @@ import { fetchUser } from './actions'
 import TopBar from './components/topBar'
 import Landing from './pages/landing'
 import ModalConductor from './modals'
-import Signup from './pages/signup'
 
 class App extends Component {
   componentDidMount() {
@@ -20,7 +19,6 @@ class App extends Component {
         <div className="app-body">
           <Router>
             <Landing path="/" />
-            <Signup path="signup" />
           </Router>
         </div>
       </div>

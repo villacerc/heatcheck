@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import Login from './login'
+import Signup from './signup'
 
 class ModalConductor extends React.Component {
   render() {
@@ -14,6 +15,8 @@ class ModalConductor extends React.Component {
           switch (name) {
             case 'login':
               return <Login key={i} {...props} />
+            case 'signup':
+              return <Signup key={i} {...props} />
             default:
               return null
           }

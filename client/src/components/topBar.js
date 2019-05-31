@@ -21,6 +21,9 @@ class TopBar extends React.Component {
   showLogin = () => {
     this.props.showModal('login')
   }
+  showSignup = () => {
+    this.props.showModal('signup')
+  }
   toSignup = () => {
     navigate('/signup')
   }
@@ -46,7 +49,7 @@ class TopBar extends React.Component {
     return (
       <div>
         <Button onClick={this.showLogin}>Login</Button>
-        <Button onClick={this.toSignup}>Sign Up</Button>
+        <Button onClick={this.showSignup}>Sign Up</Button>
       </div>
     )
   }
