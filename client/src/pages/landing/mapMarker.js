@@ -6,14 +6,24 @@ import Popper from '@material-ui/core/Popper'
 import MarkerContent from './markerContent'
 
 import styles from './mapMarker.module.scss'
+import { componentDidUpdate } from 'react-google-maps/lib/utils/MapChildHelper'
 
 class MapMarker extends React.Component {
   state = {
     showPopper: false,
     popperEntered: false,
-    className: styles.bubble
+    className: this.props.checkedIn ? styles.bubbleLight : styles.bubble
   }
   timeout = null
+  componentDidUpdate(prevProps) {
+    if (prevProps.checkedIn !== this.props.checkedIn) {
+      if (this.props.checkedIn) {
+        this.setState({ className: styles.bubbleLight })
+      } else {
+        this.setState({ className: styles.bubble })
+      }
+    }
+  }
   onMouseOver = () => {
     clearTimeout(this.timeout)
     this.setState({ showPopper: true, className: styles.bubbleLight })
@@ -36,7 +46,10 @@ class MapMarker extends React.Component {
     this.closePopper()
   }
   closePopper = () => {
-    this.setState({ showPopper: false, className: styles.bubble })
+    this.setState({
+      showPopper: false,
+      className: this.props.checkedIn ? styles.bubbleLight : styles.bubble
+    })
   }
   render() {
     const { venue, contentProps, checkedIn } = this.props
