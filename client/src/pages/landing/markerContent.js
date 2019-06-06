@@ -19,6 +19,13 @@ class MarkerContent extends React.Component {
       this.props.fetchVenues()
     }
   }
+  showCreateModal = () => {
+    this.props.closePopper()
+    if (!this.props.user) {
+      return this.props.showModal('login')
+    }
+    return this.props.showModal('create game')
+  }
   render() {
     const { venue, checkedIn } = this.props
     return (
@@ -26,6 +33,7 @@ class MarkerContent extends React.Component {
         <div>
           <div>
             <VenueInfo venue={venue} />
+            <p onClick={this.showCreateModal}>Create Game</p>
             {checkedIn ? (
               <p className={classNames(styles.checkIn, styles.active)}>
                 Checked in
