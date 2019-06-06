@@ -9,8 +9,8 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { connect } from 'react-redux'
 
-import axios from '../services/axios'
-import { updateUser, popModal } from '../actions'
+import axios from '../../services/axios'
+import { updateUser, popModal } from '../../actions'
 
 import styles from './login.module.scss'
 
@@ -79,6 +79,7 @@ class Login extends React.Component {
                 <DialogTitle>Login</DialogTitle>
                 <DialogContent>
                   <TextField
+                    autoFocus
                     id="email"
                     name="email"
                     helperText={touched.email ? errors.email : ''}

@@ -66,6 +66,7 @@ class Signup extends React.Component {
                 <DialogTitle>Sign up</DialogTitle>
                 <DialogContent>
                   <TextField
+                    autoFocus
                     id="displayName"
                     name="displayName"
                     helperText={touched.displayName ? errors.displayName : ''}
