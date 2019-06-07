@@ -24,7 +24,7 @@ class MarkerContent extends React.Component {
     if (!this.props.user) {
       return this.props.showModal('login')
     }
-    return this.props.showModal('create game')
+    return this.props.showModal('create game', { venueId: this.props.venue.id })
   }
   render() {
     const { venue, checkedIn } = this.props

@@ -19,10 +19,12 @@ class CreateGame extends React.Component {
   }
   submit = async values => {
     this.setState({ submitting: true })
+
     const res = await axios.post('/api/create-game', values)
 
     if (res.status === 200) {
-      navigate('/game')
+      // navigate('/game')
+      this.props.popModal()
     }
 
     this.setState({ submitting: false })
@@ -33,7 +35,8 @@ class CreateGame extends React.Component {
   render() {
     const values = {
       name: '',
-      descriptions: ''
+      description: '',
+      venueId: this.props.venueId
     }
 
     return (
