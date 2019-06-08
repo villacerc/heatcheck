@@ -1,0 +1,22 @@
+import React from 'react'
+import Button from '@material-ui/core/Button'
+
+import styles from './game.module.scss'
+
+class Game extends React.Component {
+  render() {
+    return (
+      <div className={styles.container}>
+        <div className={styles.header}>
+          <h1>3on3 basketball @ Parker place</h1>
+          <p>All welcome</p>
+        </div>
+        <Button variant="contained" size="large" color="primary">
+          Invite Players
+        </Button>
+      </div>
+    )
+  }
+}
+
+export default Game

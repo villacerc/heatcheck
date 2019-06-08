@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { fetchUser } from './actions'
 import TopBar from './components/topBar'
 import Landing from './pages/landing'
+import Game from './pages/game'
 import ModalConductor from './modals'
 
 class App extends Component {
@@ -19,6 +20,7 @@ class App extends Component {
         <div className="app-body">
           <Router>
             <Landing path="/" />
+            <Game path="/game" />
           </Router>
         </div>
       </div>
