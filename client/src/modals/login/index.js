@@ -1,6 +1,5 @@
 import React from 'react'
 import Dialog from '@material-ui/core/Dialog'
-import TextField from '@material-ui/core/TextField'
 import DialogContent from '@material-ui/core/DialogContent'
 import Button from '@material-ui/core/Button'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -9,6 +8,7 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { connect } from 'react-redux'
 
+import TextInput from '../../components/textInput'
 import axios from '../../services/axios'
 import { updateUser, popModal } from '../../actions'
 
@@ -65,43 +65,22 @@ class Login extends React.Component {
           onSubmit={this.handleLogin}
           validationSchema={validationSchema}
           render={props => {
-            const {
-              values: { email, password },
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit
-            } = props
-
             return (
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={props.handleSubmit}>
                 <DialogTitle>Login</DialogTitle>
                 <DialogContent>
-                  <TextField
+                  <TextInput
                     autoFocus
-                    id="email"
                     name="email"
-                    helperText={touched.email ? errors.email : ''}
-                    error={touched.email && Boolean(errors.email)}
                     label="Email"
                     type="email"
-                    fullWidth
-                    value={email}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
+                    {...props}
                   />
-                  <TextField
-                    id="password"
+                  <TextInput
                     name="password"
-                    helperText={touched.password ? errors.password : ''}
-                    error={touched.password && Boolean(errors.password)}
                     label="Password"
-                    fullWidth
                     type="password"
-                    value={password}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
+                    {...props}
                   />
                 </DialogContent>
                 <DialogActions>

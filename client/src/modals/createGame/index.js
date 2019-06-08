@@ -2,13 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { navigate } from '@reach/router'
 import Dialog from '@material-ui/core/Dialog'
-import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import { Formik } from 'formik'
 
+import TextInput from '../../components/textInput'
 import validationSchema from './validationSchema'
 import axios from '../../services/axios'
 import { popModal } from '../../actions'
@@ -46,44 +46,17 @@ class CreateGame extends React.Component {
           onSubmit={this.submit}
           validationSchema={validationSchema}
           render={props => {
-            const {
-              values: { name, description },
-              errors,
-              touched,
-              handleChange,
-              isValid,
-              handleBlur,
-              handleSubmit
-            } = props
-
             return (
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={props.handleSubmit}>
                 <DialogTitle>Create Game</DialogTitle>
                 <DialogContent>
-                  <TextField
-                    id="name"
-                    name="name"
-                    autoFocus
-                    helperText={touched.name ? errors.name : ''}
-                    error={touched.name && Boolean(errors.name)}
-                    label="Name"
-                    value={name}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    fullWidth
-                  />
-                  <TextField
-                    id="description"
+                  <TextInput name="name" autoFocus label="Name" {...props} />
+                  <TextInput
                     name="description"
-                    helperText={touched.description ? errors.description : ''}
-                    error={touched.description && Boolean(errors.description)}
                     label="Description"
-                    fullWidth
                     multiline
                     rows="4"
-                    value={description}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
+                    {...props}
                   />
                 </DialogContent>
                 <DialogActions>
@@ -98,7 +71,7 @@ class CreateGame extends React.Component {
                   <Button
                     type="submit"
                     color="primary"
-                    disabled={!isValid || this.state.submitting}
+                    disabled={!props.isValid || this.state.submitting}
                   >
                     Submit
                   </Button>
