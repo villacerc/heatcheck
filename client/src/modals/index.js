@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import Login from './login'
 import Signup from './signup'
 import CreateGame from './createGame'
+import InvitePlayers from './invitePlayers'
 
 class ModalConductor extends React.Component {
   render() {
@@ -20,6 +21,8 @@ class ModalConductor extends React.Component {
               return <Signup key={i} {...props} />
             case 'create game':
               return <CreateGame key={i} {...props} />
+            case 'invite players':
+              return <InvitePlayers key={i} {...props} />
             default:
               return null
           }
