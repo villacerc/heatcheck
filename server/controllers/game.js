@@ -31,7 +31,9 @@ const myGame = async (req, res) => {
 
     if (!game) throw 'No game found'
 
-    res.status(200).json({ game: sanitize(game) })
+    const venue = await db.Venue.scope('checkIns').findByPk(game.venueId)
+
+    res.status(200).json({ game: sanitize(game, venue) })
   } catch (err) {
     res.status(400).send({ err })
   }
@@ -48,13 +50,27 @@ const deleteGame = async (req, res) => {
   }
 }
 
-const sanitize = game => {
+const sanitize = (gameRaw, venueRaw = null) => {
+  const game = JSON.parse(JSON.stringify(gameRaw))
+
   game.players = game.pendingPlayers.filter(player => {
     return !player.Request.type
   })
   game.pendingPlayers = game.pendingPlayers.filter(player => {
     return player.Request.type
   })
+
+  if (venueRaw) {
+    const venue = JSON.parse(JSON.stringify(venueRaw))
+
+    //remove creator from checked in users
+    const creator = venue.checkIns.findIndex(
+      ({ userId }) => userId === game.userId
+    )
+    venue.checkIns.splice(creator, 1)
+
+    game.venue = venue
+  }
 
   return game
 }
