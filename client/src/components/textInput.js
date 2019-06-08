@@ -2,7 +2,6 @@ import React from 'react'
 import TextField from '@material-ui/core/TextField'
 
 export default function(props) {
-  console.log(props)
   return (
     <TextField
       autoFocus={props.autoFocus}
@@ -18,7 +17,7 @@ export default function(props) {
       onBlur={props.handleBlur}
       multiline={props.multiline}
       rows={props.rows}
-      maxRows={props.maxRows}
+      rowsMax={props.rowsMax}
     />
   )
 }

@@ -54,14 +54,18 @@ class TopBar extends React.Component {
     )
   }
   userPopper = () => {
+    const user = this.props.user.payload || {}
     return (
       <PopperWrapper
         open={this.state.showUserPopper}
         onClickAway={() => this.setState({ showUserPopper: false })}
         anchorEl={this.userAnchor}
       >
-        <MenuList>
+        <MenuList onClick={() => this.setState({ showUserPopper: false })}>
           <MenuItem>Profile</MenuItem>
+          {user.createdGame && (
+            <MenuItem onClick={() => navigate('/game')}>My Game</MenuItem>
+          )}
           <MenuItem onClick={this.logOut}>Log out</MenuItem>
         </MenuList>
       </PopperWrapper>

@@ -11,7 +11,7 @@ import { Formik } from 'formik'
 import TextInput from '../../components/textInput'
 import validationSchema from './validationSchema'
 import axios from '../../services/axios'
-import { popModal } from '../../actions'
+import { popModal, fetchUser } from '../../actions'
 
 class CreateGame extends React.Component {
   state = {
@@ -23,11 +23,11 @@ class CreateGame extends React.Component {
     const res = await axios.post('/api/create-game', values)
 
     if (res.status === 200) {
-      // navigate('/game')
+      await this.props.fetchUser()
+      this.setState({ submitting: false })
       this.props.popModal()
+      navigate('/game')
     }
-
-    this.setState({ submitting: false })
   }
   handleClose = () => {
     this.props.popModal()
@@ -87,5 +87,5 @@ class CreateGame extends React.Component {
 
 export default connect(
   null,
-  { popModal }
+  { popModal, fetchUser }
 )(CreateGame)
