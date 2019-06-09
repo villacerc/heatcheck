@@ -15,6 +15,7 @@ import styles from './index.module.scss'
 
 class InvitePlayers extends React.Component {
   render() {
+    const { checkIns } = this.props
     return (
       <Dialog
         open={true}
@@ -34,8 +35,10 @@ class InvitePlayers extends React.Component {
         </AppBar>
         <DialogContent style={{ position: 'relative' }}>
           <div style={{ marginTop: '10px' }}>
-            {new Array(10).fill().map(() => (
-              <PlayerItem />
+            {checkIns.map((player, i) => (
+              <div key={i}>
+                <PlayerItem player={player} />
+              </div>
             ))}
           </div>
         </DialogContent>
