@@ -2,6 +2,7 @@ import React from 'react'
 import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 
+import PlayerItem from '../../components/playerItem'
 import { showModal } from '../../actions'
 
 import styles from './game.module.scss'
@@ -22,6 +23,9 @@ class Game extends React.Component {
         >
           Invite Players
         </Button>
+        <div className={styles.playerList}>
+          <PlayerItem />
+        </div>
       </div>
     )
   }
