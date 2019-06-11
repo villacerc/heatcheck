@@ -12,6 +12,17 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       scopes: {
+        // creator: {
+        //   include: [
+        //     {
+        //       model: User,
+        //       as: 'creator',
+        //       attributes: {
+        //         exclude: ['password']
+        //       }
+        //     }
+        //   ]
+        // },
         players: {
           include: [
             {
@@ -28,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
   )
   Game.associate = function(models) {
     Game.belongsTo(models.User, {
-      as: 'createdGame',
+      as: 'creator',
       foreignKey: 'userId'
     })
     Game.belongsToMany(models.User, {

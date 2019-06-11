@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       scopes: {
         checkIn: {
-          include: [{ model: sequelize.models.CheckIn, as: 'checkIn' }]
+          include: [{ model: CheckIn, as: 'checkIn' }]
         },
         createdGame: {
           include: [{ model: sequelize.models.Game, as: 'createdGame' }]
@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
               }
             },
             {
-              model: sequelize.models.CheckIn,
+              model: CheckIn,
               as: 'checkIn',
               attributes: {
                 exclude: ['userId']

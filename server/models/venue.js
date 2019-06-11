@@ -1,6 +1,9 @@
 'use strict'
+
 module.exports = (sequelize, DataTypes) => {
-  const CheckIn = sequelize.import('./checkIn')
+  const CheckIn = sequelize.import('./checkin')
+
+  if (CheckIn.associate) CheckIn.associate(sequelize.models)
 
   const Venue = sequelize.define(
     'Venue',
@@ -14,7 +17,13 @@ module.exports = (sequelize, DataTypes) => {
     {
       scopes: {
         checkIns: {
-          include: [{ model: CheckIn, as: 'checkIns' }]
+          include: [
+            {
+              model: CheckIn,
+              as: 'checkIns',
+              include: [{ model: sequelize.models.User, as: 'user' }]
+            }
+          ]
         }
       }
     }
