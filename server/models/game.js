@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
               model: User,
               as: 'pendingPlayers',
               attributes: {
-                exclude: ['password']
+                exclude: ['password', 'isVerified']
               }
             }
           ]

@@ -21,7 +21,15 @@ module.exports = (sequelize, DataTypes) => {
             {
               model: CheckIn,
               as: 'checkIns',
-              include: [{ model: sequelize.models.User, as: 'user' }]
+              include: [
+                {
+                  model: sequelize.models.User,
+                  as: 'user',
+                  attributes: {
+                    exclude: ['password', 'isVerified']
+                  }
+                }
+              ]
             }
           ]
         }
