@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { navigate } from '@reach/router'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -25,7 +24,7 @@ class Signup extends React.Component {
 
     if (res.status === 200) {
       this.props.updateUser(res.data.user)
-      navigate('/')
+      this.handleClose()
     }
 
     this.setState({ submitting: false })
