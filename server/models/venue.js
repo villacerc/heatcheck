@@ -2,6 +2,7 @@
 
 module.exports = (sequelize, DataTypes) => {
   const CheckIn = sequelize.import('./checkin')
+  const Game = sequelize.import('./game')
 
   if (CheckIn.associate) CheckIn.associate(sequelize.models)
 
@@ -27,7 +28,8 @@ module.exports = (sequelize, DataTypes) => {
                   as: 'user',
                   attributes: {
                     exclude: ['password', 'isVerified']
-                  }
+                  },
+                  include: [{ model: Game, as: 'requestedGames' }]
                 }
               ]
             }
