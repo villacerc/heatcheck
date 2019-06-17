@@ -47,7 +47,7 @@ class Game extends React.Component {
         <div className={styles.playerList}>
           {game.players.map((player, i) => (
             <div key={i}>
-              <PlayerItem player={player} />
+              <PlayerItem player={player} invited={true} />
             </div>
           ))}
         </div>

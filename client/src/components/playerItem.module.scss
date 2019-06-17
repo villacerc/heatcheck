@@ -30,11 +30,10 @@
     }
     button {
       padding: 0 !important;
-      min-width: auto !important;
-      color: green;
-      cursor: pointer;
     }
     .cancelInvite {
+      margin-left: 10px;
+      min-width: auto;
       color: red;
     }
   }

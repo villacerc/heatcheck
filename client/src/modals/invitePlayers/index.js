@@ -23,7 +23,7 @@ class InvitePlayers extends React.Component {
         onClose={this.props.popModal}
       >
         <DialogTitle>
-          Invite Players
+          Available Players
           <Icon onClick={this.props.popModal} className={styles.cancel}>
             cancel
           </Icon>
