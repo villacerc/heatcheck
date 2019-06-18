@@ -8,6 +8,8 @@ export default function(state = { stack: [] }, action) {
     case 'POP_MODAL':
       stack.pop()
       return { ...state, stack }
+    case 'CLEAR_MODAL':
+      return { ...state, stack: [] }
     default:
       return state
   }

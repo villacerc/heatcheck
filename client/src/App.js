@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Router } from '@reach/router'
+import { Router, Location } from '@reach/router'
 import { connect } from 'react-redux'
 
 import { fetchUser } from './actions'
@@ -15,7 +15,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <ModalConductor />
+        <Location>{props => <ModalConductor {...props} />}</Location>
         <TopBar />
         <div className="app-body">
           <Router>

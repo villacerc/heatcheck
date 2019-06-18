@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { clearModal } from '../actions'
 
 import Login from './login'
 import Signup from './signup'
@@ -7,6 +8,14 @@ import CreateGame from './createGame'
 import InvitePlayers from './invitePlayers'
 
 class ModalConductor extends React.Component {
+  componentDidUpdate(prevProps) {
+    if (this.props.location.pathname !== prevProps.location.pathname) {
+      //clear modal stack
+      if (this.props.modals.stack[0]) {
+        this.props.clearModal()
+      }
+    }
+  }
   render() {
     const { stack } = this.props.modals
 
@@ -36,4 +45,7 @@ function mapStateToProps({ modals }) {
   return { modals }
 }
 
-export default connect(mapStateToProps)(ModalConductor)
+export default connect(
+  mapStateToProps,
+  { clearModal }
+)(ModalConductor)
