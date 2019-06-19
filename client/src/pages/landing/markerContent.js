@@ -27,13 +27,15 @@ class MarkerContent extends React.Component {
     return this.props.showModal('create game', { venueId: this.props.venue.id })
   }
   render() {
-    const { venue, checkedIn } = this.props
+    const { venue, checkedIn, user } = this.props
     return (
       <Paper className={styles.container}>
         <div>
           <div>
             <VenueInfo venue={venue} />
-            <p onClick={this.showCreateModal}>Create Game</p>
+            {!user.createdGame && (
+              <p onClick={this.showCreateModal}>Create Game</p>
+            )}
             {checkedIn ? (
               <p className={classNames(styles.checkIn, styles.active)}>
                 Checked in
