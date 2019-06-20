@@ -1,10 +1,11 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
+import { navigate } from '@reach/router'
 
 import axios from '../../services/axios'
 import PlayerItem from '../../components/playerItem'
-import { showModal } from '../../actions'
+import { showModal, fetchUser } from '../../actions'
 
 import styles from './game.module.scss'
 
@@ -19,6 +20,13 @@ class Game extends React.Component {
     const res = await axios.get('/api/my-game')
     if (res.status == 200) {
       this.setState({ game: res.data.game })
+    }
+  }
+  deleteGame = async () => {
+    const res = await axios.delete('/api/my-game')
+    if (res.status == 200) {
+      await this.props.fetchUser()
+      navigate('/')
     }
   }
   render() {
@@ -51,6 +59,16 @@ class Game extends React.Component {
             </div>
           ))}
         </div>
+        <div className={styles.footer}>
+          <Button
+            onClick={this.deleteGame}
+            variant="contained"
+            size="medium"
+            color="secondary"
+          >
+            Delete
+          </Button>
+        </div>
       </div>
     )
   }
@@ -58,5 +76,5 @@ class Game extends React.Component {
 
 export default connect(
   null,
-  { showModal }
+  { showModal, fetchUser }
 )(Game)
