@@ -22,6 +22,13 @@ class Game extends React.Component {
       this.setState({ game: res.data.game })
     }
   }
+  deleteConfirmation = () => {
+    this.props.showModal('dialog', {
+      type: 'confirmation',
+      body: 'Are you sure you want delete this game?',
+      confirmCallback: this.deleteGame
+    })
+  }
   deleteGame = async () => {
     const res = await axios.delete('/api/my-game')
     if (res.status == 200) {
@@ -61,7 +68,7 @@ class Game extends React.Component {
         </div>
         <div className={styles.footer}>
           <Button
-            onClick={this.deleteGame}
+            onClick={this.deleteConfirmation}
             variant="contained"
             size="medium"
             color="secondary"
