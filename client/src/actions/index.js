@@ -32,3 +32,13 @@ export const updateUser = payload => ({
   type: 'UPDATE_USER',
   payload
 })
+
+export const fetchGame = () => async dispatch => {
+  dispatch({ type: 'FETCHING_GAME' })
+
+  const res = await axios.get('/api/my-game')
+
+  if (res.status == 200) {
+    dispatch({ type: 'RECEIVE_GAME', payload: res.data.game })
+  }
+}

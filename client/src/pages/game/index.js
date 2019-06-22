@@ -6,22 +6,13 @@ import { withSnackbar } from 'notistack'
 
 import axios from '../../services/axios'
 import PlayerItem from '../../components/playerItem'
-import { showModal, fetchUser } from '../../actions'
+import { showModal, fetchUser, fetchGame } from '../../actions'
 
 import styles from './game.module.scss'
 
 class Game extends React.Component {
-  state = {
-    game: null
-  }
   componentDidMount() {
-    this.fetchGame()
-  }
-  fetchGame = async () => {
-    const res = await axios.get('/api/my-game')
-    if (res.status == 200) {
-      this.setState({ game: res.data.game })
-    }
+    this.props.fetchGame()
   }
   deleteConfirmation = () => {
     this.props.showModal('dialog', {
@@ -41,8 +32,10 @@ class Game extends React.Component {
     }
   }
   render() {
-    const { game } = this.state
-    if (!game) return null
+    if (!this.props.game.retrieved) return null
+
+    const game = this.props.game.payload
+
     return (
       <div className={styles.container}>
         <div className={styles.header}>
@@ -85,9 +78,15 @@ class Game extends React.Component {
   }
 }
 
+const reduxStates = state => {
+  return {
+    game: state.game
+  }
+}
+
 export default withSnackbar(
   connect(
-    null,
-    { showModal, fetchUser }
+    reduxStates,
+    { showModal, fetchUser, fetchGame }
   )(Game)
 )
