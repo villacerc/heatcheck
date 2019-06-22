@@ -50,10 +50,11 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Game.afterCreate(async (game, options) => {
+    //the creator will be a player in this game by default
     await Request.create({ userId: game.userId, gameId: game.id })
   })
-  // destroy all requests related to this game
   Game.afterDestroy(async (game, options) => {
+    // destroy all requests related to this game
     await Request.destroy({ where: { gameId: game.id } })
   })
 

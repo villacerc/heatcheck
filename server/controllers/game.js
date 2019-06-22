@@ -51,6 +51,52 @@ const deleteGame = async (req, res) => {
   }
 }
 
+const invitePlayer = async (req, res) => {
+  try {
+    const { playerId, gameId } = req.body
+
+    const createRequest = async () => {
+      await db.Request.create({
+        userId: playerId,
+        gameId: gameId,
+        type: 'invite'
+      })
+    }
+
+    const requests = await db.Request.findAll({
+      where: { userId: playerId }
+    })
+
+    if (requests[0]) {
+      //check if player is already in a game
+      const inGame = requests.find(({ type }) => type === null)
+      if (inGame) throw 'This player is already in a game'
+
+      //check if player requested to join
+      const joinTrue = requests.find(request => {
+        return request.gameId == gameId && request.type === 'join'
+      })
+
+      if (joinTrue) {
+        await db.Request.update(
+          {
+            type: null
+          },
+          { where: { userId: playerId, gameId: gameId } }
+        )
+      } else {
+        await createRequest()
+      }
+    } else {
+      await createRequest()
+    }
+
+    res.status(200).send()
+  } catch (err) {
+    res.status(400).send({ err })
+  }
+}
+
 const sanitize = (gameRaw, venueRaw = null) => {
   const game = JSON.parse(JSON.stringify(gameRaw))
 
@@ -72,7 +118,10 @@ const sanitize = (gameRaw, venueRaw = null) => {
     venue.checkIns.splice(creator, 1)
 
     //normalize checkins
-    venue.checkIns = venue.checkIns.map(({ user }) => user)
+    venue.checkIns = venue.checkIns.map(({ user }) => {
+      user.requestedGames = user.requestedGames.map(({ Request }) => Request)
+      return user
+    })
 
     game.venue = venue
   }
@@ -88,4 +137,4 @@ sanitizeAll = gamesArr => {
   })
 }
 
-module.exports = { create, getGames, myGame, deleteGame }
+module.exports = { create, getGames, myGame, deleteGame, invitePlayer }
