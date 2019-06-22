@@ -298,3 +298,27 @@ describe('DELETE /my-game', (req, res) => {
     })
   })
 })
+
+describe('POST /invite-player', (req, res) => {
+  describeUnauthorized('post', '/api/invite-player')
+
+  describe('authorized', () => {
+    authenticateBefore()
+    it('it should invite a player to the game', done => {
+      withSession
+        .post('/api/invite-player')
+        .send({
+          playerId: users[1].id,
+          gameId: games[0].id
+        })
+        .expect(200)
+        .expect(async () => {
+          const userInvited = await db.Request.findOne({
+            where: { userId: users[1].id, gameId: games[0].id, type: 'invite' }
+          })
+          expect(userInvited).toBeTruthy()
+        })
+        .end(done)
+    })
+  })
+})
