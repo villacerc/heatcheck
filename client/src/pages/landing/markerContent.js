@@ -33,7 +33,7 @@ class MarkerContent extends React.Component {
         <div>
           <div>
             <VenueInfo venue={venue} />
-            {!user.createdGame && (
+            {user && !user.createdGame && (
               <p onClick={this.showCreateModal}>Create Game</p>
             )}
             {checkedIn ? (

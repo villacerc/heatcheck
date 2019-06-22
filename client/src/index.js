@@ -3,12 +3,18 @@ import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import store from './reducer'
 import './index.css'
+import { SnackbarProvider } from 'notistack'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <SnackbarProvider
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      maxSnack={3}
+    >
+      <App />
+    </SnackbarProvider>
   </Provider>,
   document.getElementById('root')
 )

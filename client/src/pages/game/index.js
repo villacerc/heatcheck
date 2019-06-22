@@ -2,6 +2,7 @@ import React from 'react'
 import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 import { navigate } from '@reach/router'
+import { withSnackbar } from 'notistack'
 
 import axios from '../../services/axios'
 import PlayerItem from '../../components/playerItem'
@@ -34,6 +35,9 @@ class Game extends React.Component {
     if (res.status == 200) {
       await this.props.fetchUser()
       navigate('/')
+      this.props.enqueueSnackbar('Successfully deleted game.', {
+        variant: 'success'
+      })
     }
   }
   render() {
@@ -81,7 +85,9 @@ class Game extends React.Component {
   }
 }
 
-export default connect(
-  null,
-  { showModal, fetchUser }
-)(Game)
+export default withSnackbar(
+  connect(
+    null,
+    { showModal, fetchUser }
+  )(Game)
+)
