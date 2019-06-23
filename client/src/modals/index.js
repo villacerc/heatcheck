@@ -6,6 +6,7 @@ import Login from './login'
 import Signup from './signup'
 import CreateGame from './createGame'
 import InvitePlayers from './invitePlayers'
+import JoinRequests from './joinRequests'
 import DialogDisplay from './dialogDisplay'
 
 class ModalConductor extends React.Component {
@@ -33,6 +34,8 @@ class ModalConductor extends React.Component {
               return <CreateGame key={i} {...props} />
             case 'invite players':
               return <InvitePlayers key={i} {...props} />
+            case 'join requests':
+              return <JoinRequests key={i} {...props} />
             case 'dialog':
               return <DialogDisplay key={i} {...props} />
             default:

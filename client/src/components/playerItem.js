@@ -26,7 +26,7 @@ class PlayerItem extends React.Component {
   }
 
   renderActions = () => {
-    const { invited, inviting } = this.props
+    const { invited, inviting, joining } = this.props
     if (invited) return null
 
     if (inviting)
@@ -39,21 +39,28 @@ class PlayerItem extends React.Component {
         </React.Fragment>
       )
 
+    if (joining) {
+      return <Button>Accept</Button>
+    }
+
     return <Button onClick={this.invitePlayer}>Invite</Button>
   }
 
   render() {
-    const { player } = this.props
+    const { player, joining } = this.props
     return (
-      <Card className={styles.card}>
-        <Avatar className={styles.avatar} />
-        <div className={styles.content}>
-          <div className={styles.body}>
-            <p>{player.displayName}</p>
+      <div>
+        {joining && <p className={styles.status}>Wants to join!</p>}
+        <Card className={styles.card}>
+          <Avatar className={styles.avatar} />
+          <div className={styles.content}>
+            <div className={styles.body}>
+              <p>{player.displayName}</p>
+            </div>
+            {this.renderActions()}
           </div>
-          {this.renderActions()}
-        </div>
-      </Card>
+        </Card>
+      </div>
     )
   }
 }

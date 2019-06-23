@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 import { navigate } from '@reach/router'
 import { withSnackbar } from 'notistack'
+import Fab from '@material-ui/core/Fab'
 
 import axios from '../../services/axios'
 import PlayerItem from '../../components/playerItem'
@@ -53,18 +54,22 @@ class Game extends React.Component {
           <p>{game.description}</p>
         </div>
         <Button
-          onClick={() =>
-            this.props.showModal('invite players', {
-              checkIns: game.venue.checkIns,
-              gameId: game.id
-            })
-          }
+          onClick={() => this.props.showModal('invite players')}
           variant="contained"
           size="large"
           color="primary"
         >
           Invite Players
         </Button>
+        {game.pendingPlayers[0] && (
+          <Fab
+            onClick={() => this.props.showModal('join requests')}
+            classes={{ root: styles.fab }}
+            color="primary"
+          >
+            !
+          </Fab>
+        )}
         <div className={styles.playerList}>
           {game.players.map((player, i) => (
             <div key={i}>
