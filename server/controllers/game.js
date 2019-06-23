@@ -53,6 +53,44 @@ const deleteGame = async (req, res) => {
   }
 }
 
+const joinGame = async (req, res) => {
+  try {
+    const { userId, gameId } = req.body
+
+    //check if player has been invited to the game
+    const inviteTrue = await db.Request.findOne({
+      where: {
+        userId,
+        gameId,
+        type: 'invite'
+      }
+    })
+
+    if (inviteTrue) {
+      await db.Request.update(
+        {
+          type: null
+        },
+        { where: { userId, gameId } }
+      )
+      //delete all other requests by the user
+      await db.Request.destroy({
+        where: { userId, type: { [Op.not]: null } }
+      })
+    } else {
+      await db.Request.create({
+        userId,
+        gameId,
+        type: 'join'
+      })
+    }
+
+    res.status(200).send()
+  } catch (err) {
+    res.status(400).send({ err })
+  }
+}
+
 const invitePlayer = async (req, res) => {
   try {
     const { playerId, gameId } = req.body
@@ -60,7 +98,7 @@ const invitePlayer = async (req, res) => {
     const createRequest = async () => {
       await db.Request.create({
         userId: playerId,
-        gameId: gameId,
+        gameId,
         type: 'invite'
       })
     }
@@ -84,7 +122,7 @@ const invitePlayer = async (req, res) => {
           {
             type: null
           },
-          { where: { userId: playerId, gameId: gameId } }
+          { where: { userId: playerId, gameId } }
         )
         //delete all other requests by the user
         await db.Request.destroy({
@@ -143,4 +181,11 @@ sanitizeAll = gamesArr => {
   })
 }
 
-module.exports = { create, getGames, myGame, deleteGame, invitePlayer }
+module.exports = {
+  create,
+  getGames,
+  myGame,
+  deleteGame,
+  invitePlayer,
+  joinGame
+}

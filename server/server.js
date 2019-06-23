@@ -33,6 +33,7 @@ app.get('/api/games', controllers.game.getGames)
 app.get('/api/my-game', authorize, controllers.game.myGame)
 app.delete('/api/my-game', authorize, controllers.game.deleteGame)
 app.post('/api/invite-player', authorize, controllers.game.invitePlayer)
+app.post('/api/join-game', authorize, controllers.game.joinGame)
 
 const server = app.listen(port, () => console.log(`listening on port ${port}!`))
 
