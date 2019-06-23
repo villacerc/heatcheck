@@ -11,8 +11,16 @@ import { showModal, fetchUser, fetchGame } from '../../actions'
 import styles from './game.module.scss'
 
 class Game extends React.Component {
+  state = {
+    loaded: false
+  }
   componentDidMount() {
     this.props.fetchGame()
+  }
+  componentDidUpdate() {
+    if (!this.state.loaded && this.props.game.retrieved) {
+      this.setState({ loaded: true })
+    }
   }
   deleteConfirmation = () => {
     this.props.showModal('dialog', {
@@ -32,7 +40,7 @@ class Game extends React.Component {
     }
   }
   render() {
-    if (!this.props.game.retrieved) return null
+    if (!this.state.loaded) return null
 
     const game = this.props.game.payload
 
@@ -47,7 +55,8 @@ class Game extends React.Component {
         <Button
           onClick={() =>
             this.props.showModal('invite players', {
-              checkIns: game.venue.checkIns
+              checkIns: game.venue.checkIns,
+              gameId: game.id
             })
           }
           variant="contained"

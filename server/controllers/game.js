@@ -1,3 +1,5 @@
+const Op = require('sequelize').Op
+
 const create = async (req, res) => {
   try {
     const { venueId, name, description } = req.body
@@ -84,6 +86,10 @@ const invitePlayer = async (req, res) => {
           },
           { where: { userId: playerId, gameId: gameId } }
         )
+        //delete all other requests by the user
+        await db.Request.destroy({
+          where: { userId: playerId, type: { [Op.not]: null } }
+        })
       } else {
         await createRequest()
       }

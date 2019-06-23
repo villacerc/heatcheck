@@ -14,8 +14,17 @@ import PlayerItem from '../../components/playerItem'
 import styles from './index.module.scss'
 
 class InvitePlayers extends React.Component {
+  getAvailablePlayers = () => {
+    const { checkIns } = this.props.game.payload.venue
+    return checkIns.filter(player => {
+      const inGame = player.requestedGames.find(({ type }) => !type)
+      if (!inGame) return player
+    })
+  }
   render() {
-    const { checkIns } = this.props
+    const game = this.props.game.payload
+    const players = this.getAvailablePlayers()
+
     return (
       <Dialog
         open={true}
@@ -30,16 +39,26 @@ class InvitePlayers extends React.Component {
         </DialogTitle>
         <AppBar position="relative">
           <Tabs value={0}>
-            <Tab label={`Checked in (0)`} />
+            <Tab label={`Checked in (${players.length})`} />
           </Tabs>
         </AppBar>
         <DialogContent style={{ position: 'relative' }}>
           <div style={{ marginTop: '10px' }}>
-            {checkIns.map((player, i) => (
-              <div key={i}>
-                <PlayerItem player={player} />
-              </div>
-            ))}
+            {players.map((player, i) => {
+              const inviting = player.requestedGames.find(request => {
+                return request.gameId == game.id && request.type === 'invite'
+              })
+
+              return (
+                <div key={i}>
+                  <PlayerItem
+                    inviting={inviting}
+                    player={player}
+                    gameId={game.id}
+                  />
+                </div>
+              )
+            })}
           </div>
         </DialogContent>
       </Dialog>
@@ -47,7 +66,13 @@ class InvitePlayers extends React.Component {
   }
 }
 
+const reduxStates = state => {
+  return {
+    game: state.game
+  }
+}
+
 export default connect(
-  null,
+  reduxStates,
   { popModal }
 )(InvitePlayers)
