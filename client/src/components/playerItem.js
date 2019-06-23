@@ -48,7 +48,9 @@ class PlayerItem extends React.Component {
       <Card className={styles.card}>
         <Avatar className={styles.avatar} />
         <div className={styles.content}>
-          <p>{player.displayName}</p>
+          <div className={styles.body}>
+            <p>{player.displayName}</p>
+          </div>
           {this.renderActions()}
         </div>
       </Card>

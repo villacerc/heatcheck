@@ -17,6 +17,10 @@ code {
   padding-top: 50px;
 }
 
+p {
+  margin: 0;
+}
+
 @media (min-width: 600px) {
   .app-body {
     padding-top: 64px;
