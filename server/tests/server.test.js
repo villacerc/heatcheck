@@ -322,3 +322,27 @@ describe('POST /invite-player', (req, res) => {
     })
   })
 })
+
+describe('POST /join-game', (req, res) => {
+  describeUnauthorized('post', '/api/join-game')
+
+  describe('authorized', () => {
+    authenticateBefore()
+    it('it should join a player to the game', done => {
+      withSession
+        .post('/api/join-game')
+        .send({
+          userId: users[1].id,
+          gameId: games[0].id
+        })
+        .expect(200)
+        .expect(async () => {
+          const userJoined = await db.Request.findOne({
+            where: { userId: users[1].id, gameId: games[0].id, type: 'join' }
+          })
+          expect(userJoined).toBeTruthy()
+        })
+        .end(done)
+    })
+  })
+})
