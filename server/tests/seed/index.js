@@ -17,6 +17,11 @@ requests = [
   {
     userId: 1,
     gameId: 1
+  },
+  {
+    userId: 3,
+    gameId: 1,
+    type: 'join'
   }
 ]
 
@@ -49,6 +54,12 @@ const users = [
     displayName: 'bob',
     email: 'bob@example.com',
     password: 'userTwoPass'
+  },
+  {
+    id: 3,
+    displayName: 'kardi',
+    email: 'kardi@example.com',
+    password: 'blah'
   }
 ]
 
