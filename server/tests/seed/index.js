@@ -22,6 +22,11 @@ requests = [
     userId: 3,
     gameId: 1,
     type: 'join'
+  },
+  {
+    userId: 4,
+    gameId: 1,
+    type: 'invite'
   }
 ]
 
@@ -59,7 +64,13 @@ const users = [
     id: 3,
     displayName: 'kardi',
     email: 'kardi@example.com',
-    password: 'blah'
+    password: 'keyboardcat'
+  },
+  {
+    id: 4,
+    displayName: 'bboy',
+    email: 'bboy@example.com',
+    password: 'keyboardcat'
   }
 ]
 

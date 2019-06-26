@@ -53,7 +53,7 @@ const deleteGame = async (req, res) => {
   }
 }
 
-const acceptJoinRequest = async (req, res) => {
+acceptRequest = async (req, res, type) => {
   const { userId, gameId } = req.body
   try {
     await db.Request.update(
@@ -64,7 +64,7 @@ const acceptJoinRequest = async (req, res) => {
         where: {
           userId,
           gameId,
-          type: 'join'
+          type
         }
       }
     )
@@ -78,6 +78,14 @@ const acceptJoinRequest = async (req, res) => {
   } catch (err) {
     res.status(400).send({ err })
   }
+}
+
+const acceptInvite = async (req, res) => {
+  acceptRequest(req, res, 'invite')
+}
+
+const acceptJoinRequest = async (req, res) => {
+  acceptRequest(req, res, 'join')
 }
 
 const joinGame = async (req, res) => {
@@ -215,5 +223,6 @@ module.exports = {
   deleteGame,
   invitePlayer,
   joinGame,
-  acceptJoinRequest
+  acceptJoinRequest,
+  acceptInvite
 }

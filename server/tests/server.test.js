@@ -370,3 +370,27 @@ describe('POST /accept-join-request', (req, res) => {
     })
   })
 })
+
+describe('POST /accept-invite', (req, res) => {
+  describeUnauthorized('post', '/api/accept-invite')
+
+  describe('authorized', () => {
+    authenticateBefore()
+    it('it accept invite from the game', done => {
+      withSession
+        .post('/api/accept-invite')
+        .send({
+          userId: users[3].id,
+          gameId: games[0].id
+        })
+        .expect(200)
+        .expect(async () => {
+          const userJoined = await db.Request.findOne({
+            where: { userId: users[3].id, gameId: games[0].id, type: null }
+          })
+          expect(userJoined).toBeTruthy()
+        })
+        .end(done)
+    })
+  })
+})
