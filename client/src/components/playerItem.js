@@ -16,7 +16,7 @@ class PlayerItem extends React.Component {
     const { player, gameId } = this.props
 
     const res = await axios.post('/api/invite-player', {
-      playerId: player.id,
+      userId: player.id,
       gameId
     })
 

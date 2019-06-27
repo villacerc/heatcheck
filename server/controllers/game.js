@@ -128,18 +128,18 @@ const joinGame = async (req, res) => {
 
 const invitePlayer = async (req, res) => {
   try {
-    const { playerId, gameId } = req.body
+    const { userId, gameId } = req.body
 
     const createRequest = async () => {
       await db.Request.create({
-        userId: playerId,
+        userId,
         gameId,
         type: 'invite'
       })
     }
 
     const requests = await db.Request.findAll({
-      where: { userId: playerId }
+      where: { userId }
     })
 
     if (requests[0]) {
@@ -157,11 +157,11 @@ const invitePlayer = async (req, res) => {
           {
             type: null
           },
-          { where: { userId: playerId, gameId } }
+          { where: { userId, gameId } }
         )
         //delete all other requests by the user
         await db.Request.destroy({
-          where: { userId: playerId, type: { [Op.not]: null } }
+          where: { userId, type: { [Op.not]: null } }
         })
       } else {
         await createRequest()

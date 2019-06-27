@@ -308,7 +308,7 @@ describe('POST /invite-player', (req, res) => {
       withSession
         .post('/api/invite-player')
         .send({
-          playerId: users[1].id,
+          userId: users[1].id,
           gameId: games[0].id
         })
         .expect(200)
