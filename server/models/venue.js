@@ -17,6 +17,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       scopes: {
+        games: {
+          include: [{ model: Game, as: 'games' }]
+        },
         checkIns: {
           include: [
             {
@@ -43,6 +46,10 @@ module.exports = (sequelize, DataTypes) => {
       as: 'checkIns',
       foreignKey: 'venueId',
       foreignKeyConstraint: true
+    })
+    Venue.hasMany(models.Game, {
+      as: 'games',
+      foreignKey: 'venueId'
     })
   }
 
