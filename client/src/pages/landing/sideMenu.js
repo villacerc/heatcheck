@@ -1,6 +1,5 @@
 import React from 'react'
 import Drawer from '@material-ui/core/Drawer'
-import Divider from '@material-ui/core/Divider'
 import { connect } from 'react-redux'
 
 import SideMenuRow from './sideMenuRow'
@@ -22,8 +21,7 @@ class SideMenu extends React.Component {
         {venues &&
           venues.map(venue => {
             return (
-              <div key={venue.id}>
-                <Divider />
+              <div key={venue.id} className={styles.row}>
                 <SideMenuRow venue={venue} />
               </div>
             )

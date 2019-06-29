@@ -6,7 +6,6 @@ import Popper from '@material-ui/core/Popper'
 import MarkerContent from './markerContent'
 
 import styles from './mapMarker.module.scss'
-import { componentDidUpdate } from 'react-google-maps/lib/utils/MapChildHelper'
 
 class MapMarker extends React.Component {
   state = {
