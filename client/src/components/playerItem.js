@@ -12,10 +12,12 @@ import { fetchGame } from '../actions'
 import styles from './playerItem.module.scss'
 
 class PlayerItem extends React.Component {
-  invitePlayer = async () => {
+  acceptRequest = async request => {
     const { player, gameId } = this.props
 
-    const res = await axios.post('/api/invite-player', {
+    const route = request === 'invite' ? 'invite-player' : 'accept-join-request'
+
+    const res = await axios.post(`/api/${route}`, {
       userId: player.id,
       gameId
     })
@@ -40,10 +42,10 @@ class PlayerItem extends React.Component {
       )
 
     if (joining) {
-      return <Button>Accept</Button>
+      return <Button onClick={() => this.acceptRequest('join')}>Accept</Button>
     }
 
-    return <Button onClick={this.invitePlayer}>Invite</Button>
+    return <Button onClick={() => this.acceptRequest('invite')}>Invite</Button>
   }
 
   render() {

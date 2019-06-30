@@ -70,6 +70,7 @@ class Game extends React.Component {
             !
           </Fab>
         )}
+        <h4>Players</h4>
         <div className={styles.playerList}>
           {game.players.map((player, i) => (
             <div key={i}>
@@ -80,7 +81,7 @@ class Game extends React.Component {
         <div className={styles.footer}>
           <Button
             onClick={this.deleteConfirmation}
-            variant="contained"
+            variant="outlined"
             size="medium"
             color="secondary"
           >

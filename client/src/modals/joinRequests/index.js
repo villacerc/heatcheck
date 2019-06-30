@@ -9,6 +9,13 @@ import PlayerItem from '../../components/playerItem'
 import styles from './joinRequests.module.scss'
 
 class JoinRequests extends React.Component {
+  componentDidUpdate() {
+    const game = this.props.game.payload
+
+    if (game.pendingPlayers.length === 0) {
+      this.props.popModal()
+    }
+  }
   render() {
     const game = this.props.game.payload
 
