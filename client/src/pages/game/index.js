@@ -63,7 +63,9 @@ class Game extends React.Component {
         </Button>
         {game.pendingPlayers[0] && (
           <Fab
-            onClick={() => this.props.showModal('join requests')}
+            onClick={() =>
+              this.props.showModal('game requests', { type: 'joins' })
+            }
             classes={{ root: styles.fab }}
             color="primary"
           >

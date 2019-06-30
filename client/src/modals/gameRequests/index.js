@@ -6,9 +6,9 @@ import Icon from '@material-ui/core/Icon'
 import { popModal } from '../../actions'
 import PlayerItem from '../../components/playerItem'
 
-import styles from './joinRequests.module.scss'
+import styles from './gameRequests.module.scss'
 
-class JoinRequests extends React.Component {
+class GameRequests extends React.Component {
   componentDidUpdate() {
     const game = this.props.game.payload
 
@@ -16,9 +16,19 @@ class JoinRequests extends React.Component {
       this.props.popModal()
     }
   }
-  render() {
+  renderJoinRequests = () => {
     const game = this.props.game.payload
 
+    return game.pendingPlayers.map((player, i) => (
+      <div key={i} style={{ marginBottom: '1.3rem' }}>
+        <PlayerItem key={i} joining player={player} gameId={game.id} />
+      </div>
+    ))
+  }
+  renderList = () => {
+    if (this.props.type === 'joins') return this.renderJoinRequests()
+  }
+  render() {
     return (
       <Dialog
         open={true}
@@ -28,11 +38,7 @@ class JoinRequests extends React.Component {
         <Icon onClick={this.props.popModal} className={styles.cancel}>
           cancel
         </Icon>
-        {game.pendingPlayers.map((player, i) => (
-          <div key={i} style={{ marginBottom: '1.3rem' }}>
-            <PlayerItem key={i} joining player={player} gameId={game.id} />
-          </div>
-        ))}
+        {this.renderList()}
       </Dialog>
     )
   }
@@ -47,4 +53,4 @@ const reduxStates = state => {
 export default connect(
   reduxStates,
   { popModal }
-)(JoinRequests)
+)(GameRequests)
