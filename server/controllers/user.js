@@ -49,8 +49,8 @@ const signup = async (req, res) => {
 }
 
 const getUser = async (req, res) => {
-  const user = req.isAuthenticated() ? req.user : null
-  res.status(200).send({ user: user })
+  const user = req.isAuthenticated() ? sanitize(req.user) : null
+  res.status(200).send({ user })
 }
 
 const logout = async (req, res) => {
@@ -69,6 +69,21 @@ const logout = async (req, res) => {
 
   req.logout()
   res.status(200).send()
+}
+
+const sanitize = userRaw => {
+  const user = JSON.parse(JSON.stringify(userRaw))
+
+  user.gameInvites = user.requestedGames.filter(
+    ({ Request }) => Request.type === 'invite'
+  )
+  user.joinRequests = user.requestedGames.filter(
+    ({ Request }) => Request.type === 'join'
+  )
+
+  delete user.requestedGames
+
+  return user
 }
 
 module.exports = {
