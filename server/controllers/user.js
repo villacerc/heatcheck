@@ -21,8 +21,6 @@ const authenticate = (req, res, next) => {
           { venueId: req.body.venueId },
           { where: { userId: user.id } }
         )
-
-        user = await db.User.scope('includeAll').findByPk(user.id)
       }
 
       return res.status(200).json({ user })
@@ -49,7 +47,7 @@ const signup = async (req, res) => {
 }
 
 const getUser = async (req, res) => {
-  const user = req.isAuthenticated() ? sanitize(req.user) : null
+  const user = req.isAuthenticated() ? req.user : null
   res.status(200).send({ user })
 }
 
@@ -69,21 +67,6 @@ const logout = async (req, res) => {
 
   req.logout()
   res.status(200).send()
-}
-
-const sanitize = userRaw => {
-  const user = JSON.parse(JSON.stringify(userRaw))
-
-  user.gameInvites = user.requestedGames.filter(
-    ({ Request }) => Request.type === 'invite'
-  )
-  user.joinRequests = user.requestedGames.filter(
-    ({ Request }) => Request.type === 'join'
-  )
-
-  delete user.requestedGames
-
-  return user
 }
 
 module.exports = {

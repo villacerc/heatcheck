@@ -91,38 +91,44 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   //sanitize user JSON
-  User.prototype.toJSON = function() {
+  User.prototype.toJSON = function(scope = null) {
     //skip parse if no id
     if (!this.get().id) return
 
-    const values = JSON.parse(JSON.stringify(this.get()))
+    const user = JSON.parse(JSON.stringify(this.get()))
 
-    delete values.password
+    if (scope === 'includeAll') return includeAll(user)
 
-    //filter the games that have a request type
-    values.requestedGames = values.requestedGames.filter(({ Request }) => {
-      if (Request.type) {
-        const request = JSON.parse(JSON.stringify(Request))
+    return user
+  }
 
-        // delete request.userId
-        return request
-      }
-    })
+  const includeAll = user => {
+    //filter games by type
+    user.gameInvites = user.requestedGames.filter(
+      ({ Request }) => Request.type === 'invite'
+    )
+    user.joinRequests = user.requestedGames.filter(
+      ({ Request }) => Request.type === 'join'
+    )
 
     //check if a player has joined a game
-    if (!values.createdGame) {
-      const joinedGame = values.requestedGames.find(({ Request }) => {
+    if (!user.createdGame) {
+      const joinedGame = user.requestedGames.find(({ Request }) => {
         return !Request.type
       })
 
       if (joinedGame) {
-        values.joinedGame = JSON.parse(JSON.stringify(joinedGame))
+        user.joinedGame = JSON.parse(JSON.stringify(joinedGame))
 
-        delete values.joinedGame.Request
+        delete user.joinedGame.Request
       }
     }
 
-    return values
+    delete user.requestedGames
+    delete user.password
+
+    return user
   }
+
   return User
 }

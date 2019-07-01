@@ -11,7 +11,7 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
   try {
     const user = await db.User.scope('includeAll').findByPk(id)
-    return done(null, user)
+    return done(null, user.toJSON('includeAll'))
   } catch (e) {
     return done(null, e)
   }
@@ -35,7 +35,7 @@ passport.use(
         bcrypt.compare(password, user.password, (err, isMatch) => {
           if (err) done(null, false, { message: err })
           if (isMatch) {
-            return done(null, user)
+            return done(null, user.toJSON('includeAll'))
           }
           return done(null, false, { message: 'Wrong password' })
         })
