@@ -219,7 +219,12 @@ describe('POST /create-game', () => {
         .send(body)
         .expect(200)
         .expect(async res => {
-          const { game } = res.body
+          //get latest game
+          const games = await db.Game.findAll({
+            limit: 1,
+            order: [['createdAt', 'DESC']]
+          })
+          const game = games[0]
 
           expect(game.userId).toBe(users[0].id)
           expect(game.venueId).toBe(body.venueId)

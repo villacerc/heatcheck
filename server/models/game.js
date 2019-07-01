@@ -58,5 +58,43 @@ module.exports = (sequelize, DataTypes) => {
     await Request.destroy({ where: { gameId: game.id } })
   })
 
+  Game.prototype.toJSON = function(scope, venueRaw = null) {
+    const game = JSON.parse(JSON.stringify(this.get()))
+
+    if (scope === 'players') return withPlayers(game, venueRaw)
+
+    return game
+  }
+
+  const withPlayers = (game, venueRaw) => {
+    //parse players from request model
+    game.players = game.pendingPlayers.filter(player => {
+      return !player.Request.type
+    })
+    game.pendingPlayers = game.pendingPlayers.filter(player => {
+      return player.Request.type
+    })
+
+    if (venueRaw) {
+      const venue = JSON.parse(JSON.stringify(venueRaw))
+
+      //remove creator from checked in users
+      const creator = venue.checkIns.findIndex(
+        ({ userId }) => userId === game.userId
+      )
+      venue.checkIns.splice(creator, 1)
+
+      //normalize checkins
+      venue.checkIns = venue.checkIns.map(({ user }) => {
+        user.requestedGames = user.requestedGames.map(({ Request }) => Request)
+        return user
+      })
+
+      game.venue = venue
+    }
+
+    return game
+  }
+
   return Game
 }
