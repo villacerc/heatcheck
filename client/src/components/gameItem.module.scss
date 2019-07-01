@@ -1,0 +1,16 @@
+.content {
+  display: flex;
+  padding: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 80%;
+  }
+}
+.status {
+  font-size: 13pt;
+  color: white;
+}

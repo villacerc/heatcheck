@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt')
 
 module.exports = (sequelize, DataTypes) => {
   const CheckIn = sequelize.import('./checkin')
+  const Game = sequelize.models.Game
+
   const User = sequelize.define(
     'User',
     {
@@ -22,12 +24,12 @@ module.exports = (sequelize, DataTypes) => {
           include: [{ model: CheckIn, as: 'checkIn' }]
         },
         createdGame: {
-          include: [{ model: sequelize.models.Game, as: 'createdGame' }]
+          include: [{ model: Game, as: 'createdGame' }]
         },
         includeAll: {
           include: [
             {
-              model: sequelize.models.Game,
+              model: Game,
               as: 'createdGame',
               attributes: {
                 exclude: ['userId']
@@ -41,11 +43,20 @@ module.exports = (sequelize, DataTypes) => {
               }
             },
             {
-              model: sequelize.models.Game,
+              model: Game,
               as: 'requestedGames',
               attributes: {
                 exclude: ['userId']
-              }
+              },
+              include: [
+                {
+                  model: sequelize.models.User,
+                  as: 'creator',
+                  attributes: {
+                    exclude: ['password', 'isVerified', 'email']
+                  }
+                }
+              ]
             }
           ]
         }

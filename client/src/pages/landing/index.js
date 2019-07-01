@@ -1,7 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import Fab from '@material-ui/core/Fab'
 
-import { fetchVenues } from '../../actions'
+import { fetchVenues, showModal } from '../../actions'
 import GoogleMapWrapper from './googleMapWrapper'
 import SideMenu from './sideMenu'
 
@@ -17,7 +18,23 @@ class Landing extends React.Component {
       this.props.fetchVenues()
     }
   }
+  renderFab = () => {
+    const { user } = this.props
 
+    if (user && user.gameInvites[0]) {
+      return (
+        <Fab
+          onClick={() =>
+            this.props.showModal('game requests', { type: 'invites' })
+          }
+          color="primary"
+          classes={{ root: styles.fab }}
+        >
+          !
+        </Fab>
+      )
+    }
+  }
   render() {
     const url =
       'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places'
@@ -35,16 +52,17 @@ class Landing extends React.Component {
           open={this.state.showSideMenu}
           hideCb={() => this.setState({ showSideMenu: false })}
         />
+        {this.renderFab()}
       </div>
     )
   }
 }
 
-const stateToProps = ({ venues }) => {
-  return { venues }
+const stateToProps = ({ venues, user }) => {
+  return { venues, user: user.payload }
 }
 
 export default connect(
   stateToProps,
-  { fetchVenues }
+  { fetchVenues, showModal }
 )(Landing)
