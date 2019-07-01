@@ -23,10 +23,10 @@ class GameItem extends React.Component {
     const { game } = this.props
     return (
       <div>
-        <p className={styles.status}>
-          {game.creator.displayName} has invited you!
-        </p>
         <Card className={styles.card}>
+          <p className={styles.status}>
+            {game.creator.displayName} has invited you!
+          </p>
           <div className={styles.content}>
             <p>{game.name}</p>
             <Button onClick={this.acceptInvite}>Accept</Button>

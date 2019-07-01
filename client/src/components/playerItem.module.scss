@@ -4,33 +4,32 @@
   border-radius: 0 !important;
   margin-right: 10px;
 }
-.card {
+.content {
   font-size: 1.1rem;
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
   padding-right: 10px;
-  .content {
-    width: 100%;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    .actions {
-      margin-left: auto;
-      display: flex;
-      align-items: center;
-    }
-    button {
-      padding: 0 !important;
-    }
-    .cancelInvite {
-      margin-left: 10px;
-      min-width: auto;
-      color: red;
-    }
-  }
 }
 .body {
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  .actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+  }
+  button {
+    padding: 0 !important;
+  }
+  .cancelInvite {
+    margin-left: 10px;
+    min-width: auto;
+    color: red;
+  }
+}
+.info {
   flex-grow: 1;
   p:first-child {
     white-space: nowrap;
@@ -40,6 +39,9 @@
   }
 }
 .status {
-  font-size: 13pt;
+  text-align: center;
+  font-size: 12pt;
   color: white;
+  padding: 0.3rem;
+  background-color: #1976d2;
 }

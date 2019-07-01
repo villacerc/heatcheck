@@ -52,7 +52,7 @@ class GameRequests extends React.Component {
         classes={{ paper: styles.dialog }}
         onClose={this.props.popModal}
       >
-        {this.renderList()}
+        <div className={styles.list}>{this.renderList()}</div>
         <Button onClick={this.props.popModal} className={styles.close}>
           Close
         </Button>

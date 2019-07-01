@@ -52,14 +52,16 @@ class PlayerItem extends React.Component {
     const { player, joining } = this.props
     return (
       <div>
-        {joining && <p className={styles.status}>Wants to join!</p>}
-        <Card className={styles.card}>
-          <Avatar className={styles.avatar} />
+        <Card>
+          {joining && <p className={styles.status}>Join request!</p>}
           <div className={styles.content}>
+            <Avatar className={styles.avatar} />
             <div className={styles.body}>
-              <p>{player.displayName}</p>
+              <div className={styles.info}>
+                <p>{player.displayName}</p>
+              </div>
+              {this.renderActions()}
             </div>
-            {this.renderActions()}
           </div>
         </Card>
       </div>
