@@ -218,31 +218,39 @@ describe('POST /create-game', () => {
         .post('/api/create-game')
         .send(body)
         .expect(200)
-        .expect(async res => {
-          //get latest game
-          const games = await db.Game.findAll({
+        .expect(res => {
+          //get last game
+          const games = db.Game.findAll({
             limit: 1,
             order: [['createdAt', 'DESC']]
           })
-          const game = games[0]
-
-          expect(game.userId).toBe(users[0].id)
-          expect(game.venueId).toBe(body.venueId)
-          expect(game.name).toBe(body.name)
-          expect(game.description).toBe(body.description)
-
-          //checked that request is created for user
-          db.Request.findOne({
-            where: { userId: users[0].id, gameId: game.id }
-          }).then(request => {
-            expect(request).toBeTruthy()
+          const requests = db.Request.findAll({
+            where: { userId: users[0].id }
           })
+          const user = db.User.scope('checkIn').findByPk(users[0].id)
 
-          //check that user is checked in to venue
-          db.User.scope('checkIn')
-            .findByPk(users[0].id)
-            .then(user => {
+          //have to use this method because there seems to be an issue with
+          //subsequent fetches following a fetch that returns an array
+          Promise.all([games, requests, user])
+            .then(responses => {
+              const game = responses[0][0]
+
+              expect(game.userId).toBe(users[0].id)
+              expect(game.venueId).toBe(body.venueId)
+              expect(game.name).toBe(body.name)
+              expect(game.description).toBe(body.description)
+
+              const requests = responses[1]
+              const request = requests.find(({ gameId }) => gameId == game.id)
+
+              expect(request).toBeTruthy()
+
+              const user = responses[2]
+
               expect(user.checkIn.venueId).toBe(body.venueId)
+            })
+            .catch(err => {
+              console.log(err)
             })
         })
         .end(done)
