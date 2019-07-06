@@ -3,69 +3,59 @@
 const bcrypt = require('bcrypt')
 
 module.exports = (sequelize, DataTypes) => {
-  const CheckIn = sequelize.import('./checkin')
-  const Game = sequelize.models.Game
-
-  const User = sequelize.define(
-    'User',
-    {
-      displayName: DataTypes.STRING,
-      email: {
-        type: DataTypes.STRING,
-        unique: true,
-        validate: { isEmail: true }
-      },
-      color: {
-        type: DataTypes.STRING
-      },
-      password: DataTypes.STRING,
-      isVerified: DataTypes.BOOLEAN
+  const User = sequelize.define('User', {
+    displayName: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      unique: true,
+      validate: { isEmail: true }
     },
-    {
-      scopes: {
-        checkIn: {
-          include: [{ model: CheckIn, as: 'checkIn' }]
+    color: {
+      type: DataTypes.STRING
+    },
+    password: DataTypes.STRING,
+    isVerified: DataTypes.BOOLEAN
+  })
+  User.loadScopes = function(models) {
+    const checkIn = {
+      model: models.CheckIn,
+      as: 'checkIn',
+      attributes: {
+        exclude: ['userId']
+      }
+    }
+    User.addScope('checkIn', {
+      include: [checkIn]
+    })
+    User.addScope('includeAll', {
+      include: [
+        {
+          model: models.Game,
+          as: 'createdGame',
+          attributes: {
+            exclude: ['userId']
+          }
         },
-        createdGame: {
-          include: [{ model: Game, as: 'createdGame' }]
-        },
-        includeAll: {
+        checkIn,
+        {
+          model: models.Game,
+          as: 'requestedGames',
+          attributes: {
+            exclude: ['userId']
+          },
           include: [
             {
-              model: Game,
-              as: 'createdGame',
+              model: models.User,
+              as: 'creator',
               attributes: {
-                exclude: ['userId']
+                exclude: ['password', 'isVerified', 'email']
               }
-            },
-            {
-              model: CheckIn,
-              as: 'checkIn',
-              attributes: {
-                exclude: ['userId']
-              }
-            },
-            {
-              model: Game,
-              as: 'requestedGames',
-              attributes: {
-                exclude: ['userId']
-              },
-              include: [
-                {
-                  model: sequelize.models.User,
-                  as: 'creator',
-                  attributes: {
-                    exclude: ['password', 'isVerified', 'email']
-                  }
-                }
-              ]
             }
           ]
         }
-      }
-    }
-  )
+      ]
+    })
+  }
   User.associate = function(models) {
     User.hasOne(models.VerificationToken, {
       as: 'verificationToken',
@@ -101,10 +91,10 @@ module.exports = (sequelize, DataTypes) => {
     user.password = hashPw(user.password)
   })
   User.afterCreate(async (user, options) => {
-    await CheckIn.create({ userId: user.id })
+    await db.CheckIn.create({ userId: user.id })
   })
   User.beforeDestroy(async (user, options) => {
-    await CheckIn.destroy({ where: { userId: user.id } })
+    await db.CheckIn.destroy({ where: { userId: user.id } })
   })
 
   //sanitize user JSON
