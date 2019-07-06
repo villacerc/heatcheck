@@ -16,9 +16,9 @@ const create = async (req, res) => {
 
 const getGames = async (req, res) => {
   try {
-    const games = await db.Game.scope('players').findAll()
+    const games = await db.Game.scope('players', 'venue').findAll()
 
-    res.status(200).json({ games })
+    res.status(200).json({ games: sanitizeAll(games) })
   } catch (err) {
     res.status(400).send({ err })
   }
@@ -173,6 +173,18 @@ const invitePlayer = async (req, res) => {
   } catch (err) {
     res.status(400).send({ err })
   }
+}
+
+sanitizeAll = gamesRaw => {
+  const games = JSON.parse(JSON.stringify(gamesRaw))
+
+  for (const game of games) {
+    game.playersCount = game.pendingPlayers.filter(
+      ({ Request }) => !Request.type
+    ).length
+    delete game.pendingPlayers
+  }
+  return games
 }
 
 module.exports = {

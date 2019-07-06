@@ -7,6 +7,14 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING
   })
   Game.loadScopes = function(models) {
+    Game.addScope('venue', {
+      include: [
+        {
+          model: models.Venue,
+          as: 'venue'
+        }
+      ]
+    })
     Game.addScope('players', {
       include: [
         {
@@ -35,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
       as: 'creator',
       foreignKey: 'userId'
     })
+    Game.belongsTo(models.Venue, {
+      as: 'venue',
+      foreignKey: 'venueId'
+    })
     Game.belongsToMany(models.User, {
       through: 'Request',
       as: 'pendingPlayers',
@@ -54,9 +66,12 @@ module.exports = (sequelize, DataTypes) => {
   Game.prototype.toJSON = function(scope, venueRaw = null) {
     const game = JSON.parse(JSON.stringify(this.get()))
 
-    if (scope === 'players') return withPlayers(game, venueRaw)
-
-    return game
+    switch (scope) {
+      case 'players':
+        return withPlayers(game, venueRaw)
+      default:
+        return game
+    }
   }
 
   const withPlayers = (game, venueRaw) => {
