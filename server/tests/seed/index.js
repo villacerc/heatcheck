@@ -86,7 +86,7 @@ const populateVenues = done => {
 }
 
 const populateUsers = done => {
-  db.User.destroy({ where: {} })
+  db.User.destroy({ where: {}, individualHooks: true })
     .then(() => {
       db.User.bulkCreate(users, { individualHooks: true })
     })

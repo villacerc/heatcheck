@@ -100,6 +100,9 @@ module.exports = (sequelize, DataTypes) => {
   User.afterCreate(async (user, options) => {
     await CheckIn.create({ userId: user.id })
   })
+  User.beforeDestroy(async (user, options) => {
+    await CheckIn.destroy({ where: { userId: user.id } })
+  })
 
   //sanitize user JSON
   User.prototype.toJSON = function(scope = null) {
