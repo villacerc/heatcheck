@@ -12,8 +12,11 @@ module.exports = (sequelize, DataTypes) => {
       displayName: DataTypes.STRING,
       email: {
         type: DataTypes.STRING,
-        unique: 'email',
+        unique: true,
         validate: { isEmail: true }
+      },
+      color: {
+        type: DataTypes.STRING
       },
       password: DataTypes.STRING,
       isVerified: DataTypes.BOOLEAN

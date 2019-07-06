@@ -55,7 +55,12 @@ class PlayerItem extends React.Component {
         <Card>
           {joining && <p className={styles.status}>Join request!</p>}
           <div className={styles.content}>
-            <Avatar className={styles.avatar} />
+            <Avatar
+              style={{ background: player.color }}
+              className={styles.avatar}
+            >
+              {player.displayName.charAt(0).toUpperCase()}
+            </Avatar>
             <div className={styles.body}>
               <div className={styles.info}>
                 <p>{player.displayName}</p>

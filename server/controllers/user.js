@@ -28,10 +28,22 @@ const authenticate = (req, res, next) => {
   })(req, res, next)
 }
 
+const bgColors = [
+  '#F44336',
+  '#FFC107',
+  '#3F51B5',
+  '#9C27B0',
+  '#009688',
+  '#607D8B'
+]
+
 const signup = async (req, res) => {
   const { email } = req.body
   try {
-    await db.User.create(req.body)
+    //pick random color
+    const i = Math.floor(Math.random() * bgColors.length - 1)
+
+    await db.User.create({ ...req.body, color: bgColors[i] })
     // const verification = await db.VerificationToken.create({
     //   userId: user.id,
     //   token: crypto({ length: 5 })
