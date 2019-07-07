@@ -179,7 +179,7 @@ sanitizeAll = gamesRaw => {
   const games = JSON.parse(JSON.stringify(gamesRaw))
 
   for (const game of games) {
-    game.playersCount = game.pendingPlayers.filter(
+    game.players = game.pendingPlayers.filter(
       ({ Request }) => !Request.type
     ).length
     delete game.pendingPlayers

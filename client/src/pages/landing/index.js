@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Fab from '@material-ui/core/Fab'
 
-import { fetchVenues, showModal } from '../../actions'
+import { fetchVenues, showModal, fetchGames } from '../../actions'
 import GoogleMapWrapper from './googleMapWrapper'
 import SideMenu from './sideMenu'
 
@@ -14,9 +14,8 @@ class Landing extends React.Component {
     venues: null
   }
   componentDidMount() {
-    if (!this.props.venues) {
-      this.props.fetchVenues()
-    }
+    this.props.fetchVenues()
+    this.props.fetchGames()
   }
   renderFab = () => {
     const { user } = this.props
@@ -58,11 +57,11 @@ class Landing extends React.Component {
   }
 }
 
-const stateToProps = ({ venues, user }) => {
-  return { venues, user: user.payload }
+const stateToProps = ({ venues, user, games }) => {
+  return { venues, user: user.payload, games }
 }
 
 export default connect(
   stateToProps,
-  { fetchVenues, showModal }
+  { fetchVenues, showModal, fetchGames }
 )(Landing)

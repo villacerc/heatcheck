@@ -75,7 +75,7 @@ class Game extends React.Component {
         <h4>Players</h4>
         <div className={styles.playerList}>
           {game.players.map((player, i) => (
-            <div key={i}>
+            <div key={i} style={{ marginBottom: '.5rem' }}>
               <PlayerItem player={player} invited={true} />
             </div>
           ))}

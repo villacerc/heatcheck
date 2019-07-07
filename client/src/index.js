@@ -10,7 +10,7 @@ import * as serviceWorker from './serviceWorker'
 ReactDOM.render(
   <Provider store={store}>
     <SnackbarProvider
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       maxSnack={3}
     >
       <App />

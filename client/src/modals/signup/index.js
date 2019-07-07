@@ -60,7 +60,12 @@ class Signup extends React.Component {
                     label="Display Name"
                     {...props}
                   />
-                  <TextInput name="email" label="Email" {...props} />
+                  <TextInput
+                    name="email"
+                    type="email"
+                    label="Email"
+                    {...props}
+                  />
                   <TextInput
                     name="password"
                     label="Password"

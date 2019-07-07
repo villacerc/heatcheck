@@ -1,5 +1,6 @@
 import React from 'react'
 import AppBar from '@material-ui/core/AppBar'
+import Avatar from '@material-ui/core/Avatar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
@@ -35,14 +36,15 @@ class TopBar extends React.Component {
   }
   renderButtons = () => {
     if (this.props.user.payload) {
+      const user = this.props.user.payload
       return (
         <div ref={el => (this.userAnchor = el)}>
-          <Icon
+          <Avatar
             onClick={() => this.setState({ showUserPopper: true })}
-            className={styles.defaultAv}
+            style={{ background: user.color, cursor: 'pointer' }}
           >
-            account_circle
-          </Icon>
+            {user.displayName.charAt(0).toUpperCase()}
+          </Avatar>
         </div>
       )
     }
@@ -77,7 +79,7 @@ class TopBar extends React.Component {
       <AppBar classes={{ root: styles.bar }}>
         <Toolbar>
           <div className={styles.brand}>
-            <h1>Pick And Roll</h1>
+            <h1 onClick={() => navigate('/')}>Pick And Roll</h1>
           </div>
           {user.fetching ? null : this.renderButtons()}
         </Toolbar>

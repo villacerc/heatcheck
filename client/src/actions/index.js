@@ -6,6 +6,12 @@ export const fetchVenues = () => async dispatch => {
   dispatch({ type: 'RECEIVE_VENUES', payload: res.data.venues })
 }
 
+export const fetchGames = () => async dispatch => {
+  const res = await axios.get('/api/games')
+
+  dispatch({ type: 'RECEIVE_GAMES', payload: res.data.games })
+}
+
 export const showModal = (name, props = null) => ({
   type: 'SHOW_MODAL',
   name,

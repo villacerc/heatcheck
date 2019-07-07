@@ -11,7 +11,7 @@ import { Formik } from 'formik'
 import TextInput from '../../components/textInput'
 import validationSchema from './validationSchema'
 import axios from '../../services/axios'
-import { popModal, fetchUser } from '../../actions'
+import { popModal, fetchUser, fetchGames } from '../../actions'
 
 class CreateGame extends React.Component {
   state = {
@@ -87,5 +87,5 @@ class CreateGame extends React.Component {
 
 export default connect(
   null,
-  { popModal, fetchUser }
+  { popModal, fetchUser, fetchGames }
 )(CreateGame)

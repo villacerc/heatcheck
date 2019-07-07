@@ -13,15 +13,21 @@
   display: flex;
   align-items: center;
 }
-.status {
+.gameStatus,
+.venueStatus {
   border-left: 1px solid lightgray;
   min-width: 110px;
+}
+.venueStatus > div,
+.gameStatus {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.venueStatus {
   > div {
     height: 50%;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
   > div:first-child {
     border-bottom: 1px solid lightgray;

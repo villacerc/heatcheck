@@ -6,7 +6,7 @@ import Icon from '@material-ui/core/Icon'
 import { updateUser, fetchVenues, showModal } from '../../actions'
 import axios from '../../services/axios'
 
-import styles from './venueInfo.module.scss'
+import styles from './venueAndGame.module.scss'
 
 class VenueInfo extends React.Component {
   checkIn = async () => {
@@ -71,9 +71,9 @@ class VenueInfo extends React.Component {
             </Button>
           </div>
         </div>
-        <div className={styles.status}>
-          <div>3 Games</div>
-          <div>5 Checked-in</div>
+        <div className={styles.venueStatus}>
+          <div>{venue.games} Games</div>
+          <div>{venue.checkIns} Checked-in</div>
         </div>
       </div>
     )
