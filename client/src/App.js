@@ -6,6 +6,7 @@ import { fetchUser } from './actions'
 import TopBar from './components/topBar'
 import Landing from './pages/landing'
 import Game from './pages/game'
+import NotFound from './pages/notFound'
 import ModalConductor from './modals'
 
 class App extends Component {
@@ -21,6 +22,7 @@ class App extends Component {
           <Router>
             <Landing path="/" />
             <Game path="/game" />
+            <NotFound default />
           </Router>
         </div>
       </div>
