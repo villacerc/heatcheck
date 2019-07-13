@@ -26,11 +26,11 @@ class Game extends React.Component {
       this.setState({ loaded: true })
     }
   }
-  deleteConfirmation = () => {
+  abortConfirmation = (action, callback) => {
     this.props.showModal('dialog', {
       type: 'confirmation',
-      body: 'Are you sure you want delete this game?',
-      confirmCallback: this.deleteGame
+      body: `Are you sure you want ${action} this game?`,
+      confirmCallback: callback
     })
   }
   deleteGame = async () => {
@@ -43,6 +43,16 @@ class Game extends React.Component {
       })
     }
   }
+  leaveGame = async () => {
+    const res = await axios.post('/api/leave-game')
+    if (res.status == 200) {
+      navigate('/')
+      this.props.fetchUser()
+      this.props.enqueueSnackbar('Successfully left game.', {
+        variant: 'success'
+      })
+    }
+  }
   render() {
     if (!this.state.loaded) return null
 
@@ -50,6 +60,7 @@ class Game extends React.Component {
     const user = this.props.user.payload
 
     const creator = game.userId === user.id
+    const joined = user.joinedGame && user.joinedGame.id === game.id
 
     return (
       <div className={styles.container}>
@@ -93,12 +104,24 @@ class Game extends React.Component {
         {creator && (
           <div className={styles.footer}>
             <Button
-              onClick={this.deleteConfirmation}
+              onClick={() => this.abortConfirmation('delete', this.deleteGame)}
               variant="outlined"
               size="medium"
               color="secondary"
             >
-              Delete
+              Delete Game
+            </Button>
+          </div>
+        )}
+        {joined && (
+          <div className={styles.footer}>
+            <Button
+              onClick={() => this.abortConfirmation('leave', this.leaveGame)}
+              variant="outlined"
+              size="medium"
+              color="secondary"
+            >
+              Leave Game
             </Button>
           </div>
         )}
