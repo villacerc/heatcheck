@@ -41,6 +41,25 @@ const myGame = async (req, res) => {
   }
 }
 
+const joinedGame = async (req, res) => {
+  try {
+    const request = await db.Request.findOne({
+      where: { userId: req.user.id, type: null }
+    })
+
+    if (!request) throw 'No game found'
+
+    const game = await db.Game.scope('players').findOne({
+      where: { id: request.gameId }
+    })
+    const venue = await db.Venue.findByPk(game.venueId)
+
+    res.status(200).json({ game: game.toJSON('players', venue) })
+  } catch (err) {
+    res.status(400).send({ err })
+  }
+}
+
 const deleteGame = async (req, res) => {
   try {
     const game = await db.Game.findOne({ where: { userId: req.user.id } })
@@ -208,5 +227,6 @@ module.exports = {
   joinGame,
   acceptJoinRequest,
   acceptInvite,
-  leaveGame
+  leaveGame,
+  joinedGame
 }
