@@ -53,7 +53,7 @@ class PlayerItem extends React.Component {
     return (
       <div>
         <Card>
-          {joining && <p className={styles.status}>Join request!</p>}
+          {joining && <p className={styles.status}>Player wants to join!</p>}
           <div className={styles.content}>
             <Avatar
               style={{ background: player.color }}

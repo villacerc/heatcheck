@@ -14,6 +14,8 @@ class App extends Component {
     this.props.fetchUser()
   }
   render() {
+    if (this.props.user.fetching) return null
+
     return (
       <div>
         <Location>{props => <ModalConductor {...props} />}</Location>
@@ -30,7 +32,11 @@ class App extends Component {
   }
 }
 
+const reduxState = ({ user }) => {
+  return { user }
+}
+
 export default connect(
-  null,
+  reduxState,
   { fetchUser }
 )(App)

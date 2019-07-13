@@ -1,4 +1,4 @@
-export default function(state = { fetching: false, payload: null }, action) {
+export default function(state = { fetching: true, payload: null }, action) {
   switch (action.type) {
     case 'FETCHING_USER':
       return { ...state, fetching: true }

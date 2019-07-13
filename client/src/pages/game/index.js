@@ -16,7 +16,10 @@ class Game extends React.Component {
     loaded: false
   }
   componentDidMount() {
-    this.props.fetchGame()
+    const user = this.props.user.payload
+    const state = user.createdGame ? '' : 'joined'
+
+    this.props.fetchGame(state)
   }
   componentDidUpdate() {
     if (!this.state.loaded && this.props.game.retrieved) {
@@ -44,6 +47,9 @@ class Game extends React.Component {
     if (!this.state.loaded) return null
 
     const game = this.props.game.payload
+    const user = this.props.user.payload
+
+    const creator = game.userId === user.id
 
     return (
       <div className={styles.container}>
@@ -53,24 +59,28 @@ class Game extends React.Component {
           </h1>
           <p>{game.description}</p>
         </div>
-        <Button
-          onClick={() => this.props.showModal('invite players')}
-          variant="contained"
-          size="large"
-          color="primary"
-        >
-          Invite Players
-        </Button>
-        {game.pendingPlayers[0] && (
-          <Fab
-            onClick={() =>
-              this.props.showModal('game requests', { type: 'joins' })
-            }
-            classes={{ root: styles.fab }}
-            color="primary"
-          >
-            !
-          </Fab>
+        {creator && (
+          <div>
+            <Button
+              onClick={() => this.props.showModal('invite players')}
+              variant="contained"
+              size="large"
+              color="primary"
+            >
+              Invite Players
+            </Button>
+            {game.pendingPlayers[0] && (
+              <Fab
+                onClick={() =>
+                  this.props.showModal('game requests', { type: 'joins' })
+                }
+                classes={{ root: styles.fab }}
+                color="primary"
+              >
+                !
+              </Fab>
+            )}
+          </div>
         )}
         <h4>Players</h4>
         <div className={styles.playerList}>
@@ -80,24 +90,27 @@ class Game extends React.Component {
             </div>
           ))}
         </div>
-        <div className={styles.footer}>
-          <Button
-            onClick={this.deleteConfirmation}
-            variant="outlined"
-            size="medium"
-            color="secondary"
-          >
-            Delete
-          </Button>
-        </div>
+        {creator && (
+          <div className={styles.footer}>
+            <Button
+              onClick={this.deleteConfirmation}
+              variant="outlined"
+              size="medium"
+              color="secondary"
+            >
+              Delete
+            </Button>
+          </div>
+        )}
       </div>
     )
   }
 }
 
-const reduxStates = state => {
+const reduxStates = ({ user, game }) => {
   return {
-    game: state.game
+    game,
+    user
   }
 }
 

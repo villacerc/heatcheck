@@ -65,7 +65,7 @@ class TopBar extends React.Component {
       >
         <MenuList onClick={() => this.setState({ showUserPopper: false })}>
           <MenuItem>Profile</MenuItem>
-          {user.createdGame && (
+          {(user.createdGame || user.joinedGame) && (
             <MenuItem onClick={() => navigate('/game')}>My Game</MenuItem>
           )}
           <MenuItem onClick={this.logOut}>Log out</MenuItem>
@@ -81,7 +81,7 @@ class TopBar extends React.Component {
           <div className={styles.brand}>
             <h1 onClick={() => navigate('/')}>Pick And Roll</h1>
           </div>
-          {user.fetching ? null : this.renderButtons()}
+          {this.renderButtons()}
         </Toolbar>
         {this.userPopper()}
       </AppBar>
