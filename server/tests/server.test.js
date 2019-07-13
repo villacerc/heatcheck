@@ -259,7 +259,7 @@ describe('POST /create-game', () => {
 })
 
 describe('GET /games', (req, res) => {
-  it('it should retrieve all games', done => {
+  it('should retrieve all games', done => {
     request(app)
       .get('/api/games')
       .expect(200)
@@ -275,7 +275,7 @@ describe('GET /my-game', (req, res) => {
 
   describe('authorized', () => {
     authenticateBefore()
-    it('it should retrieve a game by the user', done => {
+    it('should retrieve a game by the user', done => {
       withSession
         .get('/api/my-game')
         .expect(200)
@@ -292,7 +292,7 @@ describe('DELETE /my-game', (req, res) => {
 
   describe('authorized', () => {
     authenticateBefore()
-    it('it should delete a game by the user', done => {
+    it('should delete a game by the user', done => {
       withSession
         .delete('/api/my-game')
         .expect(200)
@@ -317,7 +317,7 @@ describe('POST /invite-player', (req, res) => {
 
   describe('authorized', () => {
     authenticateBefore()
-    it('it should invite a player to the game', done => {
+    it('should invite a player to the game', done => {
       withSession
         .post('/api/invite-player')
         .send({
@@ -341,7 +341,7 @@ describe('POST /join-game', (req, res) => {
 
   describe('authorized', () => {
     authenticateBefore(users[1])
-    it('it should join a player to the game', done => {
+    it('should join a player to the game', done => {
       withSession
         .post('/api/join-game')
         .send({
@@ -364,7 +364,7 @@ describe('POST /accept-join-request', (req, res) => {
 
   describe('authorized', () => {
     authenticateBefore()
-    it('it accept join request from player', done => {
+    it('should accept join request from player', done => {
       withSession
         .post('/api/accept-join-request')
         .send({
@@ -388,7 +388,7 @@ describe('POST /accept-invite', (req, res) => {
 
   describe('authorized', () => {
     authenticateBefore()
-    it('it accept invite from the game', done => {
+    it('should accept invite from the game', done => {
       withSession
         .post('/api/accept-invite')
         .send({
@@ -401,6 +401,48 @@ describe('POST /accept-invite', (req, res) => {
             where: { userId: users[3].id, gameId: games[0].id, type: null }
           })
           expect(userJoined).toBeTruthy()
+        })
+        .end(done)
+    })
+  })
+})
+
+describe('DELETE /my-game', (req, res) => {
+  describeUnauthorized('delete', '/api/my-game')
+
+  describe('authorized', () => {
+    authenticateBefore()
+    it('should delete a game', done => {
+      withSession
+        .delete('/api/my-game')
+        .expect(200)
+        .expect(async () => {
+          const game = await db.Game.findOne({
+            where: { userId: users[0].id }
+          })
+          expect(game).toBeNull()
+        })
+        .end(done)
+    })
+  })
+})
+
+describe('POST /leave-game', (req, res) => {
+  describeUnauthorized('post', '/api/leave-game')
+
+  describe('authorized', () => {
+    const user = users[4]
+    authenticateBefore(user)
+    it('should leave a game', done => {
+      withSession
+        .post('/api/leave-game')
+        .expect(200)
+        .expect(async () => {
+          const request = await db.Request.findOne({
+            where: { userId: user.id }
+          })
+
+          expect(request).toBeNull()
         })
         .end(done)
     })

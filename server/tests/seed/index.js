@@ -27,6 +27,11 @@ requests = [
     userId: 4,
     gameId: 1,
     type: 'invite'
+  },
+  {
+    userId: 5,
+    gameId: 1,
+    type: null
   }
 ]
 
@@ -70,6 +75,12 @@ const users = [
     id: 4,
     displayName: 'bboy',
     email: 'bboy@example.com',
+    password: 'keyboardcat'
+  },
+  {
+    id: 5,
+    displayName: 'bgirl',
+    email: 'bgirl@example.com',
     password: 'keyboardcat'
   }
 ]
