@@ -16,13 +16,17 @@ class Game extends React.Component {
     loaded: false
   }
   componentDidMount() {
-    const user = this.props.user.payload
-    const state = user.createdGame ? '' : 'joined'
-
-    this.props.fetchGame(state)
+    if (!this.props.user.fetching) {
+      this.fetchGame()
+    }
   }
-  componentDidUpdate() {
-    if (!this.state.loaded && this.props.game.retrieved) {
+  componentDidUpdate(prevProps) {
+    if (
+      this.props.user.fetching !== prevProps.user.fetching &&
+      !this.props.user.fetching
+    ) {
+      this.fetchGame()
+    } else if (!this.state.loaded && this.props.game.retrieved) {
       this.setState({ loaded: true })
     }
   }
@@ -32,6 +36,12 @@ class Game extends React.Component {
       body: `Are you sure you want ${action} this game?`,
       confirmCallback: callback
     })
+  }
+  fetchGame = () => {
+    const user = this.props.user.payload
+    const state = user.createdGame ? '' : 'joined'
+
+    this.props.fetchGame(state)
   }
   deleteGame = async () => {
     const res = await axios.delete('/api/my-game')

@@ -340,12 +340,11 @@ describe('POST /join-game', (req, res) => {
   describeUnauthorized('post', '/api/join-game')
 
   describe('authorized', () => {
-    authenticateBefore()
+    authenticateBefore(users[1])
     it('it should join a player to the game', done => {
       withSession
         .post('/api/join-game')
         .send({
-          userId: users[1].id,
           gameId: games[0].id
         })
         .expect(200)

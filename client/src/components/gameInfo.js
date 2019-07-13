@@ -1,15 +1,23 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
+import { connect } from 'react-redux'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
-import { updateUser, fetchVenues, showModal } from '../actions'
+import { updateUser, fetchVenues, showModal, fetchUser } from '../actions'
 import axios from '../services/axios'
 
 import styles from '../pages/landing/venueAndGame.module.scss'
 
 class GameInfo extends React.Component {
+  joinGame = async () => {
+    await axios.post('/api/join-game', { gameId: this.props.game.id })
+    this.props.fetchUser()
+  }
   render() {
-    const { game } = this.props
+    const { game, user } = this.props
+
+    const joining = user && user.joinRequests.find(({ id }) => game.id === id)
 
     return (
       <div className={styles.container}>
@@ -19,12 +27,20 @@ class GameInfo extends React.Component {
           <p style={{ marginTop: '.7rem' }}>{game.description}</p>
           <div className={styles.actions}>
             <Button
-              onClick={this.showCreateModal}
+              onClick={this.joinGame}
               variant="outlined"
               color="primary"
               size="small"
+              disabled={joining}
+              style={{ position: 'relative' }}
             >
               Join
+              {joining && (
+                <CircularProgress
+                  style={{ position: 'absolute', left: '31%' }}
+                  size={20}
+                />
+              )}
             </Button>
           </div>
         </div>
@@ -36,4 +52,11 @@ class GameInfo extends React.Component {
   }
 }
 
-export default GameInfo
+const reduxState = ({ user }) => {
+  return { user: user.payload }
+}
+
+export default connect(
+  reduxState,
+  { fetchUser }
+)(GameInfo)

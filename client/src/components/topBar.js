@@ -81,7 +81,7 @@ class TopBar extends React.Component {
           <div className={styles.brand}>
             <h1 onClick={() => navigate('/')}>Pick And Roll</h1>
           </div>
-          {this.renderButtons()}
+          {!user.fetching && this.renderButtons()}
         </Toolbar>
         {this.userPopper()}
       </AppBar>

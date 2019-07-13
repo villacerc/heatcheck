@@ -120,12 +120,12 @@ const acceptJoinRequest = async (req, res) => {
 
 const joinGame = async (req, res) => {
   try {
-    const { userId, gameId } = req.body
+    const { gameId } = req.body
 
     //check if player has been invited to the game
     const inviteTrue = await db.Request.findOne({
       where: {
-        userId,
+        userId: req.user.id,
         gameId,
         type: 'invite'
       }
@@ -136,15 +136,15 @@ const joinGame = async (req, res) => {
         {
           type: null
         },
-        { where: { userId, gameId } }
+        { where: { userId: req.user.id, gameId } }
       )
       //delete all other requests by the user
       await db.Request.destroy({
-        where: { userId, type: { [Op.not]: null } }
+        where: { userId: req.user.id, type: { [Op.not]: null } }
       })
     } else {
       await db.Request.create({
-        userId,
+        userId: req.user.id,
         gameId,
         type: 'join'
       })
