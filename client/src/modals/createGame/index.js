@@ -24,6 +24,7 @@ class CreateGame extends React.Component {
 
     if (res.status === 200) {
       await this.props.fetchUser()
+      if (this.props.successCallback) await this.props.successCallback()
       this.setState({ submitting: false })
       this.props.popModal()
       navigate('/game')

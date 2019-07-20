@@ -1,0 +1,36 @@
+.container {
+  padding: 5%;
+  margin: auto;
+  max-width: 620px;
+}
+.title {
+  display: flex;
+  align-items: center;
+}
+.checkIn {
+  color: green !important;
+  border: 1px solid green !important;
+}
+.actions {
+  margin-top: 1.5rem;
+  button {
+    margin-right: 1rem;
+  }
+}
+.games {
+  max-width: 370px;
+}
+.status {
+  margin: 1rem 0;
+  h4 {
+    display: inline;
+  }
+  h4:first-child {
+    margin-right: 2rem;
+  }
+}
+.checkedIn {
+  margin-left: 0.5rem;
+  font-size: 2rem !important;
+  color: green;
+}

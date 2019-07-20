@@ -2,6 +2,7 @@ import React from 'react'
 import store from '../../reducer'
 import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
+import { Link } from '@reach/router'
 
 import { updateUser, fetchVenues, showModal } from '../../actions'
 import axios from '../../services/axios'
@@ -45,7 +46,9 @@ class VenueInfo extends React.Component {
     return (
       <div className={styles.container}>
         <div className={styles.info}>
-          <h4>{venue.name}</h4>
+          <Link to={`/venues/${venue.id}`}>
+            <h4>{venue.name}</h4>
+          </Link>
           <p>{venue.address}</p>
 
           <div className={styles.actions}>

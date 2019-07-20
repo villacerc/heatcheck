@@ -1,11 +1,16 @@
 .container {
   display: flex;
+  box-shadow: rgba(135, 135, 135, 0.5) 0px 2px 4px 0px;
 }
 .info {
   width: 100%;
   padding: 10px;
+  a {
+    color: black;
+  }
   h4 {
     margin: 0;
+    margin-bottom: 0.3em;
   }
 }
 .actions {
