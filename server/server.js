@@ -20,6 +20,7 @@ app.post('/api/login', controllers.user.authenticate)
 
 //venue controllers
 app.get('/api/venues', controllers.venue.getVenues)
+app.post('/api/get-venue', controllers.venue.getVenue)
 
 //checkin controllers
 app.post('/api/checkin', authorize, controllers.checkin)
