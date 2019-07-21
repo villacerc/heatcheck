@@ -63,11 +63,9 @@ describe('POST /signup', () => {
       .post('/api/signup')
       .send(newUser)
       .expect(200)
-      .expect(res => {
-        const { user } = res.body
-        expect(user.id).toBeTruthy()
-        expect(user.displayName).toBe(newUser.displayName)
-        expect(user.email).toBe(newUser.email)
+      .expect(async res => {
+        const fetchedUsers = await db.User.findAll()
+        expect(fetchedUsers.length).toBe(users.length + 1)
       })
       .end(done)
   })
@@ -95,12 +93,6 @@ describe('POST /login', () => {
       .post('/api/login')
       .send(users[1])
       .expect(200)
-      .expect(res => {
-        const { user } = res.body
-        expect(user.id).toBeTruthy()
-        expect(user.displayName).toBe(users[1].displayName)
-        expect(user.email).toBe(users[1].email)
-      })
       .end(done)
   })
 
@@ -179,7 +171,9 @@ describe('POST /checkin', () => {
         .send({ venueId: venues[0].id })
         .expect(200)
         .expect(async res => {
-          const { user } = res.body
+          const user = await db.User.scope('checkIn').findOne({
+            where: { id: users[0].id }
+          })
           expect(user.checkIn.venueId).toBe(venues[0].id)
 
           const venue = await db.Venue.scope('checkIns').findByPk(venues[0].id)

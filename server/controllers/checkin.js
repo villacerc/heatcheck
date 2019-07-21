@@ -5,10 +5,7 @@ module.exports = async (req, res) => {
       { venueId: req.body.venueId },
       { where: { userId: req.user.id } }
     )
-
-    const user = await db.User.scope('includeAll').findByPk(req.user.id)
-
-    return res.status(200).send({ user })
+    return res.status(200).send()
   } catch (e) {
     return res.status(400).send(e)
   }

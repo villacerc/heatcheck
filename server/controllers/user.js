@@ -23,7 +23,7 @@ const authenticate = (req, res, next) => {
         )
       }
 
-      return res.status(200).json({ user })
+      return res.status(200).send()
     })
   })(req, res, next)
 }
