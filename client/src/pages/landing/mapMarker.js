@@ -51,7 +51,7 @@ class MapMarker extends React.Component {
     })
   }
   render() {
-    const { venue, contentProps, checkedIn } = this.props
+    const { venue } = this.props
 
     return (
       <MarkerWithLabel
@@ -71,12 +71,7 @@ class MapMarker extends React.Component {
             placement="top-start"
             open={this.state.showPopper}
           >
-            <MarkerContent
-              closePopper={this.closePopper}
-              venue={venue}
-              checkedIn={checkedIn}
-              {...contentProps}
-            />
+            <MarkerContent closePopper={this.closePopper} venue={venue} />
           </Popper>
         </div>
       </MarkerWithLabel>

@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 
 import TextInput from '../../components/textInput'
 import axios from '../../services/axios'
-import { updateUser, popModal } from '../../actions'
+import { fetchUser, popModal } from '../../actions'
 
 import styles from './login.module.scss'
 
@@ -42,7 +42,7 @@ class Login extends React.Component {
     const res = await axios.post('/api/login', values)
 
     if (res.status == 200) {
-      this.props.updateUser(res.data.user)
+      this.props.fetchUser()
       this.handleClose()
     } else {
       this.setState({ flash: res.data.flash })
@@ -111,5 +111,5 @@ class Login extends React.Component {
 
 export default connect(
   null,
-  { updateUser, popModal }
+  { fetchUser, popModal }
 )(Login)

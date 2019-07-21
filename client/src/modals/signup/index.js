@@ -10,7 +10,7 @@ import { Formik } from 'formik'
 import TextInput from '../../components/textInput'
 import validationSchema from './validationSchema'
 import axios from '../../services/axios'
-import { updateUser, popModal } from '../../actions'
+import { fetchUser, popModal } from '../../actions'
 
 import styles from './signup.module.scss'
 
@@ -23,7 +23,7 @@ class Signup extends React.Component {
     const res = await axios.post('/api/signup', values)
 
     if (res.status === 200) {
-      this.props.updateUser(res.data.user)
+      this.props.fetchUser(res.data.user)
       this.handleClose()
     }
 
@@ -107,5 +107,5 @@ class Signup extends React.Component {
 
 export default connect(
   null,
-  { updateUser, popModal }
+  { fetchUser, popModal }
 )(Signup)

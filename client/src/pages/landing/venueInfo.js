@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
 import { Link } from '@reach/router'
 
-import { updateUser, fetchVenues, showModal } from '../../actions'
+import { fetchUser, fetchVenues, showModal } from '../../actions'
 import axios from '../../services/axios'
 
 import styles from './venueAndGame.module.scss'
@@ -22,7 +22,7 @@ class VenueInfo extends React.Component {
       venueId: this.props.venue.id
     })
     if (res.status === 200) {
-      await store.dispatch(updateUser(res.data.user))
+      await store.dispatch(fetchUser())
       store.dispatch(fetchVenues())
     }
   }

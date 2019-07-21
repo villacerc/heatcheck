@@ -11,7 +11,7 @@ import axios from 'axios'
 import { navigate } from '@reach/router'
 
 import PopperWrapper from './popperWrapper'
-import { showModal, updateUser } from '../actions'
+import { showModal, fetchUser } from '../actions'
 
 import styles from './topBar.module.scss'
 
@@ -29,9 +29,9 @@ class TopBar extends React.Component {
     navigate('/signup')
   }
   logOut = async () => {
-    const res = await axios.post('api/logout')
+    await axios.post('api/logout')
 
-    this.props.updateUser(res.data.user)
+    await this.props.fetchUser()
     this.setState({ showUserPopper: false })
   }
   renderButtons = () => {
@@ -97,5 +97,5 @@ const reduxProps = ({ user }) => {
 
 export default connect(
   reduxProps,
-  { showModal, updateUser }
+  { showModal, fetchUser }
 )(TopBar)
