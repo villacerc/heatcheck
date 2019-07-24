@@ -41,12 +41,12 @@ class Landing extends React.Component {
 
     return (
       <div>
-        {/* <GoogleMapWrapper
+        <GoogleMapWrapper
           googleMapURL={url}
           loadingElement={<div style={{ height: `100%` }} />}
           containerElement={<div className={styles.mapContainer} />}
           mapElement={<div style={{ height: `100%` }} />}
-        /> */}
+        />
         <SideMenu
           open={this.state.showSideMenu}
           hideCb={() => this.setState({ showSideMenu: false })}
