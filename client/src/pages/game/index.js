@@ -37,9 +37,12 @@ class Game extends React.Component {
       confirmCallback: callback
     })
   }
-  fetchGame = () => {
+  fetchGame = async () => {
+    if (this.props.gameId) {
+      return this.props.fetchGame(this.props.gameId)
+    }
     const user = this.props.user.payload
-    const state = user.createdGame ? '' : 'joined'
+    const state = user.createdGame ? 'created' : 'joined'
 
     this.props.fetchGame(state)
   }
@@ -64,13 +67,14 @@ class Game extends React.Component {
     }
   }
   render() {
+    console.log(this.props)
     if (!this.state.loaded) return null
 
     const game = this.props.game.payload
     const user = this.props.user.payload
 
-    const creator = game.userId === user.id
-    const joined = user.joinedGame && user.joinedGame.id === game.id
+    const creator = user && game.userId === user.id
+    const joined = user && user.joinedGame && user.joinedGame.id === game.id
 
     return (
       <div className={styles.container}>

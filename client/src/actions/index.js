@@ -39,11 +39,16 @@ export const fetchUser = () => async dispatch => {
 
 export const fetchGame = state => async dispatch => {
   dispatch({ type: 'FETCHING_GAME' })
+  let res = ''
 
-  const res =
-    state === 'joined'
-      ? await axios.get('/api/joined-game')
-      : await axios.get('/api/my-game')
+  if (state && isNaN(state)) {
+    res =
+      state === 'joined'
+        ? await axios.get('/api/joined-game')
+        : await axios.get('/api/my-game')
+  } else {
+    res = await axios.post('/api/get-game', { gameId: state })
+  }
 
   if (res.status == 200) {
     dispatch({ type: 'RECEIVE_GAME', payload: res.data.game })

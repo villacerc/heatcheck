@@ -66,7 +66,7 @@ class TopBar extends React.Component {
         <MenuList onClick={() => this.setState({ showUserPopper: false })}>
           <MenuItem>Profile</MenuItem>
           {(user.createdGame || user.joinedGame) && (
-            <MenuItem onClick={() => navigate('/game')}>My Game</MenuItem>
+            <MenuItem onClick={() => navigate('/my-game')}>My Game</MenuItem>
           )}
           <MenuItem onClick={this.logOut}>Log out</MenuItem>
         </MenuList>

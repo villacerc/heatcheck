@@ -31,6 +31,7 @@ app.post('/api/verify', authorize, controllers.verificationToken.verify)
 //game controllers
 app.post('/api/create-game', authorize, controllers.game.create)
 app.get('/api/games', controllers.game.getGames)
+app.post('/api/get-game', controllers.game.getGame)
 app.get('/api/my-game', authorize, controllers.game.myGame)
 app.get('/api/joined-game', authorize, controllers.game.joinedGame)
 app.delete('/api/my-game', authorize, controllers.game.deleteGame)

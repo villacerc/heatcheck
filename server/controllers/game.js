@@ -14,6 +14,18 @@ const create = async (req, res) => {
   }
 }
 
+const getGame = async (req, res) => {
+  try {
+    const game = await db.Game.scope('players', 'venue').findOne({
+      where: { id: req.body.gameId }
+    })
+
+    res.status(200).json({ game: game.toJSON('players') })
+  } catch (err) {
+    res.status(400).send({ err })
+  }
+}
+
 const getGames = async (req, res) => {
   try {
     const games = await db.Game.scope('players', 'venue').findAll()
@@ -221,6 +233,7 @@ sanitizeAll = gamesRaw => {
 module.exports = {
   create,
   getGames,
+  getGame,
   myGame,
   deleteGame,
   invitePlayer,

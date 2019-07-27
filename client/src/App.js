@@ -22,7 +22,8 @@ class App extends Component {
         <div className="app-body">
           <Router>
             <Landing path="/" />
-            <Game path="/game" />
+            <Game path="/my-game" />
+            <Game path="/games/:gameId" />
             <Venue path="/venues/:venueId" />
             <NotFound default />
           </Router>

@@ -27,7 +27,7 @@ class CreateGame extends React.Component {
       if (this.props.successCallback) await this.props.successCallback()
       this.setState({ submitting: false })
       this.props.popModal()
-      navigate('/game')
+      navigate('/my-game')
     }
   }
   handleClose = () => {
