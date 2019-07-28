@@ -4,13 +4,16 @@ import { connect } from 'react-redux'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { Link } from '@reach/router'
 
-import { fetchUser } from '../actions'
+import { fetchUser, showModal } from '../actions'
 import axios from '../services/axios'
 
 import styles from '../pages/landing/venueAndGame.module.scss'
 
 class GameInfo extends React.Component {
   joinGame = async () => {
+    if (!this.props.user) {
+      return this.props.showModal('login')
+    }
     await axios.post('/api/join-game', { gameId: this.props.game.id })
     this.props.fetchUser()
   }
@@ -68,5 +71,5 @@ const reduxState = ({ user }) => {
 
 export default connect(
   reduxState,
-  { fetchUser }
+  { fetchUser, showModal }
 )(GameInfo)
