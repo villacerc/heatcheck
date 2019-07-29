@@ -15,14 +15,6 @@ const authenticate = (req, res, next) => {
         return res.status(400).send({ flash: err })
       }
 
-      //check user in
-      if (req.body.venueId) {
-        await db.CheckIn.update(
-          { venueId: req.body.venueId },
-          { where: { userId: user.id } }
-        )
-      }
-
       return res.status(200).send()
     })
   })(req, res, next)

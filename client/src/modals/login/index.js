@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 
 import TextInput from '../../components/textInput'
 import axios from '../../services/axios'
-import { fetchUser, popModal } from '../../actions'
+import { updateUser, popModal, fetchVenues, showModal } from '../../actions'
 
 import styles from './login.module.scss'
 
@@ -30,24 +30,34 @@ class Login extends React.Component {
   handleClose = () => {
     this.props.popModal()
   }
-  handleLogin = async (values, actions) => {
+  handleLogin = async values => {
     this.setState({ flash: false })
     this.setState({ loading: true })
-
-    if (this.props.venueId) {
-      //check user in to venue
-      values.venueId = this.props.venueId
-    }
 
     const res = await axios.post('/api/login', values)
 
     if (res.status == 200) {
-      this.props.fetchUser()
+      if (this.props.checkIn) {
+        await axios.post('/api/checkin', {
+          venueId: this.props.venueId
+        })
+        this.props.updateUser()
+        this.props.fetchVenues()
+        return this.handleClose()
+      } else if (this.props.createGame) {
+        this.props.updateUser()
+        await this.handleClose()
+
+        return this.props.showModal('create game', {
+          venueId: this.props.venueId
+        })
+      }
+
+      this.props.updateUser()
       this.handleClose()
     } else {
       this.setState({ flash: res.data.flash })
     }
-    this.setState({ loading: false })
   }
   render() {
     return (
@@ -111,5 +121,5 @@ class Login extends React.Component {
 
 export default connect(
   null,
-  { fetchUser, popModal }
+  { updateUser, popModal, fetchVenues, showModal }
 )(Login)

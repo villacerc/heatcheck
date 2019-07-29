@@ -7,7 +7,7 @@ import Fab from '@material-ui/core/Fab'
 
 import axios from '../../services/axios'
 import PlayerItem from '../../components/playerItem'
-import { showModal, fetchUser, fetchGame } from '../../actions'
+import { showModal, updateUser, fetchGame } from '../../actions'
 
 import styles from './game.module.scss'
 
@@ -49,7 +49,7 @@ class Game extends React.Component {
   deleteGame = async () => {
     const res = await axios.delete('/api/my-game')
     if (res.status == 200) {
-      await this.props.fetchUser()
+      await this.props.updateUser()
       navigate('/')
       this.props.enqueueSnackbar('Successfully deleted game.', {
         variant: 'success'
@@ -60,14 +60,13 @@ class Game extends React.Component {
     const res = await axios.post('/api/leave-game')
     if (res.status == 200) {
       navigate('/')
-      this.props.fetchUser()
+      this.props.updateUser()
       this.props.enqueueSnackbar('Successfully left game.', {
         variant: 'success'
       })
     }
   }
   render() {
-    console.log(this.props)
     if (!this.state.loaded) return null
 
     const game = this.props.game.payload
@@ -154,6 +153,6 @@ const reduxStates = ({ user, game }) => {
 export default withSnackbar(
   connect(
     reduxStates,
-    { showModal, fetchUser, fetchGame }
+    { showModal, updateUser, fetchGame }
   )(Game)
 )

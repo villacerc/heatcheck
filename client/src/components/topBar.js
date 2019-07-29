@@ -4,14 +4,13 @@ import Avatar from '@material-ui/core/Avatar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
-import Icon from '@material-ui/core/Icon'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import axios from 'axios'
 import { navigate } from '@reach/router'
 
 import PopperWrapper from './popperWrapper'
-import { showModal, fetchUser } from '../actions'
+import { showModal, updateUser, fetchGames, fetchVenues } from '../actions'
 
 import styles from './topBar.module.scss'
 
@@ -31,8 +30,12 @@ class TopBar extends React.Component {
   logOut = async () => {
     await axios.post('api/logout')
 
-    await this.props.fetchUser()
     this.setState({ showUserPopper: false })
+
+    this.props.fetchGames()
+    this.props.fetchVenues()
+    this.props.updateUser()
+    navigate('/')
   }
   renderButtons = () => {
     if (this.props.user.payload) {
@@ -97,5 +100,5 @@ const reduxProps = ({ user }) => {
 
 export default connect(
   reduxProps,
-  { showModal, fetchUser }
+  { showModal, updateUser, fetchGames, fetchVenues }
 )(TopBar)

@@ -8,7 +8,7 @@ import Icon from '@material-ui/core/Icon'
 import axios from '../../services/axios'
 import GameInfo from '../../components/gameInfo'
 import PlayerItem from '../../components/playerItem'
-import { showModal, fetchUser, fetchGame } from '../../actions'
+import { showModal, updateUser, fetchGame } from '../../actions'
 
 import styles from './venue.module.scss'
 
@@ -35,7 +35,7 @@ class Game extends React.Component {
       venueId: this.state.venue.id
     })
     if (res.status === 200) {
-      await this.props.fetchUser()
+      await this.props.updateUser()
       this.fetchVenue()
     }
   }
@@ -105,5 +105,5 @@ const reduxStates = ({ user, game }) => {
 
 export default connect(
   reduxStates,
-  { showModal, fetchUser, fetchGame }
+  { showModal, updateUser, fetchGame }
 )(Game)

@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
 import { Link } from '@reach/router'
 
-import { fetchUser, fetchVenues, showModal } from '../../actions'
+import { updateUser, fetchVenues, showModal } from '../../actions'
 import axios from '../../services/axios'
 
 import styles from './venueAndGame.module.scss'
@@ -15,14 +15,14 @@ class VenueInfo extends React.Component {
     if (!user) {
       if (this.props.closePopper) this.props.closePopper()
       return store.dispatch(
-        showModal('login', { venueId: this.props.venue.id })
+        showModal('login', { checkIn: true, venueId: this.props.venue.id })
       )
     }
     const res = await axios.post('/api/checkin', {
       venueId: this.props.venue.id
     })
     if (res.status === 200) {
-      await store.dispatch(fetchUser())
+      await store.dispatch(updateUser())
       store.dispatch(fetchVenues())
     }
   }
@@ -32,7 +32,9 @@ class VenueInfo extends React.Component {
     if (this.props.closePopper) this.props.closePopper()
 
     if (!user) {
-      return store.dispatch(showModal('login'))
+      return store.dispatch(
+        showModal('login', { createGame: true, venueId: this.props.venue.id })
+      )
     }
     return store.dispatch(
       showModal('create game', { venueId: this.props.venue.id })

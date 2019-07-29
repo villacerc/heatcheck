@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 
 import axios from '../services/axios'
-import { fetchGame, fetchUser } from '../actions'
+import { fetchGame, updateUser } from '../actions'
 
 import styles from './gameItem.module.scss'
 
@@ -16,7 +16,7 @@ class GameItem extends React.Component {
     })
 
     if (res.status == 200) {
-      this.props.fetchUser()
+      this.props.updateUser()
     }
   }
   render() {
@@ -43,5 +43,5 @@ const reduxStates = ({ user }) => {
 
 export default connect(
   reduxStates,
-  { fetchGame, fetchUser }
+  { fetchGame, updateUser }
 )(GameItem)

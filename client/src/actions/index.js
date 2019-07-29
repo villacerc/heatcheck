@@ -37,6 +37,15 @@ export const fetchUser = () => async dispatch => {
   })
 }
 
+export const updateUser = () => async dispatch => {
+  const res = await axios.get('/api/user')
+
+  dispatch({
+    type: 'UPDATE_USER',
+    payload: res.data.user
+  })
+}
+
 export const fetchGame = state => async dispatch => {
   dispatch({ type: 'FETCHING_GAME' })
   let res = ''

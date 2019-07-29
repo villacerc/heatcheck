@@ -11,7 +11,7 @@ import { Formik } from 'formik'
 import TextInput from '../../components/textInput'
 import validationSchema from './validationSchema'
 import axios from '../../services/axios'
-import { popModal, fetchUser, fetchGames } from '../../actions'
+import { popModal, updateUser, fetchGames } from '../../actions'
 
 class CreateGame extends React.Component {
   state = {
@@ -23,7 +23,7 @@ class CreateGame extends React.Component {
     const res = await axios.post('/api/create-game', values)
 
     if (res.status === 200) {
-      await this.props.fetchUser()
+      await this.props.updateUser()
       if (this.props.successCallback) await this.props.successCallback()
       this.setState({ submitting: false })
       this.props.popModal()
@@ -88,5 +88,5 @@ class CreateGame extends React.Component {
 
 export default connect(
   null,
-  { popModal, fetchUser, fetchGames }
+  { popModal, updateUser, fetchGames }
 )(CreateGame)
