@@ -3,6 +3,7 @@ import store from '../../reducer'
 import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
 import { Link } from '@reach/router'
+import classNames from 'classnames'
 
 import { updateUser, fetchVenues, showModal } from '../../actions'
 import axios from '../../services/axios'
@@ -46,7 +47,12 @@ class VenueInfo extends React.Component {
 
     const checkedIn = venue.id == (user && user.checkIn.venueId)
     return (
-      <div className={styles.container}>
+      <div
+        className={classNames(
+          styles.container,
+          checkedIn ? styles.container_checkedIn : ''
+        )}
+      >
         <div className={styles.info}>
           <Link to={`/venues/${venue.id}`}>
             <h4>{venue.name}</h4>

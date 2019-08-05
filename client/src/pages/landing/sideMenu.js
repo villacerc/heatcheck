@@ -32,7 +32,8 @@ class SideMenu extends React.Component {
   }
   renderGames = () => {
     const { games } = this.props
-    if (games && !games[0]) return 'No games found'
+    if (games && !games[0])
+      return <div style={{ textAlign: 'center' }}>No games found</div>
     return (
       games &&
       games.map(game => {

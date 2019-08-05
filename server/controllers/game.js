@@ -74,6 +74,14 @@ const joinedGame = async (req, res) => {
 
 const deleteGame = async (req, res) => {
   try {
+    //check user out
+    await db.CheckIn.update(
+      { venueId: null },
+      {
+        where: { userId: req.user.id }
+      }
+    )
+
     const game = await db.Game.findOne({ where: { userId: req.user.id } })
     await game.destroy()
 
@@ -85,6 +93,14 @@ const deleteGame = async (req, res) => {
 
 const leaveGame = async (req, res) => {
   try {
+    //check user out
+    await db.CheckIn.update(
+      { venueId: null },
+      {
+        where: { userId: req.user.id }
+      }
+    )
+
     await db.Request.destroy({
       where: { userId: req.user.id }
     })
@@ -98,6 +114,15 @@ const leaveGame = async (req, res) => {
 acceptRequest = async (req, res, type) => {
   const { userId, gameId } = req.body
   try {
+    //check user in to the venue
+    const game = await db.Game.findByPk(gameId)
+    await db.CheckIn.update(
+      {
+        venueId: game.venueId
+      },
+      { where: { userId } }
+    )
+
     await db.Request.update(
       {
         type: null
