@@ -28,14 +28,28 @@ class TopBar extends React.Component {
     navigate('/signup')
   }
   logOut = async () => {
-    await axios.post('api/logout')
-
     this.setState({ showUserPopper: false })
 
-    this.props.fetchGames()
-    this.props.fetchVenues()
-    this.props.updateUser()
-    navigate('/')
+    const user = this.props.user.payload
+
+    const confirm = async () => {
+      await axios.post('api/logout')
+
+      this.props.fetchGames()
+      this.props.fetchVenues()
+      this.props.updateUser()
+      navigate('/')
+    }
+
+    if (user.createdGame || user.joinedGame) {
+      this.props.showModal('dialog', {
+        type: 'confirmation',
+        body: 'This will cause you to abandon your current game. Continue?',
+        confirmCallback: confirm
+      })
+    } else {
+      confirm()
+    }
   }
   renderButtons = () => {
     if (this.props.user.payload) {

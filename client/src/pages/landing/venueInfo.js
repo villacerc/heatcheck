@@ -5,7 +5,7 @@ import Icon from '@material-ui/core/Icon'
 import { Link } from '@reach/router'
 import classNames from 'classnames'
 
-import { updateUser, fetchVenues, showModal } from '../../actions'
+import { updateUser, fetchVenues, showModal, popModal } from '../../actions'
 import axios from '../../services/axios'
 
 import styles from './venueAndGame.module.scss'
@@ -18,7 +18,10 @@ class VenueInfo extends React.Component {
       return store.dispatch(
         showModal('login', { checkIn: true, venueId: this.props.venue.id })
       )
+    } else if (user.createdGame || user.joinedGame) {
+      return this.showConfirmationDialog('checkin')
     }
+
     const res = await axios.post('/api/checkin', {
       venueId: this.props.venue.id
     })
@@ -36,9 +39,34 @@ class VenueInfo extends React.Component {
       return store.dispatch(
         showModal('login', { createGame: true, venueId: this.props.venue.id })
       )
+    } else if (user.createdGame || user.joinedGame) {
+      return this.showConfirmationDialog()
     }
+
     return store.dispatch(
       showModal('create game', { venueId: this.props.venue.id })
+    )
+  }
+  showConfirmationDialog = action => {
+    const confirmCallback = async () => {
+      const user = store.getState().user.payload
+
+      user.createdGame
+        ? await axios.delete('/api/my-game')
+        : await axios.post('/api/leave-game')
+
+      await store.dispatch(updateUser())
+      store.dispatch(popModal())
+
+      action === 'checkin' ? this.checkIn() : this.showCreateModal()
+    }
+    store.dispatch(
+      showModal('dialog', {
+        type: 'confirmation',
+        body: 'This will cause you to abandon your current game. Continue?',
+        disableCloseInCallback: true,
+        confirmCallback
+      })
     )
   }
   render() {

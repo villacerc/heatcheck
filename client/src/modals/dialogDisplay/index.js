@@ -18,11 +18,13 @@ class DialogDisplay extends React.Component {
 
     await this.types[this.props.type].callback()
 
-    // turn popModal to a promise so it gets popped after callback finishes
-    await new Promise((resolve, reject) => {
-      setTimeout(() => resolve(), 0)
-    })
-    this.props.popModal()
+    if (!this.props.disableCloseInCallback) {
+      // turn popModal to a promise so it gets popped after callback finishes
+      await new Promise((resolve, reject) => {
+        setTimeout(() => resolve(), 0)
+      })
+      this.props.popModal()
+    }
   }
   confirmFooter = () => {
     return (
