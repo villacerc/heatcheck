@@ -7,6 +7,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { connect } from 'react-redux'
+import { navigate } from '@reach/router'
 
 import TextInput from '../../components/textInput'
 import axios from '../../services/axios'
@@ -26,7 +27,6 @@ class Login extends React.Component {
     loading: false,
     flash: false
   }
-
   handleClose = () => {
     this.props.popModal()
   }
@@ -53,8 +53,14 @@ class Login extends React.Component {
         })
       }
 
-      this.props.updateUser()
+      await this.props.updateUser()
       this.handleClose()
+      if (
+        this.props.location &&
+        this.props.location.pathname === '/signed-out'
+      ) {
+        navigate('/')
+      }
     } else {
       this.setState({ flash: res.data.flash })
     }

@@ -7,6 +7,7 @@ import TopBar from './components/topBar'
 import Landing from './pages/landing'
 import Game from './pages/game'
 import Venue from './pages/venue'
+import SignedOut from './pages/signedOut'
 import NotFound from './pages/notFound'
 import ModalConductor from './modals'
 
@@ -25,6 +26,7 @@ class App extends Component {
             <Game path="/my-game" />
             <Game path="/games/:gameId" />
             <Venue path="/venues/:venueId" />
+            <SignedOut path="/signed-out" />
             <NotFound default />
           </Router>
         </div>

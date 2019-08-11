@@ -37,8 +37,8 @@ class TopBar extends React.Component {
 
       this.props.fetchGames()
       this.props.fetchVenues()
-      this.props.updateUser()
-      navigate('/')
+      await this.props.updateUser()
+      navigate('/signed-out')
     }
 
     if (user.createdGame || user.joinedGame) {

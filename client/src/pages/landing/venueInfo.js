@@ -13,8 +13,10 @@ import styles from './venueAndGame.module.scss'
 class VenueInfo extends React.Component {
   checkIn = async () => {
     const user = store.getState().user.payload
+
+    if (this.props.closePopper) this.props.closePopper()
+
     if (!user) {
-      if (this.props.closePopper) this.props.closePopper()
       return store.dispatch(
         showModal('login', { checkIn: true, venueId: this.props.venue.id })
       )
