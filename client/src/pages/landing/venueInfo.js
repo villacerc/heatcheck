@@ -5,25 +5,14 @@ import Icon from '@material-ui/core/Icon'
 import { Link } from '@reach/router'
 import classNames from 'classnames'
 
-import { updateUser, fetchVenues, showModal, popModal } from '../../actions'
+import { abandonGameDialog } from '../../helpers'
+import { updateUser, fetchVenues, showModal } from '../../actions'
 import axios from '../../services/axios'
 
 import styles from './venueAndGame.module.scss'
 
 class VenueInfo extends React.Component {
   checkIn = async () => {
-    const user = store.getState().user.payload
-
-    if (this.props.closePopper) this.props.closePopper()
-
-    if (!user) {
-      return store.dispatch(
-        showModal('login', { checkIn: true, venueId: this.props.venue.id })
-      )
-    } else if (user.createdGame || user.joinedGame) {
-      return this.showConfirmationDialog('checkin')
-    }
-
     const res = await axios.post('/api/checkin', {
       venueId: this.props.venue.id
     })
@@ -33,49 +22,28 @@ class VenueInfo extends React.Component {
     }
   }
   showCreateModal = () => {
+    store.dispatch(showModal('create game', { venueId: this.props.venue.id }))
+  }
+  handleAction = actionCallback => {
     const user = store.getState().user.payload
 
     if (this.props.closePopper) this.props.closePopper()
 
     if (!user) {
       return store.dispatch(
-        showModal('login', { createGame: true, venueId: this.props.venue.id })
+        showModal('login', { checkIn: true, venueId: this.props.venue.id })
       )
     } else if (user.createdGame || user.joinedGame) {
-      return this.showConfirmationDialog()
+      return abandonGameDialog(actionCallback)
     }
 
-    return store.dispatch(
-      showModal('create game', { venueId: this.props.venue.id })
-    )
-  }
-  showConfirmationDialog = action => {
-    const confirmCallback = async () => {
-      const user = store.getState().user.payload
-
-      user.createdGame
-        ? await axios.delete('/api/my-game')
-        : await axios.post('/api/leave-game')
-
-      await store.dispatch(updateUser())
-      store.dispatch(popModal())
-
-      action === 'checkin' ? this.checkIn() : this.showCreateModal()
-    }
-    store.dispatch(
-      showModal('dialog', {
-        type: 'confirmation',
-        body: 'This will cause you to abandon your current game. Continue?',
-        disableCloseInCallback: true,
-        confirmCallback
-      })
-    )
+    actionCallback()
   }
   render() {
     const user = store.getState().user.payload
     const { venue } = this.props
 
-    const checkedIn = venue.id == (user && user.checkIn.venueId)
+    const checkedIn = venue.id === (user && user.checkIn.venueId)
     return (
       <div
         className={classNames(
@@ -97,13 +65,13 @@ class VenueInfo extends React.Component {
                 classes={{ root: styles.checkIn }}
                 variant="outlined"
                 size="small"
-                onClick={this.checkIn}
+                onClick={() => this.handleAction(this.checkIn)}
               >
                 Check-in
               </Button>
             )}
             <Button
-              onClick={this.showCreateModal}
+              onClick={() => this.handleAction(this.showCreateModal)}
               variant="outlined"
               color="primary"
               size="small"

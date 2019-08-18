@@ -1,13 +1,11 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
-import { navigate } from '@reach/router'
-import Fab from '@material-ui/core/Fab'
 import Icon from '@material-ui/core/Icon'
 
+import { abandonGameDialog } from '../../helpers'
 import axios from '../../services/axios'
 import GameInfo from '../../components/gameInfo'
-import PlayerItem from '../../components/playerItem'
 import { showModal, updateUser, fetchGame } from '../../actions'
 
 import styles from './venue.module.scss'
@@ -27,10 +25,6 @@ class Game extends React.Component {
     this.setState({ venue: res.data.venue })
   }
   checkIn = async () => {
-    const { user } = this.props
-    if (!user)
-      return this.props.showModal('login', { venueId: this.state.venue.id })
-
     const res = await axios.post('/api/checkin', {
       venueId: this.state.venue.id
     })
@@ -40,12 +34,26 @@ class Game extends React.Component {
     }
   }
   createGame = () => {
-    const { user } = this.props
-    if (!user) return this.props.showModal('login')
     this.props.showModal('create game', {
       venueId: this.state.venue.id,
       successCallback: this.fetchVenue
     })
+  }
+  handleAction = actionCallback => {
+    const { user } = this.props
+
+    if (this.props.closePopper) this.props.closePopper()
+
+    if (!user) {
+      return this.props.showModal('login', {
+        checkIn: true,
+        venueId: this.props.venue.id
+      })
+    } else if (user.createdGame || user.joinedGame) {
+      return abandonGameDialog(actionCallback)
+    }
+
+    actionCallback()
   }
   render() {
     if (!this.state.venue) return null
@@ -66,13 +74,17 @@ class Game extends React.Component {
           <p>{venue.address}</p>
         </div>
         <div className={styles.actions}>
-          <Button onClick={this.createGame} variant="outlined" color="primary">
+          <Button
+            onClick={() => this.handleAction(this.createGame)}
+            variant="outlined"
+            color="primary"
+          >
             Create Game
           </Button>
           {!checkedIn && (
             <Button
               classes={{ root: styles.checkIn }}
-              onClick={this.checkIn}
+              onClick={() => this.handleAction(this.checkIn)}
               variant="outlined"
               color="primary"
             >
