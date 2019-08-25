@@ -35,12 +35,13 @@ const signup = async (req, res) => {
     //pick random color
     const i = Math.floor(Math.random() * bgColors.length - 1)
 
-    await db.User.create({ ...req.body, color: bgColors[i] })
-    // const verification = await db.VerificationToken.create({
-    //   userId: user.id,
-    //   token: crypto({ length: 5 })
-    // })
-    // sendVerificationEmail(user.email, verification.token)
+    const user = await db.User.create({ ...req.body, color: bgColors[i] })
+    const verification = await db.VerificationToken.create({
+      userId: user.id,
+      token: crypto({ length: 5 })
+    })
+    sendVerificationEmail(user.email, verification.token)
+
     authenticate(req, res)
   } catch (error) {
     if (error.name === 'SequelizeUniqueConstraintError') {
