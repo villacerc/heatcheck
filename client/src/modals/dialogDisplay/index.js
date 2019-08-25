@@ -46,6 +46,15 @@ class DialogDisplay extends React.Component {
       </DialogActions>
     )
   }
+  defaultFooter = () => {
+    return (
+      <DialogActions>
+        <Button onClick={this.props.popModal} color="primary">
+          Continue
+        </Button>
+      </DialogActions>
+    )
+  }
   types = {
     confirmation: {
       callback: this.props.confirmCallback,
@@ -56,7 +65,9 @@ class DialogDisplay extends React.Component {
     return (
       <Dialog open={true}>
         <DialogContent>{this.props.body}</DialogContent>
-        {this.types[this.props.type].footer()}
+        {this.props.type
+          ? this.types[this.props.type].footer()
+          : this.defaultFooter()}
       </Dialog>
     )
   }

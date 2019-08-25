@@ -3,7 +3,7 @@ const express = require('express')
 
 require('./db/sequelize')
 require('./services/passport')
-require('./jobs')
+// require('./jobs')
 const controllers = require('./controllers')
 const authorize = require('./middlewares/authorize')
 
@@ -26,7 +26,7 @@ app.post('/api/get-venue', controllers.venue.getVenue)
 app.post('/api/checkin', authorize, controllers.checkin)
 
 //verificationToken controllers
-app.post('/api/verify', authorize, controllers.verificationToken.verify)
+app.post('/api/verify', controllers.verificationToken.verify)
 
 //game controllers
 app.post('/api/create-game', authorize, controllers.game.create)

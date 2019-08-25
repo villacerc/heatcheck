@@ -8,6 +8,7 @@ import Landing from './pages/landing'
 import Game from './pages/game'
 import Venue from './pages/venue'
 import SignedOut from './pages/signedOut'
+import Verify from './pages/verify'
 import NotFound from './pages/notFound'
 import ModalConductor from './modals'
 
@@ -27,6 +28,7 @@ class App extends Component {
             <Game path="/games/:gameId" />
             <Venue path="/venues/:venueId" />
             <SignedOut path="/signed-out" />
+            <Verify path="/verify" />
             <NotFound default />
           </Router>
         </div>

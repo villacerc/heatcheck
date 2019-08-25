@@ -16,14 +16,20 @@ const verify = async (req, res) => {
         //update user
         const updatedUser = await user.update({ isVerified: true })
         if (updatedUser) {
+          //login the user
+          req.logIn(user, async err => {
+            if (err) {
+              throw { status: 403, msg: 'Login failed' }
+            }
+          })
           return res
-            .status(403)
+            .status(200)
             .json(`User with ${user.email} has been verified`)
         } else {
           throw { status: 403, msg: 'Verification failed' }
         }
       } else {
-        throw { status: 404, msg: 'Token expired' }
+        throw { status: 404, msg: 'Token invalid or expired' }
       }
     } else {
       throw { status: 404, msg: 'Email not found' }
