@@ -68,7 +68,13 @@ class TopBar extends React.Component {
     return (
       <div>
         <Button onClick={this.showLogin}>Login</Button>
-        <Button onClick={this.showSignup}>Sign Up</Button>
+        <Button
+          variant="outlined"
+          style={{ marginLeft: '.5rem', borderColor: 'white' }}
+          onClick={this.showSignup}
+        >
+          Sign Up
+        </Button>
       </div>
     )
   }

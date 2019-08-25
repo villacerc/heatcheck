@@ -6,6 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import { Formik } from 'formik'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 import TextInput from '../../components/textInput'
 import validationSchema from './validationSchema'
@@ -16,7 +17,8 @@ import styles from './signup.module.scss'
 
 class Signup extends React.Component {
   state = {
-    submitting: false
+    submitting: false,
+    captchaValue: null
   }
   submit = async values => {
     this.setState({ submitting: true })
@@ -32,6 +34,7 @@ class Signup extends React.Component {
   handleClose = () => {
     this.props.popModal()
   }
+
   render() {
     const values = {
       displayName: '',
@@ -39,6 +42,7 @@ class Signup extends React.Component {
       confirmPassword: '',
       password: ''
     }
+
     return (
       <Dialog
         classes={{ paper: styles.paper }}
@@ -78,6 +82,12 @@ class Signup extends React.Component {
                     type="password"
                     {...props}
                   />
+                  <div style={{ marginTop: '1rem' }}>
+                    <ReCAPTCHA
+                      sitekey="6Ld3y7QUAAAAAMMEx2Xdr044pBxGf5uhHpTtxMht"
+                      onChange={value => this.setState({ captchaValue: value })}
+                    />
+                  </div>
                 </DialogContent>
                 <DialogActions>
                   <Button
@@ -91,7 +101,11 @@ class Signup extends React.Component {
                   <Button
                     type="submit"
                     color="primary"
-                    disabled={!props.isValid || this.state.submitting}
+                    disabled={
+                      !props.isValid ||
+                      !this.state.captchaValue ||
+                      this.state.submitting
+                    }
                   >
                     Submit
                   </Button>

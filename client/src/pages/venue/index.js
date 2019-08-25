@@ -47,7 +47,7 @@ class Game extends React.Component {
     if (!user) {
       return this.props.showModal('login', {
         checkIn: true,
-        venueId: this.props.venue.id
+        venueId: this.state.venue.id
       })
     } else if (user.createdGame || user.joinedGame) {
       return abandonGameDialog(actionCallback)
