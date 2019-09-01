@@ -42,7 +42,13 @@ class Landing extends React.Component {
     return (
       <div>
         <GoogleMapWrapper
-          googleMapURL={url}
+          center={
+            this.props.center || {
+              lat: 49.1785,
+              lng: -123.12789
+            }
+          }
+          googleMapURL={url2}
           loadingElement={<div style={{ height: `100%` }} />}
           containerElement={<div className={styles.mapContainer} />}
           mapElement={<div style={{ height: `100%` }} />}
@@ -57,8 +63,13 @@ class Landing extends React.Component {
   }
 }
 
-const stateToProps = ({ venues, user, games }) => {
-  return { venues, user: user.payload, games }
+const stateToProps = ({ venues, user, games, googleMap }) => {
+  return {
+    venues,
+    user: user.payload,
+    games,
+    center: googleMap.center
+  }
 }
 
 export default connect(

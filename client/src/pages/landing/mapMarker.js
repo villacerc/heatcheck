@@ -3,7 +3,9 @@ import React from 'react'
 import MarkerWithLabel from 'react-google-maps/lib/components/addons/MarkerWithLabel'
 import Popper from '@material-ui/core/Popper'
 import classNames from 'classnames'
+import store from '../../reducer'
 
+import { setCenteredVenue } from '../../actions'
 import MarkerContent from './markerContent'
 
 import styles from './mapMarker.module.scss'
@@ -12,7 +14,8 @@ class MapMarker extends React.Component {
   state = {
     showPopper: false,
     popperEntered: false,
-    className: this.props.checkedIn ? styles.bubbleCheckedIn : ''
+    className: this.props.checkedIn ? styles.bubbleCheckedIn : '',
+    centeredVenue: {}
   }
   timeout = null
   componentDidUpdate(prevProps) {
@@ -23,10 +26,34 @@ class MapMarker extends React.Component {
         this.setState({ className: '' })
       }
     }
+
+    this.setCenteredVenue()
+  }
+  setCenteredVenue = () => {
+    const { centeredVenue } = store.getState().googleMap
+
+    if (this.state.centeredVenue.id !== centeredVenue.id) {
+      this.setState({ centeredVenue }, this.shouldShowPopper)
+    }
+  }
+  shouldShowPopper = () => {
+    const { centeredVenue } = this.state
+    const { venue } = this.props
+
+    if (centeredVenue.id === venue.id) {
+      setTimeout(this.showPopper, 0)
+    } else {
+      this.closePopper()
+    }
   }
   onMouseOver = () => {
     clearTimeout(this.timeout)
-    this.setState({ showPopper: true, className: styles.bubbleLight })
+    this.showPopper()
+
+    const { centeredVenue } = store.getState().googleMap
+    if (centeredVenue.id) {
+      store.dispatch(setCenteredVenue({}))
+    }
   }
   onMouseOut = e => {
     //hide popper and remove highlight if not inside popper
@@ -44,6 +71,9 @@ class MapMarker extends React.Component {
       popperEntered: false
     })
     this.closePopper()
+  }
+  showPopper = () => {
+    this.setState({ showPopper: true, className: styles.bubbleLight })
   }
   closePopper = () => {
     this.setState({

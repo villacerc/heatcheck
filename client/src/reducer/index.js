@@ -7,13 +7,15 @@ import modals from './modals'
 import user from './user'
 import game from './game'
 import games from './games'
+import googleMap from './googleMap'
 
 const reducers = combineReducers({
   venues,
   modals,
   user,
   game,
-  games
+  games,
+  googleMap
 })
 
 const store = createStore(reducers, applyMiddleware(reduxThunk, logger))

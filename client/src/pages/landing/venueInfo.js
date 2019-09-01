@@ -6,7 +6,13 @@ import { Link } from '@reach/router'
 import classNames from 'classnames'
 
 import { abandonGameDialog } from '../../helpers'
-import { updateUser, fetchVenues, showModal } from '../../actions'
+import {
+  updateUser,
+  fetchVenues,
+  showModal,
+  setCenteredVenue,
+  setMapCenter
+} from '../../actions'
 import axios from '../../services/axios'
 
 import styles from './venueAndGame.module.scss'
@@ -39,6 +45,10 @@ class VenueInfo extends React.Component {
 
     actionCallback()
   }
+  centerMap = () => {
+    store.dispatch(setCenteredVenue(this.props.venue))
+    store.dispatch(setMapCenter(this.props.venue))
+  }
   render() {
     const user = store.getState().user.payload
     const { venue } = this.props
@@ -55,7 +65,14 @@ class VenueInfo extends React.Component {
           <Link to={`/venues/${venue.id}`}>
             <h4>{venue.name}</h4>
           </Link>
-          <p>{venue.address}</p>
+          <p>
+            {venue.address}
+            {this.props.hasOwnProperty('withMapLink') && (
+              <button className={styles.showMap} onClick={this.centerMap}>
+                show on map
+              </button>
+            )}
+          </p>
 
           <div className={styles.actions}>
             {checkedIn ? (

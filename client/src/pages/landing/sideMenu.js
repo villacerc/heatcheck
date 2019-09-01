@@ -24,7 +24,7 @@ class SideMenu extends React.Component {
       venues.map(venue => {
         return (
           <div key={venue.id} className={styles.row}>
-            <VenueInfo venue={venue} />
+            <VenueInfo venue={venue} withMapLink />
           </div>
         )
       })
