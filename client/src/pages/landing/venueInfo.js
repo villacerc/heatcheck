@@ -10,8 +10,8 @@ import {
   updateUser,
   fetchVenues,
   showModal,
-  setCenteredVenue,
-  setMapCenter
+  setMapCenter,
+  setSideMenuIsVisible
 } from '../../actions'
 import axios from '../../services/axios'
 
@@ -24,7 +24,8 @@ class VenueInfo extends React.Component {
     })
     if (res.status === 200) {
       await store.dispatch(updateUser())
-      store.dispatch(fetchVenues())
+      await store.dispatch(fetchVenues())
+      this.centerMap()
     }
   }
   showCreateModal = () => {
@@ -46,8 +47,12 @@ class VenueInfo extends React.Component {
     actionCallback()
   }
   centerMap = () => {
-    store.dispatch(setCenteredVenue(this.props.venue))
-    store.dispatch(setMapCenter(this.props.venue))
+    if (window.innerWidth < 600) {
+      store.dispatch(setSideMenuIsVisible(false))
+      setTimeout(() => store.dispatch(setMapCenter(this.props.venue)), 300)
+    } else {
+      store.dispatch(setMapCenter(this.props.venue))
+    }
   }
   render() {
     const user = store.getState().user.payload
@@ -66,7 +71,7 @@ class VenueInfo extends React.Component {
             <h4>{venue.name}</h4>
           </Link>
           <p>
-            {venue.address}
+            <span style={{ marginRight: '0.5rem' }}>{venue.address}</span>
             {this.props.hasOwnProperty('withMapLink') && (
               <button className={styles.showMap} onClick={this.centerMap}>
                 show on map

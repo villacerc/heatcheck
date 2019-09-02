@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withScriptjs, withGoogleMap, GoogleMap } from 'react-google-maps'
 
-import { setCenteredVenue } from '../../actions'
+import { setSelectedVenue } from '../../actions'
 
 import MapMarker from './mapMarker'
 
@@ -45,8 +45,8 @@ class GoogleMapWrapper extends React.Component {
     }
   ]
   resetCenteredValue = () => {
-    if (this.props.centeredVenue.id) {
-      this.props.setCenteredVenue({})
+    if (this.props.selectedVenue.id) {
+      this.props.setSelectedVenue({})
     }
   }
   render() {
@@ -73,12 +73,12 @@ class GoogleMapWrapper extends React.Component {
 }
 
 function reduxProps({ venues, user, googleMap }) {
-  return { venues, user: user.payload, centeredVenue: googleMap.centeredVenue }
+  return { venues, user: user.payload, selectedVenue: googleMap.selectedVenue }
 }
 
 GoogleMapWrapper = withScriptjs(withGoogleMap(GoogleMapWrapper))
 
 export default connect(
   reduxProps,
-  { setCenteredVenue }
+  { setSelectedVenue }
 )(GoogleMapWrapper)

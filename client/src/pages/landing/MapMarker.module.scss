@@ -103,6 +103,9 @@
 
 .large {
   width: 75px !important;
+  &:before {
+    left: 44px !important;
+  }
   &:after {
     left: 44px !important;
   }
@@ -110,6 +113,9 @@
 
 .medium {
   width: 38px !important;
+  &:before {
+    left: 24px !important;
+  }
   &:after {
     left: 24px !important;
   }

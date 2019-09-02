@@ -5,7 +5,7 @@ import Popper from '@material-ui/core/Popper'
 import classNames from 'classnames'
 import store from '../../reducer'
 
-import { setCenteredVenue } from '../../actions'
+import { setSelectedVenue } from '../../actions'
 import MarkerContent from './markerContent'
 
 import styles from './mapMarker.module.scss'
@@ -15,7 +15,7 @@ class MapMarker extends React.Component {
     showPopper: false,
     popperEntered: false,
     className: this.props.checkedIn ? styles.bubbleCheckedIn : '',
-    centeredVenue: {}
+    selectedVenue: {}
   }
   timeout = null
   componentDidUpdate(prevProps) {
@@ -27,20 +27,19 @@ class MapMarker extends React.Component {
       }
     }
 
-    this.setCenteredVenue()
+    this.setSelectedVenue()
   }
-  setCenteredVenue = () => {
-    const { centeredVenue } = store.getState().googleMap
-
-    if (this.state.centeredVenue.id !== centeredVenue.id) {
-      this.setState({ centeredVenue }, this.shouldShowPopper)
+  setSelectedVenue = () => {
+    const { selectedVenue } = store.getState().googleMap
+    if (this.state.selectedVenue.id !== selectedVenue.id) {
+      this.setState({ selectedVenue }, this.shouldShowPopper)
     }
   }
   shouldShowPopper = () => {
-    const { centeredVenue } = this.state
+    const { selectedVenue } = this.state
     const { venue } = this.props
 
-    if (centeredVenue.id === venue.id) {
+    if (selectedVenue.id === venue.id) {
       setTimeout(this.showPopper, 0)
     } else {
       this.closePopper()
@@ -49,11 +48,7 @@ class MapMarker extends React.Component {
   onMouseOver = () => {
     clearTimeout(this.timeout)
     this.showPopper()
-
-    const { centeredVenue } = store.getState().googleMap
-    if (centeredVenue.id) {
-      store.dispatch(setCenteredVenue({}))
-    }
+    store.dispatch(setSelectedVenue(this.props.venue))
   }
   onMouseOut = e => {
     //hide popper and remove highlight if not inside popper
@@ -102,12 +97,17 @@ class MapMarker extends React.Component {
       status
     }
   }
+  onClick = () => {
+    this.showPopper()
+    store.dispatch(setSelectedVenue(this.props.venue))
+  }
   render() {
     const { venue } = this.props
     const moreStyles = this.getMoreStyles()
 
     return (
       <MarkerWithLabel
+        onClick={this.onClick}
         onMouseOut={this.onMouseOut}
         onMouseOver={this.onMouseOver}
         position={{ lat: venue.lat, lng: venue.lng }}

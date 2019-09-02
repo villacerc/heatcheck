@@ -31,8 +31,7 @@ class Login extends React.Component {
     this.props.popModal()
   }
   handleLogin = async values => {
-    this.setState({ flash: false })
-    this.setState({ loading: true })
+    this.setState({ flash: false, loading: true })
 
     const res = await axios.post('/api/login', values)
 
@@ -62,7 +61,7 @@ class Login extends React.Component {
         navigate('/')
       }
     } else {
-      this.setState({ flash: res.data.flash })
+      this.setState({ flash: res.data.flash, loading: false })
     }
   }
   render() {

@@ -10,7 +10,13 @@ import axios from 'axios'
 import { navigate } from '@reach/router'
 
 import PopperWrapper from './popperWrapper'
-import { showModal, updateUser, fetchGames, fetchVenues } from '../actions'
+import {
+  showModal,
+  updateUser,
+  fetchGames,
+  fetchVenues,
+  setSelectedVenue
+} from '../actions'
 
 import styles from './topBar.module.scss'
 
@@ -99,15 +105,17 @@ class TopBar extends React.Component {
   render() {
     const { user } = this.props
     return (
-      <AppBar classes={{ root: styles.bar }}>
-        <Toolbar>
-          <div className={styles.brand}>
-            <h1 onClick={() => navigate('/')}>Pick And Roll</h1>
-          </div>
-          {!user.fetching && this.renderButtons()}
-        </Toolbar>
-        {this.userPopper()}
-      </AppBar>
+      <div onTouchStart={() => this.props.setSelectedVenue({})}>
+        <AppBar classes={{ root: styles.bar }}>
+          <Toolbar>
+            <div className={styles.brand}>
+              <h1 onClick={() => navigate('/')}>Pick And Roll</h1>
+            </div>
+            {!user.fetching && this.renderButtons()}
+          </Toolbar>
+          {this.userPopper()}
+        </AppBar>
+      </div>
     )
   }
 }
@@ -120,5 +128,5 @@ const reduxProps = ({ user }) => {
 
 export default connect(
   reduxProps,
-  { showModal, updateUser, fetchGames, fetchVenues }
+  { showModal, updateUser, fetchGames, fetchVenues, setSelectedVenue }
 )(TopBar)

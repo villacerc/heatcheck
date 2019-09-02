@@ -4,7 +4,9 @@ import { connect } from 'react-redux'
 import AppBar from '@material-ui/core/AppBar'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
+import UAParser from 'ua-parser-js'
 
+import { setSideMenuIsVisible, setSelectedVenue } from '../../actions'
 import VenueInfo from './venueInfo'
 import GameInfo from '../../components/gameInfo'
 
@@ -12,7 +14,23 @@ import styles from './sideMenu.module.scss'
 
 class SideMenu extends React.Component {
   state = {
-    tab: 0
+    tab: 0,
+    initialized: false
+  }
+  componentDidMount() {
+    this.initialize()
+  }
+  initialize = async () => {
+    const parser = new UAParser()
+
+    if (parser.getDevice().type === 'mobile') {
+      if (this.props.sideMenuIsVisible === null)
+        await this.props.setSideMenuIsVisible(false)
+    } else {
+      this.props.setSideMenuIsVisible(true)
+    }
+
+    this.setState({ initialized: true })
   }
   changeTab = (e, newValue) => {
     this.setState({ tab: newValue })
@@ -51,7 +69,15 @@ class SideMenu extends React.Component {
     }
     return this.renderGames()
   }
+  hideMenu = () => {
+    this.props.setSideMenuIsVisible(false)
+
+    const { selectedVenue } = this.props
+    this.props.setSelectedVenue({})
+    setTimeout(() => this.props.setSelectedVenue(selectedVenue), 300)
+  }
   render() {
+    if (!this.state.initialized) return null
     return (
       <Drawer
         classes={{
@@ -59,32 +85,48 @@ class SideMenu extends React.Component {
         }}
         variant="persistent"
         anchor="left"
-        open={true}
+        open={this.props.sideMenuIsVisible}
       >
-        <AppBar position="static" color="default">
-          <Tabs
-            value={this.state.tab}
-            onChange={this.changeTab}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="fullWidth"
-          >
-            <Tab label="Venues" />
-            <Tab
-              label={`Games (${
-                this.props.games ? this.props.games.length : '0'
-              })`}
-            />
-          </Tabs>
-        </AppBar>
-        <div className={styles.content}>{this.renderContent()}</div>
+        <div className={styles.hideMenu} onClick={this.hideMenu}>
+          <i className="fa fa-angle-left" />
+        </div>
+        <div
+          onTouchStart={() => this.props.setSelectedVenue({})}
+          style={{ position: 'relative', height: '100%' }}
+        >
+          <AppBar position="static" color="default">
+            <Tabs
+              value={this.state.tab}
+              onChange={this.changeTab}
+              indicatorColor="primary"
+              textColor="primary"
+              variant="fullWidth"
+            >
+              <Tab label="Venues" />
+              <Tab
+                label={`Games (${
+                  this.props.games ? this.props.games.length : '0'
+                })`}
+              />
+            </Tabs>
+          </AppBar>
+          <div className={styles.content}>{this.renderContent()}</div>
+        </div>
       </Drawer>
     )
   }
 }
 
-function mapStateToProps({ venues, games }) {
-  return { venues, games }
+function mapStateToProps({ venues, games, sideMenu, googleMap }) {
+  return {
+    venues,
+    games,
+    sideMenuIsVisible: sideMenu.isVisible,
+    selectedVenue: googleMap.selectedVenue
+  }
 }
 
-export default connect(mapStateToProps)(SideMenu)
+export default connect(
+  mapStateToProps,
+  { setSideMenuIsVisible, setSelectedVenue }
+)(SideMenu)

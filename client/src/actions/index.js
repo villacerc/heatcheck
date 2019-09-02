@@ -6,12 +6,17 @@ export const fetchVenues = () => async dispatch => {
   dispatch({ type: 'RECEIVE_VENUES', payload: res.data.venues })
 }
 
-export const setMapCenter = payload => async dispatch => {
-  dispatch({ type: 'SET_MAP_CENTER', payload })
+export const setSideMenuIsVisible = payload => async dispatch => {
+  dispatch({ type: 'SET_SIDEMENU_IS_VISIVBLE', payload })
 }
 
-export const setCenteredVenue = payload => async dispatch => {
-  dispatch({ type: 'SET_CENTERED_VENUE', payload })
+export const setMapCenter = payload => async dispatch => {
+  dispatch({ type: 'SET_MAP_CENTER', payload })
+  dispatch(setSelectedVenue(payload))
+}
+
+export const setSelectedVenue = payload => async dispatch => {
+  dispatch({ type: 'SET_SELECTED_VENUE', payload })
 }
 
 export const fetchGames = () => async dispatch => {

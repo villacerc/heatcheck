@@ -8,6 +8,7 @@ import user from './user'
 import game from './game'
 import games from './games'
 import googleMap from './googleMap'
+import sideMenu from './sideMenu'
 
 const reducers = combineReducers({
   venues,
@@ -15,7 +16,8 @@ const reducers = combineReducers({
   user,
   game,
   games,
-  googleMap
+  googleMap,
+  sideMenu
 })
 
 const store = createStore(reducers, applyMiddleware(reduxThunk, logger))

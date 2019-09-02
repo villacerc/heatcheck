@@ -1,8 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Fab from '@material-ui/core/Fab'
+import classNames from 'classnames'
 
-import { fetchVenues, showModal, fetchGames } from '../../actions'
+import {
+  fetchVenues,
+  showModal,
+  fetchGames,
+  setSideMenuIsVisible,
+  setSelectedVenue
+} from '../../actions'
 import GoogleMapWrapper from './googleMapWrapper'
 import SideMenu from './sideMenu'
 
@@ -10,7 +17,6 @@ import styles from './index.module.scss'
 
 class Landing extends React.Component {
   state = {
-    showSideMenu: false,
     venues: null
   }
   componentDidMount() {
@@ -39,8 +45,17 @@ class Landing extends React.Component {
       'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places'
     const url2 = process.env.REACT_APP_GOOGLE_MAP_URL
 
+    const { sideMenuIsVisible } = this.props
+
     return (
       <div>
+        <button
+          className={styles.showSideMenu}
+          onTouchStart={() => this.props.setSelectedVenue({})}
+          onClick={() => this.props.setSideMenuIsVisible(true)}
+        >
+          <i className="fas fa-bars"></i>
+        </button>
         <GoogleMapWrapper
           center={
             this.props.center || {
@@ -48,31 +63,36 @@ class Landing extends React.Component {
               lng: -123.12789
             }
           }
-          googleMapURL={url2}
+          googleMapURL={url}
           loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div className={styles.mapContainer} />}
+          containerElement={
+            <div
+              className={classNames(
+                styles.mapContainer,
+                sideMenuIsVisible ? styles.shrink : styles.expand
+              )}
+            />
+          }
           mapElement={<div style={{ height: `100%` }} />}
         />
-        <SideMenu
-          open={this.state.showSideMenu}
-          hideCb={() => this.setState({ showSideMenu: false })}
-        />
+        <SideMenu />
         {this.renderFab()}
       </div>
     )
   }
 }
 
-const stateToProps = ({ venues, user, games, googleMap }) => {
+const stateToProps = ({ venues, user, games, googleMap, sideMenu }) => {
   return {
     venues,
     user: user.payload,
     games,
-    center: googleMap.center
+    center: googleMap.center,
+    sideMenuIsVisible: sideMenu.isVisible
   }
 }
 
 export default connect(
   stateToProps,
-  { fetchVenues, showModal, fetchGames }
+  { fetchVenues, showModal, fetchGames, setSideMenuIsVisible, setSelectedVenue }
 )(Landing)
