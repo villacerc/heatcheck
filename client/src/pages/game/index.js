@@ -6,6 +6,7 @@ import { withSnackbar } from 'notistack'
 import Fab from '@material-ui/core/Fab'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
+import NotFound from '../notFound'
 import axios from '../../services/axios'
 import PlayerItem from '../../components/playerItem'
 import { showModal, updateUser, fetchGame } from '../../actions'
@@ -42,14 +43,22 @@ class Game extends React.Component {
     if (this.props.gameId) {
       return this.props.fetchGame(this.props.gameId)
     }
-    const user = this.props.user.payload
-    const state = user.createdGame ? 'created' : 'joined'
 
-    this.props.fetchGame(state)
+    const user = this.props.user.payload
+
+    let gameId = null
+    if (user.createdGame) gameId = user.createdGame.id
+    if (user.joinedGame) gameId = user.joinedGame.id
+
+    if (gameId) {
+      this.props.fetchGame(gameId)
+    } else {
+      this.setState({ loaded: true })
+    }
   }
   deleteGame = async () => {
-    const res = await axios.delete('/api/my-game')
-    if (res.status == 200) {
+    const res = await axios.delete('/api/delete-game')
+    if (res.status === 200) {
       await this.props.updateUser()
       navigate('/')
       this.props.enqueueSnackbar('Successfully deleted game.', {
@@ -59,7 +68,7 @@ class Game extends React.Component {
   }
   leaveGame = async () => {
     const res = await axios.post('/api/leave-game')
-    if (res.status == 200) {
+    if (res.status === 200) {
       navigate('/')
       this.props.updateUser()
       this.props.enqueueSnackbar('You have left the game.', {
@@ -107,6 +116,9 @@ class Game extends React.Component {
     if (!this.state.loaded) return null
 
     const game = this.props.game.payload
+
+    if (!game) return <NotFound />
+
     const user = this.props.user.payload
 
     const creator = user && game.userId === user.id

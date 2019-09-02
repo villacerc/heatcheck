@@ -264,31 +264,14 @@ describe('GET /games', (req, res) => {
   })
 })
 
-describe('GET /my-game', (req, res) => {
-  describeUnauthorized('get', '/api/my-game')
-
-  describe('authorized', () => {
-    authenticateBefore()
-    it('should retrieve a game by the user', done => {
-      withSession
-        .get('/api/my-game')
-        .expect(200)
-        .expect(async res => {
-          expect(res.body.game.userId).toBe(users[0].id)
-        })
-        .end(done)
-    })
-  })
-})
-
-describe('DELETE /my-game', (req, res) => {
-  describeUnauthorized('delete', '/api/my-game')
+describe('DELETE /delete-game', (req, res) => {
+  describeUnauthorized('delete', '/api/delete-game')
 
   describe('authorized', () => {
     authenticateBefore()
     it('should delete a game by the user', done => {
       withSession
-        .delete('/api/my-game')
+        .delete('/api/delete-game')
         .expect(200)
         .expect(async () => {
           const game = await db.Game.findOne({ where: { userId: users[0].id } })
@@ -395,26 +378,6 @@ describe('POST /accept-invite', (req, res) => {
             where: { userId: users[3].id, gameId: games[0].id, type: null }
           })
           expect(userJoined).toBeTruthy()
-        })
-        .end(done)
-    })
-  })
-})
-
-describe('DELETE /my-game', (req, res) => {
-  describeUnauthorized('delete', '/api/my-game')
-
-  describe('authorized', () => {
-    authenticateBefore()
-    it('should delete a game', done => {
-      withSession
-        .delete('/api/my-game')
-        .expect(200)
-        .expect(async () => {
-          const game = await db.Game.findOne({
-            where: { userId: users[0].id }
-          })
-          expect(game).toBeNull()
         })
         .end(done)
     })

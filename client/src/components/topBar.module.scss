@@ -22,6 +22,12 @@
   padding: 5px;
   font-size: 33px !important;
 }
+.badge span {
+  top: 5px;
+  right: 5px;
+  height: 15px;
+  min-width: 15px;
+}
 
 @media (min-width: 500px) {
   .brand h1 {

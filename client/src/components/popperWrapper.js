@@ -1,5 +1,5 @@
 import React from 'react'
-import Popper from '@material-ui/core/Popper'
+import Popover from '@material-ui/core/Popover'
 import Grow from '@material-ui/core/Grow'
 import Fade from '@material-ui/core/Fade'
 import Paper from '@material-ui/core/Paper'
@@ -29,14 +29,20 @@ const PopperWrapper = props => {
   // 'top-start', 'top'
 
   return (
-    <Popper
+    <Popover
       open={props.open}
-      placement={props.placement || 'bottom'}
+      onClose={props.onClose}
+      // placement={props.placement || 'bottom'}
       anchorEl={props.anchorEl}
-      transition
-      disablePortal
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center'
+      }}
+      // transition
+      // disablePortal
     >
-      {({ TransitionProps, placement }) => {
+      {content()}
+      {/* {({ TransitionProps, placement }) => {
         switch (props.transition) {
           case 'fade':
             return (
@@ -54,8 +60,8 @@ const PopperWrapper = props => {
               </Grow>
             )
         }
-      }}
-    </Popper>
+      }} */}
+    </Popover>
   )
 }
 

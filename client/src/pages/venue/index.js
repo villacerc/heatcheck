@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 import Icon from '@material-ui/core/Icon'
 
+import NotFound from '../notFound'
 import { abandonGameDialog } from '../../helpers'
 import axios from '../../services/axios'
 import GameInfo from '../../components/gameInfo'
@@ -22,7 +23,7 @@ class Game extends React.Component {
     const res = await axios.post('/api/get-venue', {
       venueId: this.props.venueId
     })
-    this.setState({ venue: res.data.venue })
+    this.setState({ venue: res.data.venue, loaded: true })
   }
   checkIn = async () => {
     const res = await axios.post('/api/checkin', {
@@ -56,8 +57,12 @@ class Game extends React.Component {
     actionCallback()
   }
   render() {
-    if (!this.state.venue) return null
+    if (!this.state.loaded) return null
+
     const { venue } = this.state
+
+    if (!venue) return <NotFound />
+
     const { user } = this.props
 
     const checkedIn = user && user.checkIn.venueId === venue.id

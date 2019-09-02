@@ -8,6 +8,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import axios from 'axios'
 import { navigate } from '@reach/router'
+import Badge from '@material-ui/core/Badge'
 
 import PopperWrapper from './popperWrapper'
 import {
@@ -22,6 +23,7 @@ import styles from './topBar.module.scss'
 
 class TopBar extends React.Component {
   state = {
+    userAnchorEl: null,
     showUserPopper: false
   }
   showLogin = () => {
@@ -57,20 +59,12 @@ class TopBar extends React.Component {
       confirm()
     }
   }
+  avatarClick = e => {
+    this.setState({ userAnchorEl: e.currentTarget })
+  }
   renderButtons = () => {
-    if (this.props.user.payload) {
-      const user = this.props.user.payload
-      return (
-        <div ref={el => (this.userAnchor = el)}>
-          <Avatar
-            onClick={() => this.setState({ showUserPopper: true })}
-            style={{ background: user.color, cursor: 'pointer' }}
-          >
-            {user.displayName.charAt(0).toUpperCase()}
-          </Avatar>
-        </div>
-      )
-    }
+    if (this.props.user.payload) return this.renderAvatar()
+
     return (
       <div>
         <Button onClick={this.showLogin}>Login</Button>
@@ -84,15 +78,41 @@ class TopBar extends React.Component {
       </div>
     )
   }
+  renderAvatar = () => {
+    const user = this.props.user.payload
+
+    const avatar = () => {
+      return (
+        <div ref={el => (this.userAnchor = el)}>
+          <Avatar
+            onClick={this.avatarClick}
+            style={{ background: user.color, cursor: 'pointer' }}
+          >
+            {user.displayName.charAt(0).toUpperCase()}
+          </Avatar>
+        </div>
+      )
+    }
+
+    if (user && user.gameInvites[0]) {
+      return (
+        <Badge className={styles.badge} color="primary">
+          {avatar()}
+        </Badge>
+      )
+    }
+
+    return avatar()
+  }
   userPopper = () => {
     const user = this.props.user.payload || {}
     return (
       <PopperWrapper
-        open={this.state.showUserPopper}
-        onClickAway={() => this.setState({ showUserPopper: false })}
+        open={Boolean(this.state.userAnchorEl)}
+        onClose={() => this.setState({ userAnchorEl: null })}
         anchorEl={this.userAnchor}
       >
-        <MenuList onClick={() => this.setState({ showUserPopper: false })}>
+        <MenuList onClick={() => this.setState({ userAnchorEl: null })}>
           <MenuItem>Profile</MenuItem>
           {(user.createdGame || user.joinedGame) && (
             <MenuItem onClick={() => navigate('/my-game')}>My Game</MenuItem>

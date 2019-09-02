@@ -20,6 +20,8 @@ const getGame = async (req, res) => {
       where: { id: req.body.gameId }
     })
 
+    if (!game) throw 'No game found'
+
     //get checkins from venue
     const venue = await db.Venue.scope('checkIns').findByPk(game.venueId)
 
@@ -34,23 +36,6 @@ const getGames = async (req, res) => {
     const games = await db.Game.scope('players', 'venue').findAll()
 
     res.status(200).json({ games: sanitizeAll(games) })
-  } catch (err) {
-    res.status(400).send({ err })
-  }
-}
-
-const myGame = async (req, res) => {
-  try {
-    const game = await db.Game.scope('players').findOne({
-      where: { userId: req.user.id }
-    })
-
-    if (!game) throw 'No game found'
-
-    //get checkins from venue
-    const venue = await db.Venue.scope('checkIns').findByPk(game.venueId)
-
-    res.status(200).json({ game: game.toJSON('players', venue) })
   } catch (err) {
     res.status(400).send({ err })
   }
@@ -262,7 +247,6 @@ module.exports = {
   create,
   getGames,
   getGame,
-  myGame,
   deleteGame,
   invitePlayer,
   joinGame,

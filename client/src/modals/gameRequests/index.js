@@ -13,7 +13,10 @@ class GameRequests extends React.Component {
   componentDidUpdate() {
     if (this.props.type === 'joins') {
       const game = this.props.game.payload
-      if (game.pendingPlayers.length === 0) {
+      const joinRequests = game.pendingPlayers.map.filter(
+        ({ Request }) => Request.type === 'join'
+      )
+      if (joinRequests.length === 0) {
         this.props.popModal()
       }
     } else if (this.props.type === 'invites') {

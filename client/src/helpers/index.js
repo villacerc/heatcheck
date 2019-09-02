@@ -8,7 +8,7 @@ export const abandonGameDialog = callback => {
     const user = store.getState().user.payload
 
     user.createdGame
-      ? await axios.delete('/api/my-game')
+      ? await axios.delete('/api/delete-game')
       : await axios.post('/api/leave-game')
 
     await store.dispatch(updateUser())

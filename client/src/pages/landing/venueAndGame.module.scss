@@ -60,11 +60,14 @@
   border: 1px solid #5566c3 !important;
 }
 .showMap {
+  border: 0;
   cursor: pointer;
   border-radius: 5px;
-  border: 1px solid;
   outline: 0;
+  color: blue;
+  font-size: 9pt;
   transition: background 0.3s;
+  background-color: white;
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
