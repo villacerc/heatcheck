@@ -20,7 +20,10 @@ const getGame = async (req, res) => {
       where: { id: req.body.gameId }
     })
 
-    res.status(200).json({ game: game.toJSON('players') })
+    //get checkins from venue
+    const venue = await db.Venue.scope('checkIns').findByPk(game.venueId)
+
+    res.status(200).json({ game: game.toJSON('players', venue) })
   } catch (err) {
     res.status(400).send({ err })
   }

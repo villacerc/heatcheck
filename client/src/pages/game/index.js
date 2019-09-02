@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { navigate } from '@reach/router'
 import { withSnackbar } from 'notistack'
 import Fab from '@material-ui/core/Fab'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 import axios from '../../services/axios'
 import PlayerItem from '../../components/playerItem'
@@ -61,10 +62,46 @@ class Game extends React.Component {
     if (res.status == 200) {
       navigate('/')
       this.props.updateUser()
-      this.props.enqueueSnackbar('Successfully left game.', {
+      this.props.enqueueSnackbar('You have left the game.', {
         variant: 'success'
       })
     }
+  }
+  joinGame = async () => {
+    if (!this.props.user.payload) {
+      return this.props.showModal('login')
+    }
+    await axios.post('/api/join-game', { gameId: this.props.game.payload.id })
+    this.props.updateUser()
+  }
+  renderJoinButton = () => {
+    const game = this.props.game.payload
+    const user = this.props.user.payload
+
+    const joined = user && user.joinedGame && user.joinedGame.id === game.id
+
+    if (joined) return null
+
+    const joining = user && user.joinRequests.find(({ id }) => game.id === id)
+
+    return (
+      <Button
+        onClick={this.joinGame}
+        variant="outlined"
+        color="primary"
+        size="small"
+        disabled={Boolean(joining)}
+        style={{ position: 'relative' }}
+      >
+        Join
+        {joining && (
+          <CircularProgress
+            style={{ position: 'absolute', left: '31%' }}
+            size={20}
+          />
+        )}
+      </Button>
+    )
   }
   render() {
     if (!this.state.loaded) return null
@@ -75,6 +112,10 @@ class Game extends React.Component {
     const creator = user && game.userId === user.id
     const joined = user && user.joinedGame && user.joinedGame.id === game.id
 
+    const hasJoinRequest = game.pendingPlayers.find(
+      ({ Request }) => Request.type === 'join'
+    )
+
     return (
       <div className={styles.container}>
         <div className={styles.header}>
@@ -83,7 +124,7 @@ class Game extends React.Component {
           </h1>
           <p>{game.description}</p>
         </div>
-        {creator && (
+        {creator ? (
           <div>
             <Button
               onClick={() => this.props.showModal('invite players')}
@@ -93,7 +134,7 @@ class Game extends React.Component {
             >
               Invite Players
             </Button>
-            {game.pendingPlayers[0] && (
+            {hasJoinRequest && (
               <Fab
                 onClick={() =>
                   this.props.showModal('game requests', { type: 'joins' })
@@ -105,6 +146,8 @@ class Game extends React.Component {
               </Fab>
             )}
           </div>
+        ) : (
+          this.renderJoinButton()
         )}
         <h4>Players</h4>
         <div className={styles.playerList}>

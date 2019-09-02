@@ -12,7 +12,7 @@ import { fetchGame } from '../actions'
 import styles from './playerItem.module.scss'
 
 class PlayerItem extends React.Component {
-  acceptRequest = async request => {
+  handleRequest = async request => {
     const { player, gameId } = this.props
 
     const route = request === 'invite' ? 'invite-player' : 'accept-join-request'
@@ -23,7 +23,7 @@ class PlayerItem extends React.Component {
     })
 
     if (res.status == 200) {
-      this.props.fetchGame()
+      this.props.fetchGame(gameId)
     }
   }
 
@@ -42,10 +42,10 @@ class PlayerItem extends React.Component {
       )
 
     if (joining) {
-      return <Button onClick={() => this.acceptRequest('join')}>Accept</Button>
+      return <Button onClick={() => this.handleRequest('join')}>Accept</Button>
     }
 
-    return <Button onClick={() => this.acceptRequest('invite')}>Invite</Button>
+    return <Button onClick={() => this.handleRequest('invite')}>Invite</Button>
   }
 
   render() {

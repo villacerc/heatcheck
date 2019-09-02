@@ -25,11 +25,15 @@ class GameRequests extends React.Component {
   renderJoinRequests = () => {
     const game = this.props.game.payload
 
-    return game.pendingPlayers.map((player, i) => (
-      <div key={i} style={{ marginBottom: '1.3rem' }}>
-        <PlayerItem joining player={player} gameId={game.id} />
-      </div>
-    ))
+    return game.pendingPlayers.map((player, i) => {
+      if (player.Request.type === 'join') {
+        return (
+          <div key={i} style={{ marginBottom: '1.3rem' }}>
+            <PlayerItem joining player={player} gameId={game.id} />
+          </div>
+        )
+      }
+    })
   }
   renderGameInvites = () => {
     const { gameInvites } = this.props.user
