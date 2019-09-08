@@ -1,6 +1,9 @@
 import React from 'react'
 import Dialog from '@material-ui/core/Dialog'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import DialogContent from '@material-ui/core/DialogContent'
 import { connect } from 'react-redux'
+import DialogActions from '@material-ui/core/DialogActions'
 import Button from '@material-ui/core/Button'
 
 import { popModal } from '../../actions'
@@ -13,7 +16,7 @@ class GameRequests extends React.Component {
   componentDidUpdate() {
     if (this.props.type === 'joins') {
       const game = this.props.game.payload
-      const joinRequests = game.pendingPlayers.map.filter(
+      const joinRequests = game.pendingPlayers.filter(
         ({ Request }) => Request.type === 'join'
       )
       if (joinRequests.length === 0) {
@@ -55,14 +58,21 @@ class GameRequests extends React.Component {
   render() {
     return (
       <Dialog
-        open={true}
         classes={{ paper: styles.dialog }}
+        open={true}
         onClose={this.props.popModal}
       >
-        <div className={styles.list}>{this.renderList()}</div>
-        <Button onClick={this.props.popModal} className={styles.close}>
-          Close
-        </Button>
+        <DialogTitle>
+          {this.props.type === 'joins' ? 'Join Requests' : 'Game Invites'}
+        </DialogTitle>
+        <DialogContent>
+          <div className={styles.list}>{this.renderList()}</div>
+        </DialogContent>
+        <DialogActions>
+          <Button type="button" onClick={this.props.popModal} color="primary">
+            Close
+          </Button>
+        </DialogActions>
       </Dialog>
     )
   }

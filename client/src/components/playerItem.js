@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { connect } from 'react-redux'
+import classNames from 'classnames'
 
 import axios from '../services/axios'
 import { fetchGame } from '../actions'
@@ -22,7 +23,7 @@ class PlayerItem extends React.Component {
       gameId
     })
 
-    if (res.status == 200) {
+    if (res.status === 200) {
       this.props.fetchGame(gameId)
     }
   }
@@ -49,11 +50,10 @@ class PlayerItem extends React.Component {
   }
 
   render() {
-    const { player, joining } = this.props
+    const { player, isGameCreator } = this.props
     return (
       <div>
         <Card>
-          {joining && <p className={styles.status}>Player wants to join!</p>}
           <div className={styles.content}>
             <Avatar
               style={{ background: player.color }}
@@ -63,7 +63,14 @@ class PlayerItem extends React.Component {
             </Avatar>
             <div className={styles.body}>
               <div className={styles.info}>
-                <p>{player.displayName}</p>
+                <p>
+                  {isGameCreator && (
+                    <i
+                      className={classNames(styles.leader, 'fas fa-crown')}
+                    ></i>
+                  )}
+                  {player.displayName}
+                </p>
               </div>
               {this.renderActions()}
             </div>

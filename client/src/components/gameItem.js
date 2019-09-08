@@ -15,7 +15,7 @@ class GameItem extends React.Component {
       gameId: this.props.game.id
     })
 
-    if (res.status == 200) {
+    if (res.status === 200) {
       this.props.updateUser()
     }
   }
@@ -24,13 +24,12 @@ class GameItem extends React.Component {
     return (
       <div>
         <Card className={styles.card}>
-          <p className={styles.status}>
-            {game.creator.displayName} has invited you!
-          </p>
-          <div className={styles.content}>
+          <p style={{ fontWeight: 100 }}>{game.creator.displayName}</p>
+          <div className={styles.title}>
             <p>{game.name}</p>
             <Button onClick={this.acceptInvite}>Accept</Button>
           </div>
+          <p>{game.description}</p>
         </Card>
       </div>
     )

@@ -105,7 +105,7 @@ class TopBar extends React.Component {
     return avatar()
   }
   userPopper = () => {
-    const user = this.props.user.payload || {}
+    const user = this.props.user.payload
     return (
       <PopperWrapper
         open={Boolean(this.state.userAnchorEl)}
@@ -116,6 +116,18 @@ class TopBar extends React.Component {
           <MenuItem>Profile</MenuItem>
           {(user.createdGame || user.joinedGame) && (
             <MenuItem onClick={() => navigate('/my-game')}>My Game</MenuItem>
+          )}
+          {user.gameInvites[0] && (
+            <MenuItem
+              onClick={() =>
+                this.props.showModal('game requests', { type: 'invites' })
+              }
+            >
+              Game Invites
+              <span className={styles.inlineBadge}>
+                {user.gameInvites.length}
+              </span>
+            </MenuItem>
           )}
           <MenuItem onClick={this.logOut}>Log out</MenuItem>
         </MenuList>
@@ -133,7 +145,7 @@ class TopBar extends React.Component {
             </div>
             {!user.fetching && this.renderButtons()}
           </Toolbar>
-          {this.userPopper()}
+          {user.payload && this.userPopper()}
         </AppBar>
       </div>
     )

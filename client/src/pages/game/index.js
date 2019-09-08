@@ -3,7 +3,6 @@ import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 import { navigate } from '@reach/router'
 import { withSnackbar } from 'notistack'
-import Fab from '@material-ui/core/Fab'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
 import NotFound from '../notFound'
@@ -124,7 +123,7 @@ class Game extends React.Component {
     const creator = user && game.userId === user.id
     const joined = user && user.joinedGame && user.joinedGame.id === game.id
 
-    const hasJoinRequest = game.pendingPlayers.find(
+    const joinRequests = game.pendingPlayers.filter(
       ({ Request }) => Request.type === 'join'
     )
 
@@ -137,7 +136,7 @@ class Game extends React.Component {
           <p>{game.description}</p>
         </div>
         {creator ? (
-          <div>
+          <div className={styles.actions}>
             <Button
               onClick={() => this.props.showModal('invite players')}
               variant="contained"
@@ -146,17 +145,17 @@ class Game extends React.Component {
             >
               Invite Players
             </Button>
-            {hasJoinRequest && (
-              <Fab
-                onClick={() =>
-                  this.props.showModal('game requests', { type: 'joins' })
-                }
-                classes={{ root: styles.fab }}
-                color="primary"
-              >
-                !
-              </Fab>
-            )}
+            <Button
+              onClick={() =>
+                this.props.showModal('game requests', { type: 'joins' })
+              }
+              variant="contained"
+              size="large"
+              color="primary"
+              disabled={!joinRequests[0]}
+            >
+              Join Requests ({joinRequests.length})
+            </Button>
           </div>
         ) : (
           this.renderJoinButton()
@@ -165,7 +164,11 @@ class Game extends React.Component {
         <div className={styles.playerList}>
           {game.players.map((player, i) => (
             <div key={i} style={{ marginBottom: '.5rem' }}>
-              <PlayerItem player={player} invited={true} />
+              <PlayerItem
+                isGameCreator={game.userId === player.id}
+                player={player}
+                invited={true}
+              />
             </div>
           ))}
         </div>

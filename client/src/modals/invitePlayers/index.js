@@ -1,12 +1,13 @@
 import React from 'react'
 import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
+import DialogActions from '@material-ui/core/DialogActions'
 import DialogTitle from '@material-ui/core/DialogTitle'
+import Button from '@material-ui/core/Button'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import AppBar from '@material-ui/core/AppBar'
 import { connect } from 'react-redux'
-import Icon from '@material-ui/core/Icon'
 
 import { popModal } from '../../actions'
 import PlayerItem from '../../components/playerItem'
@@ -31,12 +32,7 @@ class InvitePlayers extends React.Component {
         classes={{ paper: styles.dialog }}
         onClose={this.props.popModal}
       >
-        <DialogTitle>
-          Available Players
-          <Icon onClick={this.props.popModal} className={styles.cancel}>
-            cancel
-          </Icon>
-        </DialogTitle>
+        <DialogTitle>Available Players</DialogTitle>
         <AppBar position="relative">
           <Tabs value={0}>
             <Tab label={`Checked in (${players.length})`} />
@@ -61,6 +57,11 @@ class InvitePlayers extends React.Component {
             })}
           </div>
         </DialogContent>
+        <DialogActions>
+          <Button type="button" onClick={this.props.popModal} color="primary">
+            Close
+          </Button>
+        </DialogActions>
       </Dialog>
     )
   }

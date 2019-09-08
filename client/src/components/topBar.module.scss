@@ -28,6 +28,20 @@
   height: 15px;
   min-width: 15px;
 }
+.inlineBadge {
+  margin-left: 8px;
+  width: 16px;
+  height: 16px;
+  border-radius: 100%;
+  background-color: #3f51b5;
+  font-size: 9pt;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  line-height: 1;
+}
 
 @media (min-width: 500px) {
   .brand h1 {

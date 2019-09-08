@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import Fab from '@material-ui/core/Fab'
 import classNames from 'classnames'
 
 import {
@@ -22,23 +21,6 @@ class Landing extends React.Component {
   componentDidMount() {
     this.props.fetchVenues()
     this.props.fetchGames()
-  }
-  renderFab = () => {
-    const { user } = this.props
-
-    if (user && user.gameInvites[0]) {
-      return (
-        <Fab
-          onClick={() =>
-            this.props.showModal('game requests', { type: 'invites' })
-          }
-          color="primary"
-          classes={{ root: styles.fab }}
-        >
-          !
-        </Fab>
-      )
-    }
   }
   render() {
     const url =
@@ -76,7 +58,6 @@ class Landing extends React.Component {
           mapElement={<div style={{ height: `100%` }} />}
         />
         <SideMenu />
-        {this.renderFab()}
       </div>
     )
   }
