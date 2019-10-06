@@ -5,6 +5,9 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     google_place_id: DataTypes.STRING,
     address: DataTypes.STRING,
+    locality: DataTypes.STRING,
+    area: DataTypes.STRING,
+    country: DataTypes.STRING,
     lat: DataTypes.DOUBLE,
     lng: DataTypes.DOUBLE
   })
