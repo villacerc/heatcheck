@@ -1,9 +1,16 @@
 .bar {
-  background-color: #ff5722 !important;
+  background-color: rgb(255, 145, 77) !important;
   color: white;
   button {
     color: inherit;
     font-size: 12pt;
+  }
+}
+.barTransparent {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  button {
+    color: white;
   }
 }
 .brand {
@@ -41,6 +48,18 @@
   justify-content: center;
   font-weight: bold;
   line-height: 1;
+}
+.buttons {
+  margin-left: auto;
+}
+.invertedButtons {
+  button {
+    transition: all 0.3s !important;
+    &:hover {
+      color: rgb(255, 145, 77);
+      border-color: rgb(255, 145, 77) !important;
+    }
+  }
 }
 
 @media (min-width: 500px) {

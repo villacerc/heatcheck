@@ -9,6 +9,7 @@ import MenuList from '@material-ui/core/MenuList'
 import axios from 'axios'
 import { navigate } from '@reach/router'
 import Badge from '@material-ui/core/Badge'
+import classNames from 'classnames'
 
 import PopperWrapper from './popperWrapper'
 import {
@@ -65,8 +66,16 @@ class TopBar extends React.Component {
   renderButtons = () => {
     if (this.props.user.payload) return this.renderAvatar()
 
+    const inSearch = this.props.location.pathname.includes('search')
+
     return (
-      <div>
+      <div
+        className={classNames(
+          styles.buttons,
+          inSearch ? styles.invertedButtons : ''
+        )}
+        style={{ marginLeft: 'auto' }}
+      >
         <Button onClick={this.showLogin}>Login</Button>
         <Button
           variant="outlined"
@@ -83,7 +92,7 @@ class TopBar extends React.Component {
 
     const avatar = () => {
       return (
-        <div ref={el => (this.userAnchor = el)}>
+        <div ref={el => (this.userAnchor = el)} style={{ marginLeft: 'auto' }}>
           <Avatar
             onClick={this.avatarClick}
             style={{ background: user.color, cursor: 'pointer' }}
@@ -135,14 +144,22 @@ class TopBar extends React.Component {
     )
   }
   render() {
-    const { user } = this.props
+    const { user, location } = this.props
+
+    const inSearch = location.pathname.includes('search')
     return (
       <div onTouchStart={() => this.props.setSelectedVenue({})}>
-        <AppBar classes={{ root: styles.bar }}>
+        <AppBar
+          classes={{
+            root: inSearch ? styles.barTransparent : styles.bar
+          }}
+        >
           <Toolbar>
-            <div className={styles.brand}>
-              <h1 onClick={() => navigate('/')}>Pick And Roll</h1>
-            </div>
+            {!inSearch && (
+              <div className={styles.brand}>
+                <h1 onClick={() => navigate('/')}>Pick And Roll</h1>
+              </div>
+            )}
             {!user.fetching && this.renderButtons()}
           </Toolbar>
           {user.payload && this.userPopper()}

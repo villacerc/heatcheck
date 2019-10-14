@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'League Spartan';
+  src: local('LeagueSpartan-Bold'),
+    url(./fonts/leaguespartan-bold.woff) format('woff');
+}
+
 body {
   margin: 0;
   padding: 0;

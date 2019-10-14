@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { fetchUser } from './actions'
 import TopBar from './components/topBar'
 import Landing from './pages/landing'
+import Search from './pages/search'
 import Game from './pages/game'
 import Venue from './pages/venue'
 import SignedOut from './pages/signedOut'
@@ -20,10 +21,11 @@ class App extends Component {
     return (
       <div>
         <Location>{props => <ModalConductor {...props} />}</Location>
-        <TopBar />
+        <Location>{props => <TopBar {...props} />}</Location>
         <div className="app-body">
           <Router>
             <Landing path="/" />
+            <Search path="/search" />
             <Game path="/my-game" />
             <Game path="/games/:gameId" />
             <Venue path="/venues/:venueId" />
