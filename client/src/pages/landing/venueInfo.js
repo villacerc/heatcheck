@@ -71,7 +71,9 @@ class VenueInfo extends React.Component {
             <h4>{venue.name}</h4>
           </Link>
           <p>
-            <span style={{ marginRight: '0.5rem' }}>{venue.address}</span>
+            <span style={{ marginRight: '0.5rem', opacity: '.7' }}>
+              {venue.address}
+            </span>
             {this.props.hasOwnProperty('withMapLink') && (
               <button className={styles.showMap} onClick={this.centerMap}>
                 show on map

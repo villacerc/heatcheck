@@ -76,8 +76,20 @@ class SideMenu extends React.Component {
     this.props.setSelectedVenue({})
     setTimeout(() => this.props.setSelectedVenue(selectedVenue), 300)
   }
+  resultsText = () => {
+    if (!this.props.venues) return null
+
+    const { locality, area, country } = this.props.venues[0]
+
+    return (
+      <div style={{ padding: '10px', marginLeft: '20px' }}>
+        Showing results for {locality} {area}, {country}
+      </div>
+    )
+  }
   render() {
     if (!this.state.initialized) return null
+
     return (
       <Drawer
         classes={{
@@ -87,8 +99,11 @@ class SideMenu extends React.Component {
         anchor="left"
         open={this.props.sideMenuIsVisible}
       >
-        <div className={styles.hideMenu} onClick={this.hideMenu}>
-          <i className="fa fa-angle-left" />
+        <div className={styles.hideMenu}>
+          <button style={{ cursor: 'pointer' }} onClick={this.hideMenu}>
+            <i className="fa fa-angle-left" />
+          </button>
+          {this.resultsText()}
         </div>
         <div
           onTouchStart={() => this.props.setSelectedVenue({})}

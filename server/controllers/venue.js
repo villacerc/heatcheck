@@ -59,7 +59,7 @@ const getGeocode = async place => {
 
   if (locality) {
     place.locality = locality.long_name
-    place.area = area.long_name
+    place.area = area.short_name
     place.country = country.long_name
   }
 
