@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import classNames from 'classnames'
+import { withCookies } from 'react-cookie'
+import { Redirect } from '@reach/router'
 
 import {
   fetchVenues,
@@ -16,13 +18,32 @@ import styles from './index.module.scss'
 
 class Landing extends React.Component {
   state = {
-    venues: null
+    initialized: false,
+    redirect: false
   }
   componentDidMount() {
-    this.props.fetchVenues()
-    this.props.fetchGames()
+    this.initialize()
+  }
+
+  initialize = async () => {
+    const { cookies } = this.props
+
+    const location = cookies.get('location')
+
+    if (location) {
+      await this.props.fetchVenues(location)
+      this.props.fetchGames(location)
+
+      this.setState({ initialized: true })
+    } else {
+      this.setState({ redirect: true, initialized: true })
+    }
   }
   render() {
+    if (!this.state.initialized) return null
+
+    if (this.state.redirect) return <Redirect noThrow to="/search" />
+
     const url =
       'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places'
     const url2 = process.env.REACT_APP_GOOGLE_MAP_URL
@@ -73,7 +94,15 @@ const stateToProps = ({ venues, user, games, googleMap, sideMenu }) => {
   }
 }
 
-export default connect(
-  stateToProps,
-  { fetchVenues, showModal, fetchGames, setSideMenuIsVisible, setSelectedVenue }
-)(Landing)
+export default withCookies(
+  connect(
+    stateToProps,
+    {
+      fetchVenues,
+      showModal,
+      fetchGames,
+      setSideMenuIsVisible,
+      setSelectedVenue
+    }
+  )(Landing)
+)

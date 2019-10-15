@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-export const fetchVenues = () => async dispatch => {
-  const res = await axios.get('/api/venues')
+export const fetchVenues = location => async dispatch => {
+  const res = await axios.post('/api/get-venues', { location })
 
   dispatch({ type: 'RECEIVE_VENUES', payload: res.data.venues })
 }
@@ -19,8 +19,8 @@ export const setSelectedVenue = payload => async dispatch => {
   dispatch({ type: 'SET_SELECTED_VENUE', payload })
 }
 
-export const fetchGames = () => async dispatch => {
-  const res = await axios.get('/api/games')
+export const fetchGames = location => async dispatch => {
+  const res = await axios.get('/api/games', { location })
 
   dispatch({ type: 'RECEIVE_GAMES', payload: res.data.games })
 }

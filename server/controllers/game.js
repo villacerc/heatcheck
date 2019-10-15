@@ -33,7 +33,15 @@ const getGame = async (req, res) => {
 
 const getGames = async (req, res) => {
   try {
-    const games = await db.Game.scope('players', 'venue').findAll()
+    const games = await db.Game.scope('players', 'venue').findAll({
+      include: [
+        {
+          model: db.Venue,
+          as: 'venue',
+          where: req.body.location
+        }
+      ]
+    })
 
     res.status(200).json({ games: sanitizeAll(games) })
   } catch (err) {

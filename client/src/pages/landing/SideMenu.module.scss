@@ -34,7 +34,11 @@
   align-items: center;
   min-height: 35px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  color: rgba(0, 0, 0, 0.6);
+  color: rgba(0, 0, 0, 0.8);
+}
+.hideMenuButton {
+  border-radius: 5px;
+  background-color: white;
 }
 @media (min-width: 600px) {
   content {

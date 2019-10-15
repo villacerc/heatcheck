@@ -14,14 +14,13 @@
   }
 }
 .brand {
-  font-family: 'Carter One', cursive;
+  font-family: 'League Spartan';
   margin-left: 5%;
   flex-grow: 1;
   h1 {
     cursor: pointer;
     width: max-content;
     margin: 0;
-    font-size: 1.1rem;
   }
 }
 .defaultAv {
@@ -63,7 +62,4 @@
 }
 
 @media (min-width: 500px) {
-  .brand h1 {
-    font-size: 2rem !important;
-  }
 }

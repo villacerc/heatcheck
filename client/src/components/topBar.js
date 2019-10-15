@@ -25,7 +25,21 @@ import styles from './topBar.module.scss'
 class TopBar extends React.Component {
   state = {
     userAnchorEl: null,
-    showUserPopper: false
+    showUserPopper: false,
+    isSmall: false
+  }
+  componentDidMount() {
+    if (window.innerWidth <= 500) {
+      this.setState({ isSmall: true })
+    }
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth <= 500 && !this.state.isSmall) {
+        this.setState({ isSmall: true })
+      } else if (window.innerWidth > 500 && this.state.isSmall) {
+        this.setState({ isSmall: false })
+      }
+    })
   }
   showLogin = () => {
     this.props.showModal('login')
@@ -76,6 +90,11 @@ class TopBar extends React.Component {
         )}
         style={{ marginLeft: 'auto' }}
       >
+        {!inSearch && (
+          <Button onClick={() => navigate('/search')}>
+            <i style={{ fontSize: '17pt' }} className="fas fa-search"></i>
+          </Button>
+        )}
         <Button onClick={this.showLogin}>Login</Button>
         <Button
           variant="outlined"
@@ -147,6 +166,7 @@ class TopBar extends React.Component {
     const { user, location } = this.props
 
     const inSearch = location.pathname.includes('search')
+
     return (
       <div onTouchStart={() => this.props.setSelectedVenue({})}>
         <AppBar
@@ -157,7 +177,9 @@ class TopBar extends React.Component {
           <Toolbar>
             {!inSearch && (
               <div className={styles.brand}>
-                <h1 onClick={() => navigate('/')}>Pick And Roll</h1>
+                <h1 onClick={() => navigate('/')}>
+                  {this.state.isSmall ? 'P' : 'Pick and Roll'}
+                </h1>
               </div>
             )}
             {!user.fetching && this.renderButtons()}

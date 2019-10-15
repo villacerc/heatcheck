@@ -71,15 +71,12 @@ class SideMenu extends React.Component {
   }
   hideMenu = () => {
     this.props.setSideMenuIsVisible(false)
-
-    const { selectedVenue } = this.props
     this.props.setSelectedVenue({})
-    setTimeout(() => this.props.setSelectedVenue(selectedVenue), 300)
   }
   resultsText = () => {
     if (!this.props.venues) return null
 
-    const { locality, area, country } = this.props.venues[0]
+    const { locality, area, country } = this.props.venues[0] || {}
 
     return (
       <div style={{ padding: '10px', marginLeft: '20px' }}>
@@ -100,7 +97,11 @@ class SideMenu extends React.Component {
         open={this.props.sideMenuIsVisible}
       >
         <div className={styles.hideMenu}>
-          <button style={{ cursor: 'pointer' }} onClick={this.hideMenu}>
+          <button
+            className={styles.hideMenuButton}
+            style={{ cursor: 'pointer' }}
+            onClick={this.hideMenu}
+          >
             <i className="fa fa-angle-left" />
           </button>
           {this.resultsText()}

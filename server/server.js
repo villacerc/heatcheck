@@ -19,7 +19,7 @@ app.post('/api/signup', controllers.user.signup)
 app.post('/api/login', controllers.user.authenticate)
 
 //venue controllers
-app.get('/api/venues', controllers.venue.getVenues)
+app.post('/api/get-venues', controllers.venue.getVenues)
 app.post('/api/get-venue', controllers.venue.getVenue)
 app.post('/api/search', controllers.venue.searchVenues)
 

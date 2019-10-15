@@ -2,6 +2,7 @@ import React from 'react'
 import store from '../../reducer'
 import Button from '@material-ui/core/Button'
 import Icon from '@material-ui/core/Icon'
+import Card from '@material-ui/core/Card'
 import { Link } from '@reach/router'
 import classNames from 'classnames'
 
@@ -60,59 +61,56 @@ class VenueInfo extends React.Component {
 
     const checkedIn = venue.id === (user && user.checkIn.venueId)
     return (
-      <div
-        className={classNames(
-          styles.container,
-          checkedIn ? styles.container_checkedIn : ''
-        )}
-      >
-        <div className={styles.info}>
-          <Link to={`/venues/${venue.id}`}>
-            <h4>{venue.name}</h4>
-          </Link>
-          <p>
-            <span style={{ marginRight: '0.5rem', opacity: '.7' }}>
-              {venue.address}
-            </span>
-            {this.props.hasOwnProperty('withMapLink') && (
-              <button className={styles.showMap} onClick={this.centerMap}>
-                show on map
-              </button>
-            )}
-          </p>
+      <Card>
+        <div className={classNames(styles.container)}>
+          <div className={styles.info}>
+            <Link to={`/venues/${venue.id}`}>
+              <h4>{venue.name}</h4>
+            </Link>
+            <p>
+              <span style={{ marginRight: '0.5rem', opacity: '.7' }}>
+                {venue.address}
+              </span>
+              {this.props.hasOwnProperty('withMapLink') && (
+                <button className={styles.showMap} onClick={this.centerMap}>
+                  show on map
+                </button>
+              )}
+            </p>
 
-          <div className={styles.actions}>
-            {checkedIn ? (
-              <Icon classes={{ root: styles.checkedIn }}>check_circle</Icon>
-            ) : (
+            <div className={styles.actions}>
+              {checkedIn ? (
+                <Icon classes={{ root: styles.checkedIn }}>check_circle</Icon>
+              ) : (
+                <Button
+                  classes={{ root: styles.checkIn }}
+                  variant="outlined"
+                  size="small"
+                  onClick={() => this.handleAction(this.checkIn)}
+                >
+                  Check-in
+                </Button>
+              )}
               <Button
-                classes={{ root: styles.checkIn }}
+                onClick={() => this.handleAction(this.showCreateModal)}
                 variant="outlined"
+                color="primary"
                 size="small"
-                onClick={() => this.handleAction(this.checkIn)}
               >
-                Check-in
+                Create Game
               </Button>
-            )}
-            <Button
-              onClick={() => this.handleAction(this.showCreateModal)}
-              variant="outlined"
-              color="primary"
-              size="small"
-            >
-              Create Game
-            </Button>
+            </div>
+          </div>
+          <div className={styles.venueStatus}>
+            <div className={venue.games ? styles.gamesActive : ''}>
+              {venue.games} Games
+            </div>
+            <div className={venue.checkIns ? styles.checkInsActive : ''}>
+              {venue.checkIns} Checked-in
+            </div>
           </div>
         </div>
-        <div className={styles.venueStatus}>
-          <div className={venue.games ? styles.gamesActive : ''}>
-            {venue.games} Games
-          </div>
-          <div className={venue.checkIns ? styles.checkInsActive : ''}>
-            {venue.checkIns} Checked-in
-          </div>
-        </div>
-      </div>
+      </Card>
     )
   }
 }

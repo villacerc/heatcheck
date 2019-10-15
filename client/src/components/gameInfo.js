@@ -1,6 +1,7 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
+import Card from '@material-ui/core/Card'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { Link } from '@reach/router'
 
@@ -29,38 +30,40 @@ class GameInfo extends React.Component {
     const joining = user && user.joinRequests.find(({ id }) => game.id === id)
 
     return (
-      <div className={styles.container}>
-        <div className={styles.info}>
-          <Link to={`/games/${game.id}`}>
-            <h4>{game.name}</h4>
-          </Link>
-          <p>{game.venue && `@ ${game.venue.name}`}</p>
-          <p style={{ marginTop: '.7rem' }}>{game.description}</p>
-          <div className={styles.actions}>
-            {this.isNotUsersGame() && (
-              <Button
-                onClick={this.joinGame}
-                variant="outlined"
-                color="primary"
-                size="small"
-                disabled={joining}
-                style={{ position: 'relative' }}
-              >
-                Join
-                {joining && (
-                  <CircularProgress
-                    style={{ position: 'absolute', left: '31%' }}
-                    size={20}
-                  />
-                )}
-              </Button>
-            )}
+      <Card>
+        <div className={styles.container}>
+          <div className={styles.info}>
+            <Link to={`/games/${game.id}`}>
+              <h4>{game.name}</h4>
+            </Link>
+            <p>{game.venue && `@ ${game.venue.name}`}</p>
+            <p style={{ marginTop: '.7rem' }}>{game.description}</p>
+            <div className={styles.actions}>
+              {this.isNotUsersGame() && (
+                <Button
+                  onClick={this.joinGame}
+                  variant="outlined"
+                  color="primary"
+                  size="small"
+                  disabled={joining}
+                  style={{ position: 'relative' }}
+                >
+                  Join
+                  {joining && (
+                    <CircularProgress
+                      style={{ position: 'absolute', left: '31%' }}
+                      size={20}
+                    />
+                  )}
+                </Button>
+              )}
+            </div>
+          </div>
+          <div className={styles.gameStatus}>
+            <div>{game.players} Players</div>
           </div>
         </div>
-        <div className={styles.gameStatus}>
-          <div>{game.players} Players</div>
-        </div>
-      </div>
+      </Card>
     )
   }
 }

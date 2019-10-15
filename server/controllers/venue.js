@@ -16,7 +16,7 @@ const getVenue = async (req, res) => {
 
 const searchVenues = async (req, res) => {
   try {
-    const query = req.body.query + ' basketball courts'
+    const query = req.body.location + ' basketball courts'
     const url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${query}&key=${process.env.GOOGLE_API_KEY}`
 
     initiateSearch(url, res)
@@ -27,9 +27,9 @@ const searchVenues = async (req, res) => {
 
 const getVenues = async (req, res) => {
   try {
-    //need to search via geocode here based on front end cookies
-
-    const venues = await db.Venue.scope('checkIns', 'games').findAll()
+    const venues = await db.Venue.scope('checkIns', 'games').findAll({
+      where: req.body.location
+    })
 
     res.status(200).json({ venues: sanitizeAll(venues) })
   } catch (err) {
