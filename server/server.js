@@ -39,6 +39,7 @@ app.post('/api/invite-player', authorize, controllers.game.invitePlayer)
 app.post('/api/join-game', authorize, controllers.game.joinGame)
 app.post('/api/leave-game', authorize, controllers.game.leaveGame)
 app.post('/api/accept-invite', authorize, controllers.game.acceptInvite)
+app.post('/api/cancel-invite', authorize, controllers.game.cancelInvite)
 app.post(
   '/api/accept-join-request',
   authorize,

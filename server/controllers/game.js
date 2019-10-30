@@ -189,6 +189,18 @@ const joinGame = async (req, res) => {
   }
 }
 
+const cancelInvite = async (req, res) => {
+  try {
+    const { userId, gameId } = req.body
+
+    await db.Request.destroy({ where: { userId, gameId } })
+
+    res.status(200).send()
+  } catch (err) {
+    res.status(400).send({ err })
+  }
+}
+
 const invitePlayer = async (req, res) => {
   try {
     const { userId, gameId } = req.body
@@ -260,6 +272,7 @@ module.exports = {
   joinGame,
   acceptJoinRequest,
   acceptInvite,
+  cancelInvite,
   leaveGame,
   joinedGame
 }

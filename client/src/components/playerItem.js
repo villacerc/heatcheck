@@ -16,7 +16,19 @@ class PlayerItem extends React.Component {
   handleRequest = async request => {
     const { player, gameId } = this.props
 
-    const route = request === 'invite' ? 'invite-player' : 'accept-join-request'
+    let route = ''
+
+    switch (request) {
+      case 'invite':
+        route = 'invite-player'
+        break
+      case 'cancel':
+        route = 'cancel-invite'
+        break
+      default:
+        route = 'accept-join-request'
+        break
+    }
 
     const res = await axios.post(`/api/${route}`, {
       userId: player.id,
@@ -36,7 +48,10 @@ class PlayerItem extends React.Component {
       return (
         <React.Fragment>
           <CircularProgress style={{ marginLeft: 'auto' }} size={20} />
-          <Button className={styles.cancelInvite}>
+          <Button
+            onClick={() => this.handleRequest('cancel')}
+            className={styles.cancelInvite}
+          >
             <Icon>close</Icon>
           </Button>
         </React.Fragment>

@@ -24,12 +24,14 @@ class GameItem extends React.Component {
     return (
       <div>
         <Card className={styles.card}>
-          <p style={{ fontWeight: 100 }}>{game.creator.displayName}</p>
           <div className={styles.title}>
             <p>{game.name}</p>
             <Button onClick={this.acceptInvite}>Accept</Button>
           </div>
-          <p>{game.description}</p>
+          <p style={{ marginBottom: '10px' }}>{game.description}</p>
+          <p style={{ fontWeight: 100, opacity: '.5' }}>
+            {game.creator.displayName}
+          </p>
         </Card>
       </div>
     )
