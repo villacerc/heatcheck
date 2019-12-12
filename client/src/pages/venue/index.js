@@ -2,6 +2,7 @@ import React from 'react'
 import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 import Icon from '@material-ui/core/Icon'
+import Card from '@material-ui/core/Card'
 
 import NotFound from '../notFound'
 import { abandonGameDialog } from '../../helpers'
@@ -11,7 +12,7 @@ import { showModal, updateUser, fetchGame } from '../../actions'
 
 import styles from './venue.module.scss'
 
-class Game extends React.Component {
+class Venue extends React.Component {
   state = {
     venue: null,
     loaded: false
@@ -69,45 +70,47 @@ class Game extends React.Component {
 
     return (
       <div className={styles.container}>
-        <div className={styles.header}>
-          <h1 className={styles.title}>
-            {venue.name}
-            {checkedIn && (
-              <Icon classes={{ root: styles.checkedIn }}>check_circle</Icon>
-            )}
-          </h1>
-          <p>{venue.address}</p>
-        </div>
-        <div className={styles.actions}>
-          <Button
-            onClick={() => this.handleAction(this.createGame)}
-            variant="outlined"
-            color="primary"
-          >
-            Create Game
-          </Button>
-          {!checkedIn && (
+        <Card classes={{ root: styles.card }}>
+          <div className={styles.header}>
+            <h1 className={styles.title}>
+              {venue.name}
+              {checkedIn && (
+                <Icon classes={{ root: styles.checkedIn }}>check_circle</Icon>
+              )}
+            </h1>
+            <p>{venue.address}</p>
+          </div>
+          <div className={styles.actions}>
             <Button
-              classes={{ root: styles.checkIn }}
-              onClick={() => this.handleAction(this.checkIn)}
+              onClick={() => this.handleAction(this.createGame)}
               variant="outlined"
               color="primary"
             >
-              Check-in
+              Create Game
             </Button>
-          )}
-        </div>
-        <div className={styles.status}>
-          <h4>Games ({venue.games.length})</h4>
-          <h4>Check-ins ({venue.checkIns})</h4>
-        </div>
-        <div className={styles.games}>
-          {venue.games.map((game, i) => (
-            <div key={i} className={styles.game}>
-              <GameInfo game={game} />
-            </div>
-          ))}
-        </div>
+            {!checkedIn && (
+              <Button
+                classes={{ root: styles.checkIn }}
+                onClick={() => this.handleAction(this.checkIn)}
+                variant="outlined"
+                color="primary"
+              >
+                Check-in
+              </Button>
+            )}
+          </div>
+          <div className={styles.status}>
+            <h4>Games ({venue.games.length})</h4>
+            <h4>Check-ins ({venue.checkIns})</h4>
+          </div>
+          <div className={styles.games}>
+            {venue.games.map((game, i) => (
+              <div key={i} className={styles.game}>
+                <GameInfo game={game} />
+              </div>
+            ))}
+          </div>
+        </Card>
       </div>
     )
   }
@@ -123,4 +126,4 @@ const reduxStates = ({ user, game }) => {
 export default connect(
   reduxStates,
   { showModal, updateUser, fetchGame }
-)(Game)
+)(Venue)

@@ -103,7 +103,7 @@ class VenueInfo extends React.Component {
           </div>
           <div className={styles.venueStatus}>
             <div className={venue.games ? styles.gamesActive : ''}>
-              {venue.games} Games
+              {venue.games} {venue.games === 1 ? 'Game' : 'Games'}
             </div>
             <div className={venue.checkIns ? styles.checkInsActive : ''}>
               {venue.checkIns} Checked-in

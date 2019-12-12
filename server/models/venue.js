@@ -24,6 +24,13 @@ module.exports = (sequelize, DataTypes) => {
               attributes: {
                 exclude: ['password', 'isVerified', 'email']
               }
+            },
+            {
+              model: models.User,
+              as: 'creator',
+              attributes: {
+                exclude: ['password', 'isVerified', 'email']
+              }
             }
           ]
         }

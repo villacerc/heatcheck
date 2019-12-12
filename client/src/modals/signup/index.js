@@ -61,7 +61,7 @@ class Signup extends React.Component {
                   <TextInput
                     autoFocus
                     name="displayName"
-                    label="Display Name"
+                    label="Player Name"
                     {...props}
                   />
                   <TextInput

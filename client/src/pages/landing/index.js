@@ -95,14 +95,11 @@ const stateToProps = ({ venues, user, games, googleMap, sideMenu }) => {
 }
 
 export default withCookies(
-  connect(
-    stateToProps,
-    {
-      fetchVenues,
-      showModal,
-      fetchGames,
-      setSideMenuIsVisible,
-      setSelectedVenue
-    }
-  )(Landing)
+  connect(stateToProps, {
+    fetchVenues,
+    showModal,
+    fetchGames,
+    setSideMenuIsVisible,
+    setSelectedVenue
+  })(Landing)
 )

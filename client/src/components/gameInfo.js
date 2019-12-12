@@ -36,7 +36,7 @@ class GameInfo extends React.Component {
             <Link to={`/games/${game.id}`}>
               <h4>{game.name}</h4>
             </Link>
-            <p>{game.venue && `@ ${game.venue.name}`}</p>
+            <p style={{ opacity: '.7' }}>{game.venue && game.venue.name}</p>
             <p style={{ marginTop: '.7rem' }}>{game.description}</p>
             <div className={styles.actions}>
               {this.isNotUsersGame() && (
@@ -57,10 +57,15 @@ class GameInfo extends React.Component {
                   )}
                 </Button>
               )}
+              <div style={{ marginLeft: 'auto', opacity: '.5' }}>
+                {game.creator.displayName}
+              </div>
             </div>
           </div>
           <div className={styles.gameStatus}>
-            <div>{game.players} Players</div>
+            <div>
+              {game.players} {game.players === 1 ? 'Player' : 'Players'}
+            </div>
           </div>
         </div>
       </Card>
@@ -72,7 +77,4 @@ const reduxState = ({ user }) => {
   return { user: user.payload }
 }
 
-export default connect(
-  reduxState,
-  { updateUser, showModal }
-)(GameInfo)
+export default connect(reduxState, { updateUser, showModal })(GameInfo)

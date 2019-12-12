@@ -7,6 +7,17 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING
   })
   Game.loadScopes = function(models) {
+    Game.addScope('creator', {
+      include: [
+        {
+          model: models.User,
+          as: 'creator',
+          attributes: {
+            exclude: ['password', 'isVerified', 'email']
+          }
+        }
+      ]
+    })
     Game.addScope('venue', {
       include: [
         {

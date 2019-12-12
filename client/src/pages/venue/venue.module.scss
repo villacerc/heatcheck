@@ -1,7 +1,11 @@
 .container {
-  padding: 5%;
   margin: auto;
+  margin-top: 5%;
   max-width: 620px;
+  padding: 0 10px 0 10px;
+}
+.card {
+  padding: 2% 5% 5% 5%;
 }
 .title {
   display: flex;
@@ -19,6 +23,9 @@
 }
 .games {
   max-width: 370px;
+}
+.game {
+  margin-bottom: 15px;
 }
 .status {
   margin: 1rem 0;

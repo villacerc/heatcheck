@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { navigate } from '@reach/router'
 import { withSnackbar } from 'notistack'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import Card from '@material-ui/core/Card'
 
 import NotFound from '../notFound'
 import axios from '../../services/axios'
@@ -129,73 +130,76 @@ class Game extends React.Component {
 
     return (
       <div className={styles.container}>
-        <div className={styles.header}>
-          <h1>
-            {game.name} @ {game.venue.name}
-          </h1>
-          <p>{game.description}</p>
-        </div>
-        {creator ? (
-          <div className={styles.actions}>
-            <Button
-              onClick={() => this.props.showModal('invite players')}
-              variant="contained"
-              size="large"
-              color="primary"
-            >
-              Invite Players
-            </Button>
-            <Button
-              onClick={() =>
-                this.props.showModal('game requests', { type: 'joins' })
-              }
-              variant="contained"
-              size="large"
-              color="primary"
-              disabled={!joinRequests[0]}
-            >
-              Join Requests ({joinRequests.length})
-            </Button>
+        <Card classes={{ root: styles.card }}>
+          <div className={styles.header}>
+            <h1>{game.name}</h1>
+            <h3> {game.venue.name}</h3>
+            <p>{game.description}</p>
           </div>
-        ) : (
-          this.renderJoinButton()
-        )}
-        <h4>Players</h4>
-        <div className={styles.playerList}>
-          {game.players.map((player, i) => (
-            <div key={i} style={{ marginBottom: '.5rem' }}>
-              <PlayerItem
-                isGameCreator={game.userId === player.id}
-                player={player}
-                invited={true}
-              />
+          {creator ? (
+            <div className={styles.actions}>
+              <Button
+                onClick={() => this.props.showModal('invite players')}
+                variant="contained"
+                size="large"
+                color="primary"
+              >
+                Invite Players
+              </Button>
+              <Button
+                onClick={() =>
+                  this.props.showModal('game requests', { type: 'joins' })
+                }
+                variant="contained"
+                size="large"
+                color="primary"
+                disabled={!joinRequests[0]}
+              >
+                Join Requests ({joinRequests.length})
+              </Button>
             </div>
-          ))}
-        </div>
-        {creator && (
-          <div className={styles.footer}>
-            <Button
-              onClick={() => this.abortConfirmation('delete', this.deleteGame)}
-              variant="outlined"
-              size="medium"
-              color="secondary"
-            >
-              Delete Game
-            </Button>
+          ) : (
+            this.renderJoinButton()
+          )}
+          <h4>Players</h4>
+          <div className={styles.playerList}>
+            {game.players.map((player, i) => (
+              <div key={i} style={{ marginBottom: '.5rem' }}>
+                <PlayerItem
+                  isGameCreator={game.userId === player.id}
+                  player={player}
+                  invited={true}
+                />
+              </div>
+            ))}
           </div>
-        )}
-        {joined && (
-          <div className={styles.footer}>
-            <Button
-              onClick={() => this.abortConfirmation('leave', this.leaveGame)}
-              variant="outlined"
-              size="medium"
-              color="secondary"
-            >
-              Leave Game
-            </Button>
-          </div>
-        )}
+          {creator && (
+            <div className={styles.footer}>
+              <Button
+                onClick={() =>
+                  this.abortConfirmation('delete', this.deleteGame)
+                }
+                variant="outlined"
+                size="medium"
+                color="secondary"
+              >
+                Delete Game
+              </Button>
+            </div>
+          )}
+          {joined && (
+            <div className={styles.footer}>
+              <Button
+                onClick={() => this.abortConfirmation('leave', this.leaveGame)}
+                variant="outlined"
+                size="medium"
+                color="secondary"
+              >
+                Leave Game
+              </Button>
+            </div>
+          )}
+        </Card>
       </div>
     )
   }
