@@ -64,6 +64,10 @@ class Login extends React.Component {
       this.setState({ flash: res.data.flash, loading: false })
     }
   }
+  showSignup = () => {
+    this.props.popModal()
+    this.props.showModal('signup')
+  }
   render() {
     return (
       <Dialog
@@ -97,6 +101,20 @@ class Login extends React.Component {
                     type="password"
                     {...props}
                   />
+                  <div style={{ marginTop: '20px', textAlign: 'center' }}>
+                    Don't have an account?
+                    <span
+                      onClick={this.showSignup}
+                      style={{
+                        marginLeft: '5px',
+                        cursor: 'pointer',
+                        fontWeight: 400,
+                        borderBottom: '1px solid grey'
+                      }}
+                    >
+                      Sign up
+                    </span>
+                  </div>
                 </DialogContent>
                 <DialogActions>
                   <Button
@@ -124,7 +142,6 @@ class Login extends React.Component {
   }
 }
 
-export default connect(
-  null,
-  { updateUser, popModal, fetchVenues, showModal }
-)(Login)
+export default connect(null, { updateUser, popModal, fetchVenues, showModal })(
+  Login
+)
