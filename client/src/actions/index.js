@@ -20,7 +20,7 @@ export const setSelectedVenue = payload => async dispatch => {
 }
 
 export const fetchGames = location => async dispatch => {
-  const res = await axios.get('/api/games', { location })
+  const res = await axios.post('/api/get-games', { location })
 
   dispatch({ type: 'RECEIVE_GAMES', payload: res.data.games })
 }
@@ -42,7 +42,7 @@ export const clearModal = () => ({
 export const fetchUser = () => async dispatch => {
   dispatch({ type: 'FETCHING_USER' })
 
-  const res = await axios.get('/api/user')
+  const res = await axios.post('/api/get-user')
 
   dispatch({
     type: 'UPDATE_USER',
@@ -51,7 +51,7 @@ export const fetchUser = () => async dispatch => {
 }
 
 export const updateUser = () => async dispatch => {
-  const res = await axios.get('/api/user')
+  const res = await axios.post('/api/get-user')
 
   dispatch({
     type: 'UPDATE_USER',

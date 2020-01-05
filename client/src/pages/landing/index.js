@@ -9,7 +9,8 @@ import {
   showModal,
   fetchGames,
   setSideMenuIsVisible,
-  setSelectedVenue
+  setSelectedVenue,
+  setMapCenter
 } from '../../actions'
 import GoogleMapWrapper from './googleMapWrapper'
 import SideMenu from './sideMenu'
@@ -32,6 +33,8 @@ class Landing extends React.Component {
 
     if (location) {
       await this.props.fetchVenues(location)
+      const venue = this.props.venues[0]
+      this.props.setMapCenter(venue)
       this.props.fetchGames(location)
 
       this.setState({ initialized: true })
@@ -46,7 +49,8 @@ class Landing extends React.Component {
 
     const url =
       'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places'
-    const url2 = process.env.REACT_APP_GOOGLE_MAP_URL
+    const url2 =
+      'https://maps.googleapis.com/maps/api/js?key=AIzaSyBrUsX1qwbRw4ry4rodgUPG37qP-BxUMtQ&v=3.exp&libraries=geometry,drawing,places'
 
     const { sideMenuIsVisible } = this.props
 
@@ -66,7 +70,7 @@ class Landing extends React.Component {
               lng: -123.12789
             }
           }
-          googleMapURL={url}
+          googleMapURL={url2}
           loadingElement={<div style={{ height: `100%` }} />}
           containerElement={
             <div
@@ -100,6 +104,7 @@ export default withCookies(
     showModal,
     fetchGames,
     setSideMenuIsVisible,
-    setSelectedVenue
+    setSelectedVenue,
+    setMapCenter
   })(Landing)
 )

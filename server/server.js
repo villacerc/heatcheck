@@ -1,5 +1,6 @@
 require('dotenv').config()
 const express = require('express')
+const path = require('path')
 
 require('./db/sequelize')
 require('./services/passport')
@@ -8,12 +9,20 @@ const controllers = require('./controllers')
 const authorize = require('./middlewares/authorize')
 
 const app = express()
-const port = process.env.PORT
+const port = 8080
 
 require('./middlewares')(app)
 
+if (process.env.NODE_ENV === 'prod') {
+  app.use(express.static(path.join(__dirname, '/../build')))
+
+  app.get('/*', function(req, res) {
+    res.sendFile(path.join(__dirname, '/../build', 'index.html'))
+  })
+}
+
 //user controllers
-app.get('/api/user', controllers.user.getUser)
+app.post('/api/get-user', controllers.user.getUser)
 app.post('/api/logout', authorize, controllers.user.logout)
 app.post('/api/signup', controllers.user.signup)
 app.post('/api/login', controllers.user.authenticate)
@@ -31,7 +40,7 @@ app.post('/api/verify', controllers.verificationToken.verify)
 
 //game controllers
 app.post('/api/create-game', authorize, controllers.game.create)
-app.get('/api/games', controllers.game.getGames)
+app.post('/api/get-games', controllers.game.getGames)
 app.post('/api/get-game', controllers.game.getGame)
 app.get('/api/joined-game', authorize, controllers.game.joinedGame)
 app.delete('/api/delete-game', authorize, controllers.game.deleteGame)
@@ -46,7 +55,10 @@ app.post(
   controllers.game.acceptJoinRequest
 )
 
-const server = app.listen(port, () => console.log(`listening on port ${port}!`))
+const server = app.listen(port, () => {
+  console.log(`listening on port ${port}!`)
+  console.log(`Building for ${process.env.NODE_ENV}!`)
+})
 
 // const closeConnections = () => {
 //   db.sequelize.close()

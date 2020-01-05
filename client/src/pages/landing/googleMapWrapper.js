@@ -56,6 +56,7 @@ class GoogleMapWrapper extends React.Component {
       <GoogleMap
         {...this.props}
         options={{ styles: this.myStyles }}
+        gestureHandling="cooperative"
         defaultZoom={12}
         onDragStart={this.resetCenteredValue}
         onZoomChanged={this.resetCenteredValue}
@@ -78,7 +79,4 @@ function reduxProps({ venues, user, googleMap }) {
 
 GoogleMapWrapper = withScriptjs(withGoogleMap(GoogleMapWrapper))
 
-export default connect(
-  reduxProps,
-  { setSelectedVenue }
-)(GoogleMapWrapper)
+export default connect(reduxProps, { setSelectedVenue })(GoogleMapWrapper)

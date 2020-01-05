@@ -8,7 +8,7 @@ import store from '../../reducer'
 import { setSelectedVenue } from '../../actions'
 import MarkerContent from './markerContent'
 
-import styles from './mapMarker.module.scss'
+import styles from './MapMarker.module.scss'
 
 class MapMarker extends React.Component {
   state = {

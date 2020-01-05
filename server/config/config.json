@@ -1,5 +1,5 @@
 {
-  "development": {
+  "dev": {
     "username": "carlo",
     "password": null,
     "database": "pick_and_roll",
@@ -14,11 +14,11 @@
     "dialect": "postgres",
     "logging": false
   },
-  "production": {
-    "username": "root",
-    "password": null,
-    "database": "database_production",
+  "prod": {
+    "username": "carlo",
+    "password": "carlo",
+    "database": "pick_and_roll",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "postgres"
   }
 }

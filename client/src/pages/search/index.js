@@ -78,10 +78,20 @@ class Search extends React.Component {
               type="text"
               placeholder="Type in a location..."
             />
-            <i
-              onClick={this.performSearch}
-              className={classNames('fas fa-search', styles.searchButton)}
-            ></i>
+            {this.state.searching ? (
+              <i
+                style={{ cursor: 'default' }}
+                className={classNames(
+                  'fas fa-sync fa-spin',
+                  styles.searchButton
+                )}
+              ></i>
+            ) : (
+              <i
+                onClick={this.performSearch}
+                className={classNames('fas fa-search', styles.searchButton)}
+              ></i>
+            )}
           </div>
         </div>
       </div>
@@ -89,9 +99,4 @@ class Search extends React.Component {
   }
 }
 
-export default withCookies(
-  connect(
-    null,
-    { fetchVenues }
-  )(Search)
-)
+export default withCookies(connect(null, { fetchVenues })(Search))

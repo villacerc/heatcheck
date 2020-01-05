@@ -88,13 +88,9 @@ class TopBar extends React.Component {
           styles.buttons,
           inSearch ? styles.invertedButtons : ''
         )}
-        style={{ marginLeft: 'auto' }}
+        style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}
       >
-        {!inSearch && (
-          <Button onClick={() => navigate('/search')}>
-            <i style={{ fontSize: '17pt' }} className="fas fa-search"></i>
-          </Button>
-        )}
+        {!inSearch && this.renderSearchButton()}
         <Button onClick={this.showLogin}>Login</Button>
         <Button
           variant="outlined"
@@ -106,12 +102,29 @@ class TopBar extends React.Component {
       </div>
     )
   }
+  renderSearchButton = () => {
+    return (
+      <div
+        style={{ marginRight: '10px', display: 'flex', alignItems: 'center' }}
+      >
+        <Button onClick={() => navigate('/search')}>
+          <i style={{ fontSize: '17pt' }} className="fas fa-search"></i>
+        </Button>
+      </div>
+    )
+  }
   renderAvatar = () => {
     const user = this.props.user.payload
 
     const avatar = () => {
+      const inSearch = this.props.location.pathname.includes('search')
+
       return (
-        <div ref={el => (this.userAnchor = el)} style={{ marginLeft: 'auto' }}>
+        <div
+          ref={el => (this.userAnchor = el)}
+          style={{ marginLeft: 'auto', display: 'flex' }}
+        >
+          {!inSearch && this.renderSearchButton()}
           <Avatar
             onClick={this.avatarClick}
             style={{ background: user.color, cursor: 'pointer' }}
@@ -141,7 +154,6 @@ class TopBar extends React.Component {
         anchorEl={this.userAnchor}
       >
         <MenuList onClick={() => this.setState({ userAnchorEl: null })}>
-          <MenuItem>Profile</MenuItem>
           {(user.createdGame || user.joinedGame) && (
             <MenuItem onClick={() => navigate('/my-game')}>My Game</MenuItem>
           )}
@@ -197,7 +209,10 @@ const reduxProps = ({ user }) => {
   }
 }
 
-export default connect(
-  reduxProps,
-  { showModal, updateUser, fetchGames, fetchVenues, setSelectedVenue }
-)(TopBar)
+export default connect(reduxProps, {
+  showModal,
+  updateUser,
+  fetchGames,
+  fetchVenues,
+  setSelectedVenue
+})(TopBar)

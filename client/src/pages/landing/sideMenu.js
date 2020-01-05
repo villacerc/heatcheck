@@ -10,7 +10,7 @@ import { setSideMenuIsVisible, setSelectedVenue } from '../../actions'
 import VenueInfo from './venueInfo'
 import GameInfo from '../../components/gameInfo'
 
-import styles from './sideMenu.module.scss'
+import styles from './SideMenu.module.scss'
 
 class SideMenu extends React.Component {
   state = {
@@ -142,7 +142,7 @@ function mapStateToProps({ venues, games, sideMenu, googleMap }) {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  { setSideMenuIsVisible, setSelectedVenue }
-)(SideMenu)
+export default connect(mapStateToProps, {
+  setSideMenuIsVisible,
+  setSelectedVenue
+})(SideMenu)
