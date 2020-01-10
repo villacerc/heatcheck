@@ -50,9 +50,12 @@ class VenueInfo extends React.Component {
   centerMap = () => {
     if (window.innerWidth < 600) {
       store.dispatch(setSideMenuIsVisible(false))
-      setTimeout(() => store.dispatch(setMapCenter(this.props.venue)), 300)
+      setTimeout(
+        () => store.dispatch(setMapCenter(this.props.venue, true)),
+        300
+      )
     } else {
-      store.dispatch(setMapCenter(this.props.venue))
+      store.dispatch(setMapCenter(this.props.venue, true))
     }
   }
   render() {

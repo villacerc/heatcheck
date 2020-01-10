@@ -161,7 +161,7 @@ class Game extends React.Component {
           ) : (
             this.renderJoinButton()
           )}
-          <h4>Players</h4>
+          <h4 style={{ marginTop: 0 }}>Players</h4>
           <div className={styles.playerList}>
             {game.players.map((player, i) => (
               <div key={i} style={{ marginBottom: '.5rem' }}>
@@ -213,8 +213,5 @@ const reduxStates = ({ user, game }) => {
 }
 
 export default withSnackbar(
-  connect(
-    reduxStates,
-    { showModal, updateUser, fetchGame }
-  )(Game)
+  connect(reduxStates, { showModal, updateUser, fetchGame })(Game)
 )

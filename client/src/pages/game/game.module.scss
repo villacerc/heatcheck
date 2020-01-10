@@ -23,8 +23,11 @@
   justify-content: center;
 }
 .actions {
-  button:last-child {
-    margin-left: 2rem;
+  button {
+    margin-bottom: 15px;
+  }
+  button:first-child {
+    margin-right: 2rem;
   }
 }
 .fab {

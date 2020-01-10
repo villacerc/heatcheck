@@ -10,9 +10,12 @@ export const setSideMenuIsVisible = payload => async dispatch => {
   dispatch({ type: 'SET_SIDEMENU_IS_VISIVBLE', payload })
 }
 
-export const setMapCenter = payload => async dispatch => {
+export const setMapCenter = (payload, showVenue = false) => async dispatch => {
   dispatch({ type: 'SET_MAP_CENTER', payload })
-  dispatch(setSelectedVenue(payload))
+
+  if (showVenue) {
+    dispatch(setSelectedVenue(payload))
+  }
 }
 
 export const setSelectedVenue = payload => async dispatch => {
