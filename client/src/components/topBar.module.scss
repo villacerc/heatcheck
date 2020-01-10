@@ -53,10 +53,12 @@
 }
 .invertedButtons {
   button {
+    color: rgb(255, 145, 77);
+    border-color: rgb(255, 145, 77) !important;
     transition: all 0.3s !important;
     &:hover {
-      color: rgb(255, 145, 77);
-      border-color: rgb(255, 145, 77) !important;
+      color: white;
+      border-color: white !important;
     }
   }
 }
