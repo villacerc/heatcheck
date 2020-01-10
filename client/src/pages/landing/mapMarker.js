@@ -31,10 +31,7 @@ class MapMarker extends React.Component {
   }
   setSelectedVenue = () => {
     const { selectedVenue } = store.getState().googleMap
-    if (
-      this.state.selectedVenue.id !== selectedVenue.id &&
-      this.state.selectedVenue.id
-    ) {
+    if (this.state.selectedVenue.id !== selectedVenue.id) {
       this.setState({ selectedVenue }, this.shouldShowPopper)
     }
   }

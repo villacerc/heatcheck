@@ -20,6 +20,14 @@ const reducers = combineReducers({
   sideMenu
 })
 
-const store = createStore(reducers, applyMiddleware(reduxThunk, logger))
+let middleware = []
+
+if (process.env.NODE_ENV === 'development') {
+  middleware = [reduxThunk, logger]
+} else {
+  middleware = [reduxThunk]
+}
+
+const store = createStore(reducers, applyMiddleware(...middleware))
 
 export default store
