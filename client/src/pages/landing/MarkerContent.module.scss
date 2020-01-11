@@ -35,3 +35,9 @@
 .active {
   color: green;
 }
+
+@media (max-width: 350px) {
+  .container {
+    width: 300px;
+  }
+}

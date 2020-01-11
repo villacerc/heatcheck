@@ -159,7 +159,7 @@ class Game extends React.Component {
               </Button>
             </div>
           ) : (
-            this.renderJoinButton()
+            <div className={styles.actions}>{this.renderJoinButton()}</div>
           )}
           <h4 style={{ marginTop: 0 }}>Players</h4>
           <div className={styles.playerList}>
