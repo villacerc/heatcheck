@@ -49,8 +49,7 @@ class Landing extends React.Component {
 
     const url =
       'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places'
-    const url2 =
-      'https://maps.googleapis.com/maps/api/js?key=AIzaSyBrUsX1qwbRw4ry4rodgUPG37qP-BxUMtQ&v=3.exp&libraries=geometry,drawing,places'
+    const url2 = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_KEY}&v=3.exp&libraries=geometry,drawing,places`
 
     const { sideMenuIsVisible } = this.props
 
