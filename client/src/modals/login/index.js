@@ -120,6 +120,20 @@ class Login extends React.Component {
                   <Button
                     type="button"
                     disabled={this.state.loading}
+                    onClick={() =>
+                      this.handleLogin({
+                        email: 'kdurant@gmail.com',
+                        password: 'hello'
+                      })
+                    }
+                    color="primary"
+                    style={{ marginRight: 'auto', textTransform: 'initial' }}
+                  >
+                    Login as Guest
+                  </Button>
+                  <Button
+                    type="button"
+                    disabled={this.state.loading}
                     onClick={this.handleClose}
                     color="primary"
                   >
