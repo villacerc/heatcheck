@@ -35,7 +35,7 @@ class Landing extends React.Component {
       await this.props.fetchVenues(location)
       const venue = this.props.venues[0]
       this.props.setMapCenter(venue)
-      this.props.fetchGames(location)
+      // this.props.fetchGames(location)
 
       this.setState({ initialized: true })
     } else {

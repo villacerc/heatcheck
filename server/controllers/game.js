@@ -31,6 +31,24 @@ const getGame = async (req, res) => {
   }
 }
 
+// const getGames = async (req, res) => {
+//   try {
+//     const games = await db.Game.scope('creator', 'players', 'venue').findAll({
+//       include: [
+//         {
+//           model: db.Venue,
+//           as: 'venue',
+//           where: req.body.location
+//         }
+//       ]
+//     })
+
+//     res.status(200).json({ games: sanitizeAll(games) })
+//   } catch (err) {
+//     res.status(400).send({ err })
+//   }
+// }
+
 const getGames = async (req, res) => {
   try {
     const games = await db.Game.scope('creator', 'players', 'venue').findAll({
@@ -38,7 +56,7 @@ const getGames = async (req, res) => {
         {
           model: db.Venue,
           as: 'venue',
-          where: req.body.location
+          where: req.body.params.venueId
         }
       ]
     })
