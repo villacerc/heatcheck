@@ -1,14 +1,14 @@
 {
   "dev": {
     "username": "carlo",
-    "password": null,
+    "password": "pgadmin",
     "database": "pick_and_roll",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
   "test": {
     "username": "carlo",
-    "password": null,
+    "password": "pgadmin",
     "database": "pick_and_roll_test",
     "host": "127.0.0.1",
     "dialect": "postgres",

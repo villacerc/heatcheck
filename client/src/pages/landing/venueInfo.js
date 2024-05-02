@@ -104,14 +104,14 @@ class VenueInfo extends React.Component {
               </Button>
             </div>
           </div>
-          <div className={styles.venueStatus}>
+          <Link to={`/venues/${venue.id}`} className={styles.venueStatus}>
             <div className={venue.games ? styles.gamesActive : ''}>
               {venue.games} {venue.games === 1 ? 'Game' : 'Games'}
             </div>
             <div className={venue.checkIns ? styles.checkInsActive : ''}>
               {venue.checkIns} Checked-in
             </div>
-          </div>
+          </Link>
         </div>
       </Card>
     )

@@ -108,9 +108,10 @@ class SideMenu extends React.Component {
         </div>
         <div
           onTouchStart={() => this.props.setSelectedVenue({})}
-          style={{ position: 'relative', height: '100%' }}
+          style={{height: '100%' }}
+          // style={{ position: 'relative', height: '100%' }}
         >
-          <AppBar position="static" color="default">
+          {/* <AppBar position="static" color="default">
             <Tabs
               value={this.state.tab}
               onChange={this.changeTab}
@@ -125,7 +126,7 @@ class SideMenu extends React.Component {
                 })`}
               />
             </Tabs>
-          </AppBar>
+          </AppBar> */}
           <div className={styles.content}>{this.renderContent()}</div>
         </div>
       </Drawer>
