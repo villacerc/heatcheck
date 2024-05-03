@@ -45,7 +45,7 @@ class Landing extends React.Component {
   render() {
     if (!this.state.initialized) return null
 
-    if (this.state.redirect) return <Redirect noThrow to="/search" />
+    if (this.state.redirect) return <Redirect noThrow to="/" />
 
     const url =
       'https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places'

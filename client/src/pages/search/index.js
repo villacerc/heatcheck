@@ -9,20 +9,43 @@ import axios from '../../services/axios'
 import logo from '../../assets/basketball.png'
 import styles from './searchPage.module.scss'
 
+import FilledInput from '@material-ui/core/FilledInput';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
+const LOCATIONS = [{locality: "Vancouver", area: "BC", country: "Canada"}, {locality: "Richmond", area: "BC", country: "Canada"}]
+
 class Search extends React.Component {
   state = {
     query: '',
+    locationIndex: null,
     searching: false
   }
 
   componentDidMount() {
-    const node = document.getElementById('searchField')
+    // const node = document.getElementById('searchField')
 
-    node.addEventListener('keyup', async event => {
-      if (event.key === 'Enter') {
-        this.performSearch()
-      }
+    // node.addEventListener('keyup', async event => {
+    //   if (event.key === 'Enter') {
+    //     this.performSearch()
+    //   }
+    // })
+  }
+
+  handleSelect = (event) => {
+    this.setState({ locationIndex: event.target.value });
+
+    const { locality, area, country } = LOCATIONS[event.target.value]
+
+    this.props.cookies.set('location', {
+      locality,
+      area,
+      country
     })
+    navigate('/venues')
+    this.props.fetchVenues({ locality, area, country })
   }
 
   performSearch = async () => {
@@ -61,15 +84,30 @@ class Search extends React.Component {
   render() {
     return (
       <div className={styles.body}>
+        
         <div className={styles.content}>
           <div className={styles.brand}>
             <img src={logo} />
             <h1>Pick and Roll</h1>
           </div>
           <div>
-            <h1 className={styles.info}>Search. Create. Join. Play.</h1>
+            <h1 className={styles.info}>Your Guide to Nearby Hoops!</h1>
           </div>
-          <div className={styles.searchBox}>
+
+          <FormControl variant="filled" className={styles.selectBox}>
+          <InputLabel htmlFor="filled-age-simple">Select location</InputLabel>
+          <Select
+            value={this.state.locationIndex === null ? "" : this.state.locationIndex}
+            style={{background: "white"}}
+            onChange={this.handleSelect}
+            input={<FilledInput name="location" id="filled-age-simple" />}
+          >
+            <MenuItem value={0}>Vancouver, BC</MenuItem>
+            <MenuItem value={1}>Richmond, BC</MenuItem>
+          </Select>
+        </FormControl>
+
+          {/* <div className={styles.searchBox}>
             <input
               disabled={this.state.searching}
               id="searchField"
@@ -92,7 +130,7 @@ class Search extends React.Component {
                 className={classNames('fas fa-search', styles.searchButton)}
               ></i>
             )}
-          </div>
+          </div> */}
         </div>
       </div>
     )

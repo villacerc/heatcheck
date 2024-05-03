@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import { fetchUser } from './actions'
 import TopBar from './components/topBar'
-import Landing from './pages/landing'
+import Venues from './pages/venues'
 import Search from './pages/search'
 import Game from './pages/game'
 import Venue from './pages/venue'
@@ -24,8 +24,8 @@ class App extends Component {
         <Location>{props => <TopBar {...props} />}</Location>
         <div className="app-body">
           <Router>
-            <Landing path="/" />
-            <Search path="/search" />
+            <Search path="/" />
+            <Venues path="/venues" />
             <Game path="/my-game" />
             <Game path="/games/:gameId" />
             <Venue path="/venues/:venueId" />
