@@ -8,7 +8,7 @@ import { Link } from '@reach/router'
 import { updateUser, showModal } from '../actions'
 import axios from '../services/axios'
 
-import styles from '../pages/landing/venueAndGame.module.scss'
+import styles from '../pages/venues/venueAndGame.module.scss'
 
 class GameInfo extends React.Component {
   joinGame = async () => {
