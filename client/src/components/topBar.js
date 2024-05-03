@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import axios from 'axios'
-import { navigate } from '@reach/router'
+import { navigate, Link } from '@reach/router'
 import Badge from '@material-ui/core/Badge'
 import classNames from 'classnames'
 
@@ -80,7 +80,7 @@ class TopBar extends React.Component {
   renderButtons = () => {
     if (this.props.user.payload) return this.renderAvatar()
 
-    const inSearch = this.props.location.pathname.includes('search')
+    const inSearch = this.props.location.pathname === "/"
 
     return (
       <div
@@ -90,7 +90,8 @@ class TopBar extends React.Component {
         )}
         style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}
       >
-        {!inSearch && this.renderSearchButton()}
+        {/* {!inSearch && this.renderSearchButton()} */}
+        <Button onClick={()=>navigate("/")}>Home</Button>
         <Button onClick={this.showLogin}>Login</Button>
         <Button
           variant="outlined"
@@ -117,7 +118,7 @@ class TopBar extends React.Component {
     const user = this.props.user.payload
 
     const avatar = () => {
-      const inSearch = this.props.location.pathname.includes('search')
+      const inSearch = this.props.location.pathname === "/"
 
       return (
         <div
@@ -177,7 +178,7 @@ class TopBar extends React.Component {
   render() {
     const { user, location } = this.props
 
-    const inSearch = location.pathname.includes('search')
+    const inSearch = location.pathname === "/"
 
     return (
       <div onTouchStart={() => this.props.setSelectedVenue({})}>

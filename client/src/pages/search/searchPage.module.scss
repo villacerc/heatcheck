@@ -37,6 +37,12 @@
     box-sizing: border-box;
   }
 }
+.selectBox {
+  width: 60%;
+  min-width: 100px;
+  max-width: 340px;
+  text-align: left;
+}
 .info {
   font-size: 38pt;
   font-weight: 300;
