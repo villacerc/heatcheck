@@ -5,6 +5,7 @@ import Icon from '@material-ui/core/Icon'
 import Card from '@material-ui/core/Card'
 import { Link } from '@reach/router'
 import classNames from 'classnames'
+import { withCookies } from 'react-cookie'
 
 import { abandonGameDialog } from '../../helpers'
 import {
@@ -25,7 +26,7 @@ class VenueInfo extends React.Component {
     })
     if (res.status === 200) {
       await store.dispatch(updateUser())
-      await store.dispatch(fetchVenues())
+      await store.dispatch(fetchVenues(this.props.cookies.get('location')))
       this.centerMap()
     }
   }
@@ -118,4 +119,4 @@ class VenueInfo extends React.Component {
   }
 }
 
-export default VenueInfo
+export default withCookies(VenueInfo)
