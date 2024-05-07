@@ -58,8 +58,8 @@ class TopBar extends React.Component {
     const confirm = async () => {
       await axios.post('api/logout')
 
-      this.props.fetchGames()
-      this.props.fetchVenues()
+      // this.props.fetchGames()
+      // this.props.fetchVenues()
       await this.props.updateUser()
       navigate('/signed-out')
     }
@@ -90,8 +90,7 @@ class TopBar extends React.Component {
         )}
         style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}
       >
-        {/* {!inSearch && this.renderSearchButton()} */}
-        <Button onClick={()=>navigate("/")}>Home</Button>
+        {!inSearch && this.renderSearchButton()}
         <Button onClick={this.showLogin}>Login</Button>
         <Button
           variant="outlined"
@@ -108,9 +107,10 @@ class TopBar extends React.Component {
       <div
         style={{ marginRight: '10px', display: 'flex', alignItems: 'center' }}
       >
-        <Button onClick={() => navigate('/search')}>
+        <Button onClick={()=>navigate("/")}>Home</Button>
+        {/* <Button onClick={() => navigate('/search')}>
           <i style={{ fontSize: '17pt' }} className="fas fa-search"></i>
-        </Button>
+        </Button> */}
       </div>
     )
   }
