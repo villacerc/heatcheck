@@ -90,7 +90,7 @@ class TopBar extends React.Component {
         )}
         style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}
       >
-        {!inSearch && this.renderSearchButton()}
+        {this.renderNavItems()}
         <Button onClick={this.showLogin}>Login</Button>
         <Button
           variant="outlined"
@@ -102,15 +102,19 @@ class TopBar extends React.Component {
       </div>
     )
   }
-  renderSearchButton = () => {
+  renderNavItems = () => {
+
+    const inSearch = this.props.location.pathname === "/"
+    const inCourts = this.props.location.pathname === "/venues"
+
     return (
       <div
         style={{ marginRight: '10px', display: 'flex', alignItems: 'center' }}
       >
-        <Button onClick={()=>navigate("/")}>Home</Button>
-        {/* <Button onClick={() => navigate('/search')}>
+        {!inSearch && <Button onClick={() => navigate('/')}>
           <i style={{ fontSize: '17pt' }} className="fas fa-search"></i>
-        </Button> */}
+        </Button>}
+        {!inCourts && !inSearch && <Button onClick={()=>navigate("/venues")}>Courts</Button>}
       </div>
     )
   }
@@ -118,14 +122,12 @@ class TopBar extends React.Component {
     const user = this.props.user.payload
 
     const avatar = () => {
-      const inSearch = this.props.location.pathname === "/"
-
       return (
         <div
           ref={el => (this.userAnchor = el)}
           style={{ marginLeft: 'auto', display: 'flex' }}
         >
-          {!inSearch && this.renderSearchButton()}
+          {this.renderNavItems()}
           <Avatar
             onClick={this.avatarClick}
             style={{ background: user.color, cursor: 'pointer' }}

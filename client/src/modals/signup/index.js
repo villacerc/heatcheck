@@ -43,6 +43,8 @@ class Signup extends React.Component {
       password: ''
     }
 
+    const recaptchaKey = process.env.NODE_ENV === "development" ? "6Ld3y7QUAAAAAMMEx2Xdr044pBxGf5uhHpTtxMht" : "6LfKb9YpAAAAAIFvYXg1F3oQZup8iaSP5SewvC6Z"
+
     return (
       <Dialog
         classes={{ paper: styles.paper }}
@@ -84,7 +86,7 @@ class Signup extends React.Component {
                   />
                   <div style={{ marginTop: '1rem' }}>
                     <ReCAPTCHA
-                      sitekey="6Ld3y7QUAAAAAMMEx2Xdr044pBxGf5uhHpTtxMht"
+                      sitekey={recaptchaKey}
                       onChange={value => this.setState({ captchaValue: value })}
                     />
                   </div>
