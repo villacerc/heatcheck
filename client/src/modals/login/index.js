@@ -8,6 +8,7 @@ import { Formik } from 'formik'
 import * as Yup from 'yup'
 import { connect } from 'react-redux'
 import { navigate } from '@reach/router'
+import { withCookies } from 'react-cookie'
 
 import TextInput from '../../components/textInput'
 import axios from '../../services/axios'
@@ -41,7 +42,7 @@ class Login extends React.Component {
           venueId: this.props.venueId
         })
         this.props.updateUser()
-        this.props.fetchVenues()
+        this.props.fetchVenues(this.props.cookies.get('location'))
         return this.handleClose()
       } else if (this.props.createGame) {
         this.props.updateUser()
@@ -156,6 +157,6 @@ class Login extends React.Component {
   }
 }
 
-export default connect(null, { updateUser, popModal, fetchVenues, showModal })(
+export default withCookies(connect(null, { updateUser, popModal, fetchVenues, showModal })(
   Login
-)
+))
