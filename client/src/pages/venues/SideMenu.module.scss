@@ -9,13 +9,13 @@
   overflow: hidden !important;
 }
 .content {
-  padding: 15px;
+  padding: 0 15px 15px 15px;
+  margin-top: 15px;
   overflow: auto;
   position: absolute;
   left: 0;
   right: 0;
-  top: 30px;
-  // top: 50px;
+  top: 40px;
   bottom: 0;
 }
 .header {
@@ -33,7 +33,7 @@
   padding-left: 0.5rem;
   display: flex;
   align-items: center;
-  min-height: 35px;
+  max-height: 35px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   color: rgba(0, 0, 0, 0.8);
 }
@@ -41,9 +41,16 @@
   border-radius: 5px;
   background-color: white;
 }
+.locationText {
+  padding: 10px; 
+  margin-left: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
 @media (min-width: 600px) {
-  content {
-    top: 55px;
+  .content {
+    top: 30px;
   }
   .hideMenu {
     padding-top: 0;
