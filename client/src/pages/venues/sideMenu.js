@@ -1,9 +1,6 @@
 import React from 'react'
 import Drawer from '@material-ui/core/Drawer'
 import { connect } from 'react-redux'
-import AppBar from '@material-ui/core/AppBar'
-import Tabs from '@material-ui/core/Tabs'
-import Tab from '@material-ui/core/Tab'
 import UAParser from 'ua-parser-js'
 
 import { setSideMenuIsVisible, setSelectedVenue } from '../../actions'
@@ -35,8 +32,31 @@ class SideMenu extends React.Component {
   changeTab = (e, newValue) => {
     this.setState({ tab: newValue })
   }
+  sortVenuesByGamesThenChekins = (venues) => {
+    venues.sort((a, b) => {
+      const gamesComparison = b.games - a.games;
+      if (gamesComparison !== 0) {
+        return gamesComparison;
+      }
+      
+      return b.checkIns - a.checkIns;
+    });   
+  }
+  prioritizeCheckedInVenue = (venues) => {
+    const {user} = this.props
+
+    if(user && user.checkIn) {
+      const index = venues.findIndex(venue => venue.id === user.checkIn.venueId);
+      if (index !== -1) {
+          const venue = venues.splice(index, 1)[0];
+          venues.unshift(venue);
+      }
+    }
+  };
   renderVenues = () => {
     const { venues } = this.props
+    this.sortVenuesByGamesThenChekins(venues)
+    this.prioritizeCheckedInVenue(venues)
     return (
       venues &&
       venues.map(venue => {
@@ -79,7 +99,7 @@ class SideMenu extends React.Component {
     const { locality, area, country } = this.props.venues[0] || {}
 
     return (
-      <div style={{ padding: '10px', marginLeft: '20px' }}>
+      <div className={styles.locationText}>
         Showing results for {locality} {area}, {country}
       </div>
     )
@@ -134,9 +154,10 @@ class SideMenu extends React.Component {
   }
 }
 
-function mapStateToProps({ venues, games, sideMenu, googleMap }) {
+function mapStateToProps({ venues, user, games, sideMenu, googleMap }) {
   return {
     venues,
+    user: user.payload,
     games,
     sideMenuIsVisible: sideMenu.isVisible,
     selectedVenue: googleMap.selectedVenue
