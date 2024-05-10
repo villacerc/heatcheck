@@ -2,6 +2,7 @@ import React from 'react'
 import Drawer from '@material-ui/core/Drawer'
 import { connect } from 'react-redux'
 import UAParser from 'ua-parser-js'
+import Button from '@material-ui/core/Button'
 
 import { setSideMenuIsVisible, setSelectedVenue } from '../../actions'
 import VenueInfo from './venueInfo'
@@ -116,19 +117,20 @@ class SideMenu extends React.Component {
         anchor="left"
         open={this.props.sideMenuIsVisible}
       >
-        <div className={styles.hideMenu}>
-          <button
+        <div className={styles.venuesListHeader}>
+          <Button
             className={styles.hideMenuButton}
             style={{ cursor: 'pointer' }}
             onClick={this.hideMenu}
           >
             <i className="fa fa-angle-left" />
-          </button>
+          </Button>
+          <div className={styles.venuesListHeaderDivider}></div>
           {this.resultsText()}
         </div>
         <div
           onTouchStart={() => this.props.setSelectedVenue({})}
-          style={{height: '100%' }}
+          className={styles.contentContainer}
           // style={{ position: 'relative', height: '100%' }}
         >
           {/* <AppBar position="static" color="default">

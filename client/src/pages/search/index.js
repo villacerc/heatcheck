@@ -15,7 +15,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-const LOCATIONS = [{locality: "Vancouver", area: "BC", country: "Canada"}, {locality: "Richmond", area: "BC", country: "Canada"}]
+const LOCATIONS = [
+  {locality: "Vancouver", area: "BC", country: "Canada"}, 
+  {locality: "Richmond", area: "BC", country: "Canada"},
+  {locality: "Surrey", area: "BC", country: "Canada"},
+  {locality: "Victoria", area: "BC", country: "Canada"}
+]
 
 class Search extends React.Component {
   state = {
@@ -45,7 +50,6 @@ class Search extends React.Component {
       country
     })
     navigate('/venues')
-    this.props.fetchVenues({ locality, area, country })
   }
 
   performSearch = async () => {
@@ -102,8 +106,9 @@ class Search extends React.Component {
             onChange={this.handleSelect}
             input={<FilledInput name="location" id="filled-age-simple" />}
           >
-            <MenuItem value={0}>Vancouver, BC</MenuItem>
-            <MenuItem value={1}>Richmond, BC</MenuItem>
+            {LOCATIONS.map((location, index) => (
+              <MenuItem key={index} value={index}>{`${location.locality}, ${location.area}`}</MenuItem>
+            ))}
           </Select>
         </FormControl>
 

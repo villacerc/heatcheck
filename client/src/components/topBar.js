@@ -7,9 +7,9 @@ import { connect } from 'react-redux'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
 import axios from 'axios'
-import { navigate, Link } from '@reach/router'
+import { navigate } from '@reach/router'
 import Badge from '@material-ui/core/Badge'
-import classNames from 'classnames'
+import Drawer from '@material-ui/core/Drawer'
 
 import PopperWrapper from './popperWrapper'
 import {
@@ -24,6 +24,7 @@ import styles from './topBar.module.scss'
 
 class TopBar extends React.Component {
   state = {
+    showDrawer: false,
     userAnchorEl: null,
     showUserPopper: false,
     isSmall: false
@@ -41,10 +42,15 @@ class TopBar extends React.Component {
       }
     })
   }
+  hideDrawer = () => {
+    this.setState({showDrawer: false})
+  }
   showLogin = () => {
+    this.hideDrawer()
     this.props.showModal('login')
   }
   showSignup = () => {
+    this.hideDrawer()
     this.props.showModal('signup')
   }
   toSignup = () => {
@@ -77,49 +83,112 @@ class TopBar extends React.Component {
   avatarClick = e => {
     this.setState({ userAnchorEl: e.currentTarget })
   }
-  renderButtons = () => {
-    if (this.props.user.payload) return this.renderAvatar()
-
-    const inSearch = this.props.location.pathname === "/"
+  renderLogin = () => {
+    if (this.props.user.payload) return
 
     return (
-      <div
-        className={classNames(
-          styles.buttons,
-          inSearch ? styles.invertedButtons : ''
-        )}
-        style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}
-      >
-        {this.renderNavItems()}
-        <Button onClick={this.showLogin}>Login</Button>
-        <Button
-          variant="outlined"
-          style={{ marginLeft: '.5rem', borderColor: 'white' }}
-          onClick={this.showSignup}
-        >
-          Sign Up
-        </Button>
-      </div>
+      <Button onClick={this.showLogin}>Login</Button>
+    )
+  }
+  renderSignup = () => {
+    if (this.props.user.payload) return
+
+    return (
+      <Button onClick={this.showSignup}>Sign Up</Button>
+    )
+  }
+  renderCloseButton = () => {
+    return (
+      <div className={styles.closeIconContainer}>
+      <Button onClick={()=>this.setState({showDrawer: false})}>
+      <i class="fas fa-times"></i>
+      </Button>
+    </div>
+    )
+  }
+  goToVenuesPage = () => {
+    this.hideDrawer()
+    navigate('/venues')
+  }
+  renderCourtsButton = () => {
+    const inCourts = this.props.location.pathname === "/venues"
+    const inSearch = this.props.location.pathname === "/"
+
+    if(inCourts || inSearch) return
+
+    return (
+      <Button onClick={this.goToVenuesPage}>Courts</Button>
+    )
+  }
+  goToSearchPage = () => {
+    this.hideDrawer()
+    navigate('/')
+  }
+  renderSearchButton = () => {
+    const inSearch = this.props.location.pathname === "/"
+
+    if(inSearch) return
+
+    return (
+      <Button onClick={this.goToSearchPage}>
+        <i style={{ fontSize: '17pt' }} className="fas fa-search"></i>
+      </Button>
     )
   }
   renderNavItems = () => {
+    return (
+      <div className={styles.navItems}>
+        {this.renderCloseButton()}
+        {this.renderSearchButton()}
+        {this.renderCourtsButton()}
+        {this.renderLogin()}
+        {this.renderSignup()}
+      </div>
+    )
+  }
+  renderFixedNav = () => {
+    return (
+      <div className={styles.fixedNav}>
+        {this.renderNavItems()}
+      </div>
+    )
+  }
+  renderNav = () => {
+    const { user } = this.props
 
-    const inSearch = this.props.location.pathname === "/"
-    const inCourts = this.props.location.pathname === "/venues"
+    if(user.fetching) return
 
     return (
-      <div
-        style={{ marginRight: '10px', display: 'flex', alignItems: 'center' }}
-      >
-        {!inSearch && <Button onClick={() => navigate('/')}>
-          <i style={{ fontSize: '17pt' }} className="fas fa-search"></i>
-        </Button>}
-        {!inCourts && !inSearch && <Button onClick={()=>navigate("/venues")}>Courts</Button>}
+      <div>
+        {this.renderNavDrawer()}
+        {this.renderFixedNav()}
       </div>
+    )
+  }
+  renderNavBurger = () => {
+    return (
+      <Button 
+        onClick={()=>this.setState({showDrawer: true})}
+        className={styles.navBurger}>
+        <i className="fas fa-bars"></i>
+      </Button>
+    )
+  }
+  renderNavDrawer = () => {
+    return (
+      <Drawer
+      open={this.state.showDrawer} 
+      className={styles.drawer}
+      anchor="top"
+      >
+        {this.renderNavItems()}
+      </Drawer>
     )
   }
   renderAvatar = () => {
     const user = this.props.user.payload
+
+    if(!user) return
 
     const avatar = () => {
       return (
@@ -127,7 +196,6 @@ class TopBar extends React.Component {
           ref={el => (this.userAnchor = el)}
           style={{ marginLeft: 'auto', display: 'flex' }}
         >
-          {this.renderNavItems()}
           <Avatar
             onClick={this.avatarClick}
             style={{ background: user.color, cursor: 'pointer' }}
@@ -189,7 +257,7 @@ class TopBar extends React.Component {
             root: inSearch ? styles.barTransparent : styles.bar
           }}
         >
-          <Toolbar>
+          <Toolbar className={styles.toolbar}>
             {!inSearch && (
               <div className={styles.brand}>
                 <h1 onClick={() => navigate('/')}>
@@ -197,7 +265,11 @@ class TopBar extends React.Component {
                 </h1>
               </div>
             )}
-            {!user.fetching && this.renderButtons()}
+            <div className={styles.navContainer}>
+              {this.renderNavBurger()}
+              {this.renderNav()}
+              {this.renderAvatar()}
+            </div>
           </Toolbar>
           {user.payload && this.userPopper()}
         </AppBar>

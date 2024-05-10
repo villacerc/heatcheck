@@ -1,3 +1,37 @@
+.toolbar {
+  min-height: 55px !important;
+  max-height: 55px;
+}
+.navContainer {
+  margin-left: auto;
+}
+.navBurger i {
+  font-size: 15pt;
+}
+.fixedNav {
+  display: none;
+}
+.navItems {
+  display: flex;
+  flex-direction: column;
+}
+.drawer > div:nth-child(2) {
+  background-color: rgb(255, 145, 77);
+  bottom: 0;
+}
+.drawer > div button {
+  color: white;
+}
+.drawerListItemText > span {
+  text-align: center;
+  color: white;
+}
+.closeIconContainer {
+  text-align: right;
+  i {
+    font-size: 15pt;
+  }
+}
 .bar {
   background-color: rgb(255, 145, 77) !important;
   color: white;
@@ -63,5 +97,26 @@
   }
 }
 
-@media (min-width: 500px) {
+@media (min-width: 600px) {
+  .navBurger {
+    display: none !important;
+  }
+  .drawer {
+    display: none;
+  }
+  .fixedNav {
+    display: block;
+  }
+  .navItems {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+  } 
+  .closeIconContainer {
+    display: none;
+  }
+  .toolbar {
+    min-height: 65px !important;
+    max-height: 65px;
+  }
 }

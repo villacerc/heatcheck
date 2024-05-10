@@ -60,7 +60,7 @@ class Landing extends React.Component {
           onTouchStart={() => this.props.setSelectedVenue({})}
           onClick={() => this.props.setSideMenuIsVisible(true)}
         >
-          <i className="fas fa-bars"></i>
+          <i className="fas fa-angle-right"></i>
         </button>
         <GoogleMapWrapper
           center={
