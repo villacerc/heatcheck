@@ -55,7 +55,7 @@ class GoogleMapWrapper extends React.Component {
     return (
       <GoogleMap
         {...this.props}
-        options={{ styles: this.myStyles }}
+        options={{ styles: this.myStyles, streetViewControl: false }}
         gestureHandling="cooperative"
         defaultZoom={12}
         onDragStart={this.resetCenteredValue}
