@@ -1,3 +1,7 @@
+.toolbar {
+  min-height: 55px !important;
+  max-height: 55px;
+}
 .navContainer {
   margin-left: auto;
 }
@@ -14,7 +18,6 @@
 .drawer > div:nth-child(2) {
   background-color: rgb(255, 145, 77);
   bottom: 0;
-  border-bottom: 0;
 }
 .drawer > div button {
   color: white;
@@ -111,5 +114,9 @@
   } 
   .closeIconContainer {
     display: none;
+  }
+  .toolbar {
+    min-height: 65px !important;
+    max-height: 65px;
   }
 }
