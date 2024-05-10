@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from '../services/axios'
 
 export const fetchVenues = location => async dispatch => {
   const res = await axios.post('/api/get-venues', { location })

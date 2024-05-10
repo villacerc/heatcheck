@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 import MenuItem from '@material-ui/core/MenuItem'
 import MenuList from '@material-ui/core/MenuList'
-import axios from 'axios'
+import axios from '../services/axios'
 import { navigate } from '@reach/router'
 import Badge from '@material-ui/core/Badge'
 import Drawer from '@material-ui/core/Drawer'
@@ -62,7 +62,7 @@ class TopBar extends React.Component {
     const user = this.props.user.payload
 
     const confirm = async () => {
-      await axios.post('api/logout')
+      await axios.post('/api/logout')
 
       // this.props.fetchGames()
       // this.props.fetchVenues()
@@ -193,8 +193,8 @@ class TopBar extends React.Component {
     const avatar = () => {
       return (
         <div
+          className={styles.avatarContainer}
           ref={el => (this.userAnchor = el)}
-          style={{ marginLeft: 'auto', display: 'flex' }}
         >
           <Avatar
             onClick={this.avatarClick}
