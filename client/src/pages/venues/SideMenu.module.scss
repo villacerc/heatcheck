@@ -37,6 +37,8 @@
   border-left: 1px solid rgba(0, 0, 0, 0.15);;
 }
 .hideMenuButton {
+  min-width: 0 !important;
+  width: 35px;
   border-radius: 5px;
   background-color: white;
   i {
