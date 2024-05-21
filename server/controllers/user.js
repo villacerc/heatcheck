@@ -36,11 +36,11 @@ const signup = async (req, res) => {
     const i = Math.floor(Math.random() * bgColors.length - 1)
 
     const user = await db.User.create({ ...req.body, color: bgColors[i] })
-    const verification = await db.VerificationToken.create({
-      userId: user.id,
-      token: crypto({ length: 5 })
-    })
-    sendVerificationEmail(user.email, verification.token)
+    // const verification = await db.VerificationToken.create({
+    //   userId: user.id,
+    //   token: crypto({ length: 5 })
+    // })
+    // sendVerificationEmail(user.email, verification.token)
 
     authenticate(req, res)
   } catch (error) {
