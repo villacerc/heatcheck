@@ -1,15 +1,16 @@
 require('dotenv').config()
+const fs = require('fs')
+const https = require('https')
 const express = require('express')
 const path = require('path')
 
 require('./db/sequelize')
 require('./services/passport')
-// require('./jobs')
+require('./jobs')
 const controllers = require('./controllers')
 const authorize = require('./middlewares/authorize')
 
 const app = express()
-const port = 8080
 
 require('./middlewares')(app)
 
@@ -18,6 +19,29 @@ if (process.env.NODE_ENV === 'prod') {
 
   app.get('/*', function(req, res) {
     res.sendFile(path.join(__dirname, '/../build', 'index.html'))
+  })
+}
+
+// HTTPS configuration
+if (process.env.NODE_ENV === 'prod') {
+  // Paths to SSL certificate and private key files
+  const privateKey = fs.readFileSync(process.env.PATH_TO_SSL_PRIVATE, 'utf8');
+  const certificate = fs.readFileSync(process.env.PATH_TO_SSL_CERTIFICATE, 'utf8');
+  
+  const credentials = { key: privateKey, cert: certificate };
+
+  // Create HTTPS server 
+  const httpsServer = https.createServer(credentials, app);
+
+  // Start HTTPS server
+  httpsServer.listen(443, () => {
+    console.log('HTTPS Server running on port 443');
+  });
+} else {
+  // If not in production
+  app.listen(8080, () => {
+    console.log('Listening on port 8080')
+    console.log(`Building for ${process.env.NODE_ENV}!`)
   })
 }
 
@@ -54,11 +78,6 @@ app.post(
   authorize,
   controllers.game.acceptJoinRequest
 )
-
-const server = app.listen(port, () => {
-  console.log(`listening on port ${port}!`)
-  console.log(`Building for ${process.env.NODE_ENV}!`)
-})
 
 // const closeConnections = () => {
 //   db.sequelize.close()
