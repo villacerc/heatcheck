@@ -260,7 +260,7 @@ class TopBar extends React.Component {
           <Toolbar className={styles.toolbar}>
             {!inSearch && (
               <div className={styles.brand}>
-                <h1 onClick={() => navigate('/')}>
+                <h1 onClick={() => navigate('/venues')}>
                   {this.state.isSmall ? 'P' : 'Pick and Roll'}
                 </h1>
               </div>
