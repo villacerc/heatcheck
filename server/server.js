@@ -22,28 +22,10 @@ if (process.env.NODE_ENV === 'prod') {
   })
 }
 
-// HTTPS configuration
-if (process.env.NODE_ENV === 'prod') {
-  // Paths to SSL certificate and private key files
-  const privateKey = fs.readFileSync(process.env.PATH_TO_SSL_PRIVATE, 'utf8');
-  const certificate = fs.readFileSync(process.env.PATH_TO_SSL_CERTIFICATE, 'utf8');
-  
-  const credentials = { key: privateKey, cert: certificate };
-
-  // Create HTTPS server 
-  const httpsServer = https.createServer(credentials, app);
-
-  // Start HTTPS server
-  httpsServer.listen(443, () => {
-    console.log('HTTPS Server running on port 443');
-  });
-} else {
-  // If not in production
-  app.listen(8080, () => {
-    console.log('Listening on port 8080')
+ app.listen(3000, () => {
+    console.log('Listening on port 3000')
     console.log(`Building for ${process.env.NODE_ENV}!`)
   })
-}
 
 //user controllers
 app.post('/api/get-user', controllers.user.getUser)

@@ -15,8 +15,6 @@
     "logging": false
   },
   "prod": {
-    "username": "postgres",
-    "password": "pg_gcp_pnr",
     "database": "pick_and_roll",
     "host": "127.0.0.1",
     "dialect": "postgres"
