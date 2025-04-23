@@ -1,0 +1,14 @@
+services:
+  server-dev:
+    build:
+      context: ./server # path to the server directory in host machine
+      dockerfile: Dockerfile.dev
+    ports:
+      - 8080:8080  # map port 8080 on the host machine to port 8080 in the container
+    volumes:
+      - ./server:/app # map the server directory in the host machine to /app in the container
+                      # this makes it possible to see changes in the host machine reflected in the container, which triggers nodemon
+      - /app/node_modules # this is to prevent overwriting the node_modules directory in the container with the one in the host machine
+    environment:
+      - NODE_ENV==dev
+      - PORT=8080 
