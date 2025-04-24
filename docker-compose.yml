@@ -1,8 +1,10 @@
 services:
+
   server-dev:
     build:
       context: ./server # path to the server directory in host machine
       dockerfile: Dockerfile.dev
+    container_name: server-dev # fixed, predictable name for the container
     ports:
       - 8080:8080  # map port 8080 on the host machine to port 8080 in the container
     volumes:
@@ -12,3 +14,18 @@ services:
     environment:
       - NODE_ENV==dev
       - PORT=8080 
+    
+  postgres-db:
+    image: postgres:14
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: pgadmin
+      POSTGRES_PASSWORD: pgadmin
+      POSTGRES_DB: pick_and_roll
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

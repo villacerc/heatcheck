@@ -20,6 +20,10 @@ if (process.env.NODE_ENV === 'prod') {
   app.get('/*', function(req, res) {
     res.sendFile(path.join(__dirname, '/../build', 'index.html'))
   })
+} else {
+  app.get('/', (req, res) => {
+    res.send('👋 Welcome to the Pick and Roll server!');
+  });
 }
 
  app.listen(process.env.PORT, () => {
