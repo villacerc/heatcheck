@@ -1,0 +1,14 @@
+# Use a clean base image
+FROM node:14
+
+# Set working directory
+WORKDIR /app
+
+# Copy the server source code from the host to the container (WORKDIR)
+COPY . .
+
+# Install dependencies
+RUN npm install
+
+# Start the app
+CMD ["npm", "start"]

@@ -14,7 +14,18 @@ services:
     environment:
       - NODE_ENV==dev
       - PORT=8080 
-    
+
+  client-dev:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    container_name: client-dev
+    ports:
+      - 3000:3000
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+      
   postgres-db:
     image: postgres:14
     container_name: postgres-db
