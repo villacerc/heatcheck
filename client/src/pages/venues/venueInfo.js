@@ -63,7 +63,7 @@ class VenueInfo extends React.Component {
     const user = store.getState().user.payload
     const { venue } = this.props
 
-    const checkedIn = venue.id === (user && user.checkIn.venueId)
+    const checkedIn = venue.id === (user && user.checkIn && user.checkIn.venueId)
     return (
       <Card>
         <div className={classNames(styles.container)}>

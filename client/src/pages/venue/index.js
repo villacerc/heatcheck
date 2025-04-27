@@ -66,7 +66,7 @@ class Venue extends React.Component {
 
     const { user } = this.props
 
-    const checkedIn = user && user.checkIn.venueId === venue.id
+    const checkedIn = user && user.checkIn && user.checkIn.venueId === venue.id
 
     return (
       <div className={styles.container}>

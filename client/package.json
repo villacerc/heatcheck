@@ -2,7 +2,7 @@
   "name": "heatcheck",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8080",
+  "proxy": "http://server-dev:8080",
   "dependencies": {
     "@material-ui/core": "3.9.3",
     "@reach/router": "^1.2.1",

@@ -10,5 +10,8 @@ COPY . .
 # Install dependencies
 RUN npm install
 
+# Makes React’s dev server poll for changes every few milliseconds, which fixes hot reload inside Docker.
+ENV CHOKIDAR_USEPOLLING=true
+
 # Start the app
 CMD ["npm", "start"]

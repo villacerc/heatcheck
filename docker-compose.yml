@@ -11,9 +11,8 @@ services:
       - ./server:/app # map the server directory in the host machine to /app in the container
                       # this makes it possible to see changes in the host machine reflected in the container, which triggers nodemon
       - /app/node_modules # this is to prevent overwriting the node_modules directory in the container with the one in the host machine
-    environment:
-      - NODE_ENV==dev
-      - PORT=8080 
+    env_file:
+      - ./server/.env
 
   client-dev:
     build:
