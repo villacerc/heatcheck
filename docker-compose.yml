@@ -12,7 +12,7 @@ services:
                       # this makes it possible to see changes in the host machine reflected in the container, which triggers nodemon
       - /app/node_modules # this is to prevent overwriting the node_modules directory in the container with the one in the host machine
     env_file:
-      - ./server/.env
+      - .env
 
   client-dev:
     build:
@@ -28,12 +28,12 @@ services:
   postgres-db:
     image: postgres:14
     container_name: postgres-db
-    environment:
-      POSTGRES_USER: pgadmin
-      POSTGRES_PASSWORD: pgadmin
-      POSTGRES_DB: pick_and_roll
     ports:
       - '5432:5432'
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: pick_and_roll
     volumes:
       - pgdata:/var/lib/postgresql/data
 

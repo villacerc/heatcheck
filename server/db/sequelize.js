@@ -15,8 +15,8 @@ if (config.use_env_variable) {
    if(env === "prod") {
     sequelize = new Sequelize(
       config.database,
-      process.env.PSQL_USERNAME,
-      process.env.PSQL_PASSWORD,
+      process.env.POSTGRES_USER,
+      process.env.POSTGRES_PASSWORD,
       config
     )
   } else {
