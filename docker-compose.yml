@@ -13,6 +13,15 @@ services:
       - /app/node_modules # this is to prevent overwriting the node_modules directory in the container with the one in the host machine
     env_file:
       - .env
+  server:
+    build:
+      context: .  # Root context to include both server and client directories
+      dockerfile: server/Dockerfile  # Path to the Dockerfile inside the server directory
+    container_name: server
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
 
   client-dev:
     build:
