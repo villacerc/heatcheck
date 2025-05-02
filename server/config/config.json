@@ -16,7 +16,7 @@
   },
   "prod": {
     "database": "pick_and_roll",
-    "host": "postgres-db",
+    "host": "127.0.0.1",
     "dialect": "postgres"
   }
 }
